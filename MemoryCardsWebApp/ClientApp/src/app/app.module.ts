@@ -2,18 +2,31 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DeckHomeComponent } from './deck-home/deck-home.component';
+import { ProjectHomeComponent } from './project-home/project-home.component';
+
+const appRoutes: Routes = [
+  { path: '', component: ProjectHomeComponent},
+  { path: 'deck', component: DeckHomeComponent}
+];
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DeckHomeComponent,
+    ProjectHomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    NgbModule,
+    RouterModule.forRoot(appRoutes),
 ],
   providers: [],
   bootstrap: [AppComponent]

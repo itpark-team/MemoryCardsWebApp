@@ -1,0 +1,5 @@
+<ul>
+  <li *ngFor="let deck of decks">{{deck.id}} | {{deck.title}} | {{deck.description}} | {{deck.visibility}}</li>
+</ul>
+
+<button (click)="loadDecks()">Load</button>

@@ -20,6 +20,8 @@ namespace MemoryCardsWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+            
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
@@ -40,7 +42,9 @@ namespace MemoryCardsWebApp
             }
 
             app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
+            
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
@@ -53,6 +57,8 @@ namespace MemoryCardsWebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                
+                endpoints.MapControllers();
             });
 
             app.UseSpa(spa =>
