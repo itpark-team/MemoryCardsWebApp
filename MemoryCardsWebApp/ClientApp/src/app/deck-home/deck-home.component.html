@@ -1,5 +1,35 @@
 <ul>
-  <li *ngFor="let deck of decks">{{deck.id}} | {{deck.title}} | {{deck.description}} | {{deck.visibility}} | <button (click)="deleteDecks(deck.id)">Delete</button></li>
+  <li *ngFor="let deck of decks">{{deck.id}} | {{deck.title}} | {{deck.description}} | {{deck.visibility}} | <button (click)="deleteDeck(deck.id)">Delete</button></li>
 </ul>
 
 <button (click)="getDecks()">Load</button>
+
+<div>
+  <label>
+    id: <input type="number" [ngModel]="deck.id" (ngModelChange)="deck.id=$event">
+  </label>
+  <br>
+
+  <label>
+    title: <input type="text" [ngModel]="deck.title" (ngModelChange)="deck.title=$event">
+  </label>
+  <br>
+
+  <label>
+    description: <input type="text" [ngModel]="deck.description" (ngModelChange)="deck.description=$event">
+  </label>
+  <br>
+
+  <label>
+    visibility: <input type="checkbox" [ngModel]="deck.visibility" (ngModelChange)="deck.visibility=$event">
+  </label>
+  <br>
+
+  <button (click)="postDeck()">Add new Deck</button>
+  <br>
+
+  <button (click)="putDeck()">Update Deck</button>
+  <br>
+
+</div>
+
