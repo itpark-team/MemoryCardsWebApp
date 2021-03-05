@@ -9,6 +9,7 @@ namespace MemoryCardsWebApp.Models.Entities
     {
         public User()
         {
+            Decks = new HashSet<Deck>();
             UsersDecks = new HashSet<UsersDeck>();
         }
 
@@ -19,7 +20,9 @@ namespace MemoryCardsWebApp.Models.Entities
         public string AvatarImage { get; set; }
         public byte SubStatus { get; set; }
         public DateTime? SubExpire { get; set; }
+        public bool? IsActive { get; set; }
 
+        public virtual ICollection<Deck> Decks { get; set; }
         public virtual ICollection<UsersDeck> UsersDecks { get; set; }
     }
 }

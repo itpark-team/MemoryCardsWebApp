@@ -43,15 +43,19 @@
     </database>
     <database id="3" parent="1" name="AISCinema">
       <ObjectId>7</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="4" parent="1" name="CPD">
       <ObjectId>15</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="5" parent="1" name="GirlsStore">
       <ObjectId>17</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="6" parent="1" name="Heroes3">
       <ObjectId>13</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="7" parent="1" name="MemoryCards">
       <ObjectId>18</ObjectId>
@@ -65,27 +69,35 @@
     </database>
     <database id="8" parent="1" name="MyLibrary">
       <ObjectId>11</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="9" parent="1" name="NaebLotoApp">
       <ObjectId>10</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="10" parent="1" name="ProductMarket">
       <ObjectId>16</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="11" parent="1" name="RestDatabase">
       <ObjectId>19</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="12" parent="1" name="SexShopApp">
       <ObjectId>9</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="13" parent="1" name="TelBook">
       <ObjectId>6</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="14" parent="1" name="TodosDatabase">
       <ObjectId>14</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="15" parent="1" name="WebBooksApp">
       <ObjectId>8</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="16" parent="1" name="master">
       <ObjectId>1</ObjectId>
@@ -112,6 +124,7 @@
     </database>
     <database id="19" parent="1" name="mydb">
       <ObjectId>5</ObjectId>
+      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="20" parent="1" name="tempdb">
       <ObjectId>2</ObjectId>
@@ -285,7 +298,7 @@
     </schema>
     <schema id="56" parent="7" name="dbo">
       <ObjectId>1</ObjectId>
-      <IntrospectionTimestamp>2021-02-24.00:39:59.103</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2021-03-06.00:56:56.280</IntrospectionTimestamp>
       <Current>1</Current>
     </schema>
     <schema id="57" parent="7" name="guest">
@@ -376,32 +389,32 @@
     <table id="73" parent="56" name="Cards">
       <ObjectId>629577281</ObjectId>
       <CreatedTimestamp>2021-02-10.20:57:43.167</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.01:36:43.873</ModifiedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:53:39.900</ModifiedTimestamp>
     </table>
     <table id="74" parent="56" name="Decks">
       <ObjectId>661577395</ObjectId>
       <CreatedTimestamp>2021-02-10.21:09:12.510</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.01:01:00.483</ModifiedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:55:59.347</ModifiedTimestamp>
     </table>
     <table id="75" parent="56" name="DecksCards">
       <ObjectId>741577680</ObjectId>
       <CreatedTimestamp>2021-02-10.21:14:08.787</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.01:00:34.200</ModifiedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:53:57.853</ModifiedTimestamp>
     </table>
     <table id="76" parent="56" name="InviteLinks">
       <ObjectId>821577965</ObjectId>
       <CreatedTimestamp>2021-02-10.21:25:56.410</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.01:01:00.483</ModifiedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:53:25.213</ModifiedTimestamp>
     </table>
     <table id="77" parent="56" name="Users">
       <ObjectId>773577794</ObjectId>
       <CreatedTimestamp>2021-02-10.21:19:55.357</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.00:58:06.333</ModifiedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:49:33.173</ModifiedTimestamp>
     </table>
     <table id="78" parent="56" name="UsersDecks">
       <ObjectId>709577566</ObjectId>
       <CreatedTimestamp>2021-02-10.21:12:55.233</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.00:58:49.257</ModifiedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:55:59.347</ModifiedTimestamp>
     </table>
     <column id="79" parent="73" name="Id">
       <Position>1</Position>
@@ -475,13 +488,18 @@
       <DataType>bit|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="92" parent="74" name="PK_decks_id">
+    <column id="92" parent="74" name="AuthorUserId">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="93" parent="74" name="PK_decks_id">
       <Position>1</Position>
       <ColNames>Id</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="93" parent="74" name="PK_decks_id">
+    <key id="94" parent="74" name="PK_decks_id">
       <ObjectId>1333579789</ObjectId>
       <CreatedTimestamp>2021-02-13.00:55:12.640</CreatedTimestamp>
       <ModifiedTimestamp>2021-02-13.00:55:12.640</ModifiedTimestamp>
@@ -489,31 +507,41 @@
       <UnderlyingIndexName>PK_decks_id</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <default id="94" parent="74" name="DF__Decks__Visibilit__5070F446">
+    <foreign-key id="95" parent="74" name="FK_Decks_Users_Id">
+      <ObjectId>1941581955</ObjectId>
+      <CreatedTimestamp>2021-03-06.00:49:33.173</CreatedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:49:33.173</ModifiedTimestamp>
+      <ColNames>AuthorUserId</ColNames>
+      <RefTableId>773577794</RefTableId>
+      <RefTableName>Users</RefTableName>
+      <RefKeyName>PK_users_id</RefKeyName>
+      <RefColNames>Id</RefColNames>
+    </foreign-key>
+    <default id="96" parent="74" name="DF__Decks__Visibilit__5070F446">
       <ObjectId>1349579846</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <ModifiedTimestamp>2021-02-13.00:55:12.640</ModifiedTimestamp>
       <ColNames>Visibility</ColNames>
       <DefaultExpression>0</DefaultExpression>
     </default>
-    <column id="95" parent="75" name="DeckId">
+    <column id="97" parent="75" name="DeckId">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="96" parent="75" name="CardId">
+    <column id="98" parent="75" name="CardId">
       <Position>2</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="97" parent="75" name="PK_decks_cards">
+    <index id="99" parent="75" name="PK_decks_cards">
       <Position>1</Position>
       <ColNames>DeckId
 CardId</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="98" parent="75" name="PK_decks_cards">
+    <key id="100" parent="75" name="PK_decks_cards">
       <ObjectId>1205579333</ObjectId>
       <CreatedTimestamp>2021-02-13.00:48:47.733</CreatedTimestamp>
       <ModifiedTimestamp>2021-02-13.00:48:47.733</ModifiedTimestamp>
@@ -522,50 +550,49 @@ CardId</ColNames>
       <UnderlyingIndexName>PK_decks_cards</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="99" parent="75" name="FK_DecksCards_Decks_Id">
-      <ObjectId>1445580188</ObjectId>
-      <CreatedTimestamp>2021-02-13.00:59:37.797</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.00:59:37.797</ModifiedTimestamp>
+    <foreign-key id="101" parent="75" name="FK_DecksCards_Decks_Id">
+      <ObjectId>2021582240</ObjectId>
+      <CreatedTimestamp>2021-03-06.00:53:57.853</CreatedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:53:57.853</ModifiedTimestamp>
       <ColNames>DeckId</ColNames>
       <RefTableId>661577395</RefTableId>
       <RefTableName>Decks</RefTableName>
       <RefKeyName>PK_decks_id</RefKeyName>
       <RefColNames>Id</RefColNames>
-      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="100" parent="75" name="FK_DecksCards_Cards_Id">
-      <ObjectId>1461580245</ObjectId>
-      <CreatedTimestamp>2021-02-13.01:00:34.200</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.01:00:34.200</ModifiedTimestamp>
+    <foreign-key id="102" parent="75" name="FK_DecksCards_Cards_Id">
+      <ObjectId>2005582183</ObjectId>
+      <CreatedTimestamp>2021-03-06.00:53:39.900</CreatedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:53:39.900</ModifiedTimestamp>
       <ColNames>CardId</ColNames>
       <RefTableId>629577281</RefTableId>
       <RefTableName>Cards</RefTableName>
       <RefKeyName>PK_cards_id</RefKeyName>
       <RefColNames>Id</RefColNames>
     </foreign-key>
-    <column id="101" parent="76" name="Id">
+    <column id="103" parent="76" name="Id">
       <Position>1</Position>
       <SequenceIdentity>1</SequenceIdentity>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="102" parent="76" name="DeckId">
+    <column id="104" parent="76" name="DeckId">
       <Position>2</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="103" parent="76" name="LinkHash">
+    <column id="105" parent="76" name="LinkHash">
       <Position>3</Position>
       <DataType>varchar(255 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="104" parent="76" name="PK_invite_links_id">
+    <index id="106" parent="76" name="PK_invite_links_id">
       <Position>1</Position>
       <ColNames>Id</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="105" parent="76" name="PK_invite_links_id">
+    <key id="107" parent="76" name="PK_invite_links_id">
       <ObjectId>1301579675</ObjectId>
       <CreatedTimestamp>2021-02-13.00:49:17.867</CreatedTimestamp>
       <ModifiedTimestamp>2021-02-13.00:49:17.867</ModifiedTimestamp>
@@ -573,58 +600,58 @@ CardId</ColNames>
       <UnderlyingIndexName>PK_invite_links_id</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="106" parent="76" name="FK_InviteLinks_Decks_Id">
-      <ObjectId>1477580302</ObjectId>
-      <CreatedTimestamp>2021-02-13.01:01:00.483</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.01:01:00.483</ModifiedTimestamp>
+    <foreign-key id="108" parent="76" name="FK_InviteLinks_Decks_Id">
+      <ObjectId>1989582126</ObjectId>
+      <CreatedTimestamp>2021-03-06.00:53:25.213</CreatedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:53:25.213</ModifiedTimestamp>
       <ColNames>DeckId</ColNames>
       <RefTableId>661577395</RefTableId>
       <RefTableName>Decks</RefTableName>
       <RefKeyName>PK_decks_id</RefKeyName>
       <RefColNames>Id</RefColNames>
     </foreign-key>
-    <column id="107" parent="77" name="Id">
+    <column id="109" parent="77" name="Id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="108" parent="77" name="Username">
+    <column id="110" parent="77" name="Username">
       <Position>2</Position>
       <DataType>varchar(25 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="109" parent="77" name="Email">
+    <column id="111" parent="77" name="Email">
       <Position>3</Position>
       <DataType>varchar(35 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="110" parent="77" name="PasswordHash">
+    <column id="112" parent="77" name="PasswordHash">
       <Position>4</Position>
       <DataType>varchar(300 char)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="111" parent="77" name="AvatarImage">
+    <column id="113" parent="77" name="AvatarImage">
       <Position>5</Position>
       <DataType>varchar(255 char)|0s</DataType>
     </column>
-    <column id="112" parent="77" name="SubStatus">
+    <column id="114" parent="77" name="SubStatus">
       <Position>6</Position>
       <DefaultConstraintName>DF__Users__SubStatus__534D60F1</DefaultConstraintName>
       <DefaultExpression>0</DefaultExpression>
       <DataType>tinyint|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="113" parent="77" name="SubExpire">
+    <column id="115" parent="77" name="SubExpire">
       <Position>7</Position>
       <DataType>datetime|0s</DataType>
     </column>
-    <index id="114" parent="77" name="PK_users_id">
+    <index id="116" parent="77" name="PK_users_id">
       <Position>1</Position>
       <ColNames>Id</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="115" parent="77" name="PK_users_id">
+    <key id="117" parent="77" name="PK_users_id">
       <ObjectId>1381579960</ObjectId>
       <CreatedTimestamp>2021-02-13.00:56:32.920</CreatedTimestamp>
       <ModifiedTimestamp>2021-02-13.00:56:32.920</ModifiedTimestamp>
@@ -632,31 +659,31 @@ CardId</ColNames>
       <UnderlyingIndexName>PK_users_id</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <default id="116" parent="77" name="DF__Users__SubStatus__534D60F1">
+    <default id="118" parent="77" name="DF__Users__SubStatus__534D60F1">
       <ObjectId>1397580017</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <ModifiedTimestamp>2021-02-13.00:56:32.920</ModifiedTimestamp>
       <ColNames>SubStatus</ColNames>
       <DefaultExpression>0</DefaultExpression>
     </default>
-    <column id="117" parent="78" name="UserId">
+    <column id="119" parent="78" name="UserId">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="118" parent="78" name="DeckId">
+    <column id="120" parent="78" name="DeckId">
       <Position>2</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="119" parent="78" name="PK_users_decks">
+    <index id="121" parent="78" name="PK_users_decks">
       <Position>1</Position>
       <ColNames>DeckId
 UserId</ColNames>
       <Clustering>1</Clustering>
       <Unique>1</Unique>
     </index>
-    <key id="120" parent="78" name="PK_users_decks">
+    <key id="122" parent="78" name="PK_users_decks">
       <ObjectId>1253579504</ObjectId>
       <CreatedTimestamp>2021-02-13.00:49:01.657</CreatedTimestamp>
       <ModifiedTimestamp>2021-02-13.00:49:01.657</ModifiedTimestamp>
@@ -665,27 +692,25 @@ UserId</ColNames>
       <UnderlyingIndexName>PK_users_decks</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="121" parent="78" name="FK_UsersDecks_Users_Id">
-      <ObjectId>1413580074</ObjectId>
-      <CreatedTimestamp>2021-02-13.00:58:06.333</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.00:58:06.333</ModifiedTimestamp>
+    <foreign-key id="123" parent="78" name="FK_UsersDecks_Users_Id">
+      <ObjectId>1925581898</ObjectId>
+      <CreatedTimestamp>2021-03-06.00:48:40.263</CreatedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:48:40.263</ModifiedTimestamp>
       <ColNames>UserId</ColNames>
       <RefTableId>773577794</RefTableId>
       <RefTableName>Users</RefTableName>
       <RefKeyName>PK_users_id</RefKeyName>
       <RefColNames>Id</RefColNames>
-      <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="122" parent="78" name="FK_UsersDecks_Decks_Id">
-      <ObjectId>1429580131</ObjectId>
-      <CreatedTimestamp>2021-02-13.00:58:49.257</CreatedTimestamp>
-      <ModifiedTimestamp>2021-02-13.00:58:49.257</ModifiedTimestamp>
+    <foreign-key id="124" parent="78" name="FK_UsersDecks_Decks_Id">
+      <ObjectId>2037582297</ObjectId>
+      <CreatedTimestamp>2021-03-06.00:55:59.347</CreatedTimestamp>
+      <ModifiedTimestamp>2021-03-06.00:55:59.347</ModifiedTimestamp>
       <ColNames>DeckId</ColNames>
       <RefTableId>661577395</RefTableId>
       <RefTableName>Decks</RefTableName>
       <RefKeyName>PK_decks_id</RefKeyName>
       <RefColNames>Id</RefColNames>
-      <OnDelete>cascade</OnDelete>
     </foreign-key>
   </database-model>
 </dataSource>
