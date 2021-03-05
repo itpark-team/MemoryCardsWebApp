@@ -18,7 +18,9 @@ namespace MemoryCardsWebApp.Models.Entities
         public string Title { get; set; }
         public string Description { get; set; }
         public bool Visibility { get; set; }
+        public int AuthorUserId { get; set; }
 
+        public virtual User AuthorUser { get; set; }
         public virtual ICollection<DecksCard> DecksCards { get; set; }
         public virtual ICollection<InviteLink> InviteLinks { get; set; }
         public virtual ICollection<UsersDeck> UsersDecks { get; set; }

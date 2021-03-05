@@ -73,6 +73,12 @@ namespace MemoryCardsWebApp.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.AuthorUser)
+                    .WithMany(p => p.Decks)
+                    .HasForeignKey(d => d.AuthorUserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Decks_Users_Id");
             });
 
             modelBuilder.Entity<DecksCard>(entity =>
@@ -83,7 +89,6 @@ namespace MemoryCardsWebApp.Models
                 entity.HasOne(d => d.Card)
                     .WithMany(p => p.DecksCards)
                     .HasForeignKey(d => d.CardId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DecksCards_Cards_Id");
 
                 entity.HasOne(d => d.Deck)
@@ -102,7 +107,6 @@ namespace MemoryCardsWebApp.Models
                 entity.HasOne(d => d.Deck)
                     .WithMany(p => p.InviteLinks)
                     .HasForeignKey(d => d.DeckId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_InviteLinks_Decks_Id");
             });
 
@@ -118,6 +122,10 @@ namespace MemoryCardsWebApp.Models
                     .IsRequired()
                     .HasMaxLength(35)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.PasswordHash)
                     .IsRequired()
@@ -145,6 +153,7 @@ namespace MemoryCardsWebApp.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UsersDecks)
                     .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_UsersDecks_Users_Id");
             });
 

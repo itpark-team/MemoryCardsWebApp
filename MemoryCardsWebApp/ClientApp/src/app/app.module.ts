@@ -8,6 +8,9 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeckHomeComponent } from './deck-home/deck-home.component';
 import { ProjectHomeComponent } from './project-home/project-home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import {MatButtonModule} from "@angular/material/button";
 
 const appRoutes: Routes = [
   { path: '', component: ProjectHomeComponent},
@@ -27,6 +30,8 @@ const appRoutes: Routes = [
     FormsModule,
     NgbModule,
     RouterModule.forRoot(appRoutes),
+    BrowserAnimationsModule,
+    MatButtonModule
 ],
   providers: [],
   bootstrap: [AppComponent]

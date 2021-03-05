@@ -25,7 +25,7 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-        
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -46,9 +46,9 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-        
+
         [HttpPost]
-        public IActionResult Post([FromBody]Deck deck)
+        public IActionResult Post([FromBody] Deck deck)
         {
             try
             {
@@ -65,14 +65,14 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-        
+
         [HttpPut("{id}")]
-        public IActionResult Put(int id,[FromBody]Deck deck)
+        public IActionResult Put(int id, [FromBody] Deck deck)
         {
             try
             {
                 MemoryCardsContext db = new MemoryCardsContext();
-                
+
                 Deck findDeck = db.Decks.First(item => item.Id == id);
 
                 findDeck.Title = deck.Title;
@@ -90,3 +90,4 @@ namespace MemoryCardsWebApp.Controllers
         }
     }
 }
+
