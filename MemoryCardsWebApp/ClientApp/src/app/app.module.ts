@@ -10,7 +10,11 @@ import { DeckHomeComponent } from './deck-home/deck-home.component';
 import { ProjectHomeComponent } from './project-home/project-home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
+
 import {MatButtonModule} from "@angular/material/button";
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatCardModule} from '@angular/material/card';
 
 const appRoutes: Routes = [
   { path: '', component: ProjectHomeComponent},
@@ -31,7 +35,9 @@ const appRoutes: Routes = [
     NgbModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatGridListModule,
+    MatCardModule
 ],
   providers: [],
   bootstrap: [AppComponent]

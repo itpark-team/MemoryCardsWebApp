@@ -1,0 +1,19 @@
+mat-grid-tile {
+  background: lightblue;
+}
+
+.camouflage-background{
+  background: aliceblue;
+}
+
+.deck-outer-div{
+  max-width: 40rem;
+  background: aliceblue;
+}
+
+.inner{
+  height: 10%;
+  padding: 1rem;
+}
+
+

@@ -6,6 +6,21 @@ interface Deck {
   title: string;
   description: string;
   visibility: boolean;
+  authorUserId: number;
+}
+
+interface Card {
+  id: number;
+  frontText: string;
+  backText: string;
+  frontImage: string;
+  backImage: string;
+  color: string;
+}
+
+interface DecksCard {
+  deckId: number;
+  cardId: Number;
 }
 
 @Component({
@@ -16,16 +31,50 @@ interface Deck {
 export class DeckHomeComponent implements OnInit {
 
   decks: Deck[] = [];
-  deck: Deck = {id: 0, visibility: false, description: '', title: ''};
+  cards: Card[] = [];
+  decksCards: DecksCard[] = [];
+  deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 0};
+
 
   constructor(private http: HttpClient) {
   }
 
   ngOnInit(): void {
+    this.getDecks();
+    this.getCards();
+    this.getDecksCards();
+  }
+
+  test(): void {
+
+    console.log( this.cards);
+  }
+
+  cardExists(deckId: number, cardNumber: number): boolean {
+    let count = this.getDeckCardsCount(deckId);
+    return cardNumber <= count;
+  }
+
+  getDeckCardsCount(deckId: number): number {
+    let count = 0;
+    for (let i=0;i<this.decksCards.length ;i++)
+    {
+      if(this.decksCards[i].deckId==deckId)
+      {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  getCardText(deckId: number, cardNumber: number): string {
+    let realId=this.decksCards.filter(c=>c.deckId==deckId)[cardNumber-1].cardId;
+    console.log(realId);
+    return this.cards.find(c=>c.id==realId).frontText;
   }
 
   private clearDeck(): void {
-    this.deck = {id: 0, visibility: false, description: '', title: ''};
+    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 0};
   }
 
   getDecks(): void {
@@ -38,6 +87,29 @@ export class DeckHomeComponent implements OnInit {
       }
     );
   }
+
+  getCards(): void {
+    this.http.get<Card[]>(`https://localhost:5001/api/cards`).subscribe(
+      responseData => {
+        this.cards = responseData
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
+
+  getDecksCards(): void {
+    this.http.get<DecksCard[]>(`https://localhost:5001/api/deckscards`).subscribe(
+      responseData => {
+        this.decksCards = responseData
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
+
 
   deleteDeck(id: number): void {
     this.http.delete<number>(`https://localhost:5001/api/decks/${id}`).subscribe(

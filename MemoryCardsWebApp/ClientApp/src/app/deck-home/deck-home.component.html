@@ -1,35 +1,74 @@
-<ul>
-  <li *ngFor="let deck of decks">{{deck.id}} | {{deck.title}} | {{deck.description}} | {{deck.visibility}} | <button (click)="deleteDeck(deck.id)">Delete</button></li>
-</ul>
-
-<button (click)="getDecks()">Load</button>
-
 <div>
-  <label>
-    id: <input type="number" [ngModel]="deck.id" (ngModelChange)="deck.id=$event">
-  </label>
-  <br>
+  <button mat-raised-button color="warn">back</button>
+  <hr>
+  <h1 align="middle">Decks</h1>
+  <hr>
 
-  <label>
-    title: <input type="text" [ngModel]="deck.title" (ngModelChange)="deck.title=$event">
-  </label>
-  <br>
+  <div align="middle">
+    <button mat-raised-button>+ add deck</button>
+  </div>
 
-  <label>
-    description: <input type="text" [ngModel]="deck.description" (ngModelChange)="deck.description=$event">
-  </label>
-  <br>
-
-  <label>
-    visibility: <input type="checkbox" [ngModel]="deck.visibility" (ngModelChange)="deck.visibility=$event">
-  </label>
-  <br>
-
-  <button (click)="postDeck()" mat-raised-button color="primary">Add new Deck</button>
-  <br>
-
-  <button (click)="putDeck()">Update Deck</button>
-  <br>
-
+  <div>
+    <h2 *ngFor="let deck of decks">
+      <div align="middle">
+        {{deck.title}}
+        <div class="deck-outer-div">
+          <h5 class="inner">
+            <mat-grid-list gutterSize="0.2rem" cols="7" rowHeight="1:1">
+              <mat-grid-tile *ngIf="cardExists(deck.id,1)">{{getCardText(deck.id, 1)}}</mat-grid-tile>
+              <mat-grid-tile *ngIf="cardExists(deck.id,2)">{{getCardText(deck.id, 2)}}</mat-grid-tile>
+              <mat-grid-tile *ngIf="cardExists(deck.id,3)">{{getCardText(deck.id, 3)}}</mat-grid-tile>
+              <mat-grid-tile *ngIf="cardExists(deck.id,4)">{{getCardText(deck.id, 4)}}</mat-grid-tile>
+              <mat-grid-tile *ngIf="cardExists(deck.id,5)">{{getCardText(deck.id, 5)}}</mat-grid-tile>
+              <mat-grid-tile *ngIf="cardExists(deck.id,6)">{{getCardText(deck.id, 6)}}</mat-grid-tile>
+              <mat-grid-tile class="camouflage-background">
+                <button mat-raised-button>
+                  view
+                  <br>
+                  full
+                </button>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </h5>
+        </div>
+      </div>
+    </h2>
+  </div>
 </div>
+
+
+<!--<ul>-->
+<!--  <li *ngFor="let deck of decks">{{deck.id}} | {{deck.title}} | {{deck.description}} | {{deck.visibility}} | <button (click)="deleteDeck(deck.id)">Delete</button></li>-->
+<!--</ul>-->
+
+<!--<button (click)="getDecks()">Load</button>-->
+
+<!--<div>-->
+<!--  <label>-->
+<!--    id: <input type="number" [ngModel]="deck.id" (ngModelChange)="deck.id=$event">-->
+<!--  </label>-->
+<!--  <br>-->
+
+<!--  <label>-->
+<!--    title: <input type="text" [ngModel]="deck.title" (ngModelChange)="deck.title=$event">-->
+<!--  </label>-->
+<!--  <br>-->
+
+<!--  <label>-->
+<!--    description: <input type="text" [ngModel]="deck.description" (ngModelChange)="deck.description=$event">-->
+<!--  </label>-->
+<!--  <br>-->
+
+<!--  <label>-->
+<!--    visibility: <input type="checkbox" [ngModel]="deck.visibility" (ngModelChange)="deck.visibility=$event">-->
+<!--  </label>-->
+<!--  <br>-->
+
+<!--  <button (click)="postDeck()" mat-raised-button color="primary">Add new Deck</button>-->
+<!--  <br>-->
+
+<!--  <button (click)="putDeck()">Update Deck</button>-->
+<!--  <br>-->
+
+<!--</div>-->
 
