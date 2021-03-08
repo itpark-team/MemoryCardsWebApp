@@ -1,5 +1,7 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+
 
 interface Deck {
   id: number;
@@ -30,13 +32,14 @@ interface DecksCard {
 })
 export class DeckHomeComponent implements OnInit {
 
+
   decks: Deck[] = [];
   cards: Card[] = [];
   decksCards: DecksCard[] = [];
-  deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 0};
+  deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -48,6 +51,19 @@ export class DeckHomeComponent implements OnInit {
   test(): void {
 
     console.log( this.cards);
+  }
+
+
+  showAddDialog():void{
+    this.clearDeck();
+    const dialogRef = this.dialog.open(AddDeckDialog,{data:this.deck});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result!=""){
+        this.deck = result;
+        this.postDeck();
+      }
+    });
   }
 
   cardExists(deckId: number, cardNumber: number): boolean {
@@ -69,12 +85,11 @@ export class DeckHomeComponent implements OnInit {
 
   getCardText(deckId: number, cardNumber: number): string {
     let realId=this.decksCards.filter(c=>c.deckId==deckId)[cardNumber-1].cardId;
-    console.log(realId);
     return this.cards.find(c=>c.id==realId).frontText;
   }
 
   private clearDeck(): void {
-    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 0};
+    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
   }
 
   getDecks(): void {
@@ -144,7 +159,6 @@ export class DeckHomeComponent implements OnInit {
 
     const body = JSON.stringify(this.deck);
 
-    console.log(body);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -161,6 +175,21 @@ export class DeckHomeComponent implements OnInit {
       }
     );
   }
+}
 
 
+@Component({
+  selector: 'add-deck-dialog',
+  templateUrl: 'add-deck-dialog.html',
+})
+export class AddDeckDialog {
+  constructor(public dialogRef: MatDialogRef<AddDeckDialog>,@Inject(MAT_DIALOG_DATA) public deck: Deck ) {
+
+  }
+
+
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

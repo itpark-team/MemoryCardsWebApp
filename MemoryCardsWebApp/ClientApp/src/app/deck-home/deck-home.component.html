@@ -5,7 +5,7 @@
   <hr>
 
   <div align="middle">
-    <button mat-raised-button>+ add deck</button>
+    <button mat-raised-button (click)="showAddDialog()">+ add deck</button>
   </div>
 
   <div>
@@ -34,6 +34,9 @@
       </div>
     </h2>
   </div>
+
+
+
 </div>
 
 
@@ -61,6 +64,11 @@
 
 <!--  <label>-->
 <!--    visibility: <input type="checkbox" [ngModel]="deck.visibility" (ngModelChange)="deck.visibility=$event">-->
+<!--  </label>-->
+<!--  <br>-->
+
+<!--  <label>-->
+<!--    authorUserId: <input type="text" [ngModel]="deck.authorUserId" (ngModelChange)="deck.description=$event">-->
 <!--  </label>-->
 <!--  <br>-->
 
