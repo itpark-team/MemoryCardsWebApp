@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <button mat-raised-button color="warn" (click)="goBack()">back</button>
+      <hr>
+      <h1>Deck: {{currentDeck.title}}</h1>
+      <hr>
+      <div class="deck-outer-div">
+        <mat-grid-list cols="3">
+          <ng-container *ngFor="let card of currentCards">
+            <mat-grid-tile (click)="changFrontAndBack(card)">{{card.frontText}}</mat-grid-tile>
+          </ng-container>
+        </mat-grid-list>
+      </div>
+    </div>
+  </div>
+</div>

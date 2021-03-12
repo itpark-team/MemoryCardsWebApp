@@ -17,7 +17,7 @@ namespace MemoryCardsWebApp.Controllers
             try
             {
                 MemoryCardsContext db = new MemoryCardsContext();
-
+        
                 return StatusCode(StatusCodes.Status200OK, db.Decks);
             }
             catch (Exception e)
@@ -25,6 +25,23 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+        
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+                MemoryCardsContext db = new MemoryCardsContext();
+        
+                return StatusCode(StatusCodes.Status200OK, db.Decks.First(item=>item.Id == id));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+        
+        
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

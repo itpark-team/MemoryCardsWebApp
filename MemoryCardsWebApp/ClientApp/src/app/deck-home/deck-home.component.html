@@ -26,9 +26,8 @@
                 <mat-grid-tile *ngIf="cardExists(deck.id,6)">{{getCardText(deck.id, 6)}}</mat-grid-tile>
 
                 <mat-grid-tile class="camouflage-background">
-                  <button mat-raised-button>
-                    view
-                    full
+                  <button mat-raised-button (click)="openDeck(deck.id)" >
+                    <a>view full</a>
                   </button>
                 </mat-grid-tile>
 

@@ -53,6 +53,9 @@ export class DeckHomeComponent implements OnInit {
     console.log( this.cards);
   }
 
+  openDeck(deckId: number): void {
+    location.href='deckcards?deckId='+deckId;
+  }
 
   showAddDialog():void{
     this.clearDeck();

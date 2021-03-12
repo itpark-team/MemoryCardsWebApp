@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { DeckHomeComponent } from './deck-home/deck-home.component';
 import {AddDeckDialog} from "./deck-home/deck-home.component";
 import { ProjectHomeComponent } from './project-home/project-home.component';
-
+import { DeckCardsHomeComponent } from './deck-cards-home/deck-cards-home.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
@@ -18,9 +18,11 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
+
 const appRoutes: Routes = [
   { path: '', component: ProjectHomeComponent},
-  { path: 'deck', component: DeckHomeComponent}
+  { path: 'deck', component: DeckHomeComponent},
+  { path: 'deckcards',component:DeckCardsHomeComponent}
 ];
 
 
@@ -29,7 +31,8 @@ const appRoutes: Routes = [
     AppComponent,
     DeckHomeComponent,
     ProjectHomeComponent,
-    AddDeckDialog
+    AddDeckDialog,
+    DeckCardsHomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
