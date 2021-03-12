@@ -11,7 +11,7 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class DecksController : ControllerBase
     {
-        private readonly MemoryCardsContext db;
+        private MemoryCardsContext db;
 
         public DecksController(MemoryCardsContext context)
         {

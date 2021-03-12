@@ -11,13 +11,18 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class CardsController : Controller
     {
+        private MemoryCardsContext db;
+
+        public CardsController(MemoryCardsContext context)
+        {
+            db = context;
+        }
+        
         [HttpGet]
         public IActionResult Get()
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 return StatusCode(StatusCodes.Status200OK, db.Cards);
             }
             catch (Exception e)
