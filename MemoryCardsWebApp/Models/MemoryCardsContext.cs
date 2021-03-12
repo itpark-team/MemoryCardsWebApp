@@ -27,11 +27,11 @@ namespace MemoryCardsWebApp.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=0C78\\MYSERVER;Initial Catalog=MemoryCards;Trusted_Connection=True;");
-            }
+//             if (!optionsBuilder.IsConfigured)
+//             {
+// #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//                 optionsBuilder.UseSqlServer("Server=u1236834.plsk.regruhosting.ru;Database=u1236834_MemoryCards;User Id=u1236834_groups;Password=reallyStrongPwd123;Trusted_Connection=false;");
+//             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

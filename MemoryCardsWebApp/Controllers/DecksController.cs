@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.Entities;
@@ -11,14 +12,39 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class DecksController : ControllerBase
     {
+        private MemoryCardsContext db;
+
+        public DecksController(MemoryCardsContext context)
+        {
+            db = context;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
+                /*List<Deck> decks = db.Decks.ToList();
+                foreach (var deck in decks)
+                {
+                    deck.AuthorUser = db.Users.First(item => item.Id == deck.AuthorUserId);
+                }
+                //todo get author user for parsing author user name on front
+                return StatusCode(StatusCodes.Status200OK, decks);*/
                 return StatusCode(StatusCodes.Status200OK, db.Decks);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+        
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            try
+            { 
+                return StatusCode(StatusCodes.Status200OK, db.Decks.First(item=>item.Id == id));
             }
             catch (Exception e)
             {
@@ -31,8 +57,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 Deck findDeck = db.Decks.First(item => item.Id == id);
 
                 db.Decks.Remove(findDeck);
@@ -52,8 +76,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 db.Decks.Add(deck);
 
                 db.SaveChanges();
@@ -71,8 +93,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 Deck findDeck = db.Decks.First(item => item.Id == id);
 
                 findDeck.Title = deck.Title;
@@ -90,4 +110,3 @@ namespace MemoryCardsWebApp.Controllers
         }
     }
 }
-

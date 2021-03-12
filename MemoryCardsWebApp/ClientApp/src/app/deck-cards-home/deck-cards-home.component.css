@@ -2,7 +2,7 @@ mat-grid-tile {
   background: lightblue;
 }
 
-.camouflage-background{
+mat-grid-list {
   background: aliceblue;
 }
 
@@ -10,10 +10,3 @@ mat-grid-tile {
   max-width: 40rem;
   background: aliceblue;
 }
-
-.inner{
-  height: 10%;
-  padding: 1rem;
-}
-
-

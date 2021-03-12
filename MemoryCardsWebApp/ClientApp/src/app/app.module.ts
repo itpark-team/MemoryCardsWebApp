@@ -5,16 +5,24 @@ import { HttpClientModule } from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeckHomeComponent } from './deck-home/deck-home.component';
+import {AddDeckDialog} from "./deck-home/deck-home.component";
 import { ProjectHomeComponent } from './project-home/project-home.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DeckCardsHomeComponent } from './deck-cards-home/deck-cards-home.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatCardModule} from '@angular/material/card';
+import {MatDialogModule} from "@angular/material/dialog";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+
 
 const appRoutes: Routes = [
   { path: '', component: ProjectHomeComponent},
-  { path: 'deck', component: DeckHomeComponent}
+  { path: 'deck', component: DeckHomeComponent},
+  { path: 'deckcards',component:DeckCardsHomeComponent}
 ];
 
 
@@ -22,16 +30,21 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     DeckHomeComponent,
-    ProjectHomeComponent
+    ProjectHomeComponent,
+    AddDeckDialog,
+    DeckCardsHomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    NgbModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatGridListModule,
+    MatCardModule,
+    MatDialogModule,
+    NgbModule,
 ],
   providers: [],
   bootstrap: [AppComponent]
