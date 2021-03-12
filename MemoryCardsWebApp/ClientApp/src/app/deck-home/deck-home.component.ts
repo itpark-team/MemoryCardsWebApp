@@ -95,16 +95,7 @@ export class DeckHomeComponent implements OnInit {
     this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
   }
 
-  getDecks(): void {
-    this.http.get<Deck[]>(`https://localhost:5001/api/decks`).subscribe(
-      responseData => {
-        this.decks = responseData
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
+
 
   getCards(): void {
     this.http.get<Card[]>(`https://localhost:5001/api/cards`).subscribe(
@@ -128,6 +119,18 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
+  //======DECKS START======//
+
+  getDecks(): void {
+    this.http.get<Deck[]>(`https://localhost:5001/api/decks`).subscribe(
+      responseData => {
+        this.decks = responseData
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
 
   deleteDeck(id: number): void {
     this.http.delete<number>(`https://localhost:5001/api/decks/${id}`).subscribe(
@@ -178,6 +181,7 @@ export class DeckHomeComponent implements OnInit {
       }
     );
   }
+  //======DECKS FINISH======//
 }
 
 
@@ -187,10 +191,7 @@ export class DeckHomeComponent implements OnInit {
 })
 export class AddDeckDialog {
   constructor(public dialogRef: MatDialogRef<AddDeckDialog>,@Inject(MAT_DIALOG_DATA) public deck: Deck ) {
-
   }
-
-
 
   onNoClick(): void {
     this.dialogRef.close();

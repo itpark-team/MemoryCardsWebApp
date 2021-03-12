@@ -1,48 +1,49 @@
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-8">
+<!--<div class="container">-->
+<!--  <div class="row justify-content-center">-->
+<!--    <div class="col-8">-->
 
-      <button mat-raised-button color="warn">back</button>
-      <hr>
-      <h1>Decks</h1>
-      <hr>
+<!--      <button mat-raised-button color="warn">back</button>-->
+<!--      <hr>-->
+<!--      <h1>Decks</h1>-->
+<!--      <hr>-->
 
-      <div>
-        <button mat-raised-button (click)="showAddDialog()">+ add deck</button>
-      </div>
+<!--      <div>-->
+<!--        <button mat-raised-button (click)="showAddDialog()">+ add deck</button>-->
+<!--      </div>-->
 
-      <div>
-        <div *ngFor="let deck of decks">
-          <div>
-            {{deck.title}}
-            <div class="deck-outer-div">
+<!--      <div>-->
+<!--        <div *ngFor="let deck of decks">-->
+<!--          <div>-->
+<!--            {{deck.title}}-->
+<!--            <div class="deck-outer-div">-->
 
-              <mat-grid-list cols="7">
-                <mat-grid-tile *ngIf="cardExists(deck.id,1)">{{getCardText(deck.id, 1)}}</mat-grid-tile>
-                <mat-grid-tile *ngIf="cardExists(deck.id,2)">{{getCardText(deck.id, 2)}}</mat-grid-tile>
-                <mat-grid-tile *ngIf="cardExists(deck.id,3)">{{getCardText(deck.id, 3)}}</mat-grid-tile>
-                <mat-grid-tile *ngIf="cardExists(deck.id,4)">{{getCardText(deck.id, 4)}}</mat-grid-tile>
-                <mat-grid-tile *ngIf="cardExists(deck.id,5)">{{getCardText(deck.id, 5)}}</mat-grid-tile>
-                <mat-grid-tile *ngIf="cardExists(deck.id,6)">{{getCardText(deck.id, 6)}}</mat-grid-tile>
+<!--              <mat-grid-list cols="7">-->
+<!--                <mat-grid-tile *ngIf="cardExists(deck.id,1)">{{getCardText(deck.id, 1)}}</mat-grid-tile>-->
+<!--                <mat-grid-tile *ngIf="cardExists(deck.id,2)">{{getCardText(deck.id, 2)}}</mat-grid-tile>-->
+<!--                <mat-grid-tile *ngIf="cardExists(deck.id,3)">{{getCardText(deck.id, 3)}}</mat-grid-tile>-->
+<!--                <mat-grid-tile *ngIf="cardExists(deck.id,4)">{{getCardText(deck.id, 4)}}</mat-grid-tile>-->
+<!--                <mat-grid-tile *ngIf="cardExists(deck.id,5)">{{getCardText(deck.id, 5)}}</mat-grid-tile>-->
+<!--                <mat-grid-tile *ngIf="cardExists(deck.id,6)">{{getCardText(deck.id, 6)}}</mat-grid-tile>-->
 
-                <mat-grid-tile class="camouflage-background">
-                  <button mat-raised-button (click)="openDeck(deck.id)" >
-                    <a>view full</a>
-                  </button>
-                </mat-grid-tile>
+<!--                <mat-grid-tile class="camouflage-background">-->
+<!--                  <button mat-raised-button (click)="openDeck(deck.id)">-->
+<!--                    <a>view full</a>-->
+<!--                  </button>-->
+<!--                </mat-grid-tile>-->
 
-              </mat-grid-list>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--              </mat-grid-list>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
 
-  </div>
+<!--  </div>-->
 
-</div>
+<!--</div>-->
 
+<!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
 
 <!--<ul>-->
 <!--  <li *ngFor="let deck of decks">{{deck.id}} | {{deck.title}} | {{deck.description}} | {{deck.visibility}} | <button (click)="deleteDeck(deck.id)">Delete</button></li>-->
@@ -83,4 +84,27 @@
 <!--  <br>-->
 
 <!--</div>-->
+
+<div class="container" style="background-color: blue">
+  <div class="row justify-content-center" style="background-color: red">
+    <div class="col-8" style="background-color: aqua">
+
+      <button mat-raised-button color="warn">back</button>
+      <hr>
+      <h1>Decks</h1>
+      <hr>
+
+      <div>
+        <button mat-raised-button (click)="showAddDialog()">+ add deck</button>
+      </div>
+
+      <div>
+        <div *ngFor="let deck of decks" (click)="openDeck(deck.id)" class="border border-dark mb-2">
+          {{deck.title}} | {{deck.description}} | {{deck.authorUserId}} | <button mat-raised-button (click)="openDeck(deck.id)"> view full</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 

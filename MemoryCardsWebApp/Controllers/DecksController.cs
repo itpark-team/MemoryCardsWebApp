@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.Entities;
@@ -23,6 +24,13 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
+                /*List<Deck> decks = db.Decks.ToList();
+                foreach (var deck in decks)
+                {
+                    deck.AuthorUser = db.Users.First(item => item.Id == deck.AuthorUserId);
+                }
+                //todo get author user for parsing author user name on front
+                return StatusCode(StatusCodes.Status200OK, decks);*/
                 return StatusCode(StatusCodes.Status200OK, db.Decks);
             }
             catch (Exception e)
