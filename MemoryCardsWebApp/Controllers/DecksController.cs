@@ -11,13 +11,18 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class DecksController : ControllerBase
     {
+        private readonly MemoryCardsContext db;
+
+        public DecksController(MemoryCardsContext context)
+        {
+            db = context;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-        
                 return StatusCode(StatusCodes.Status200OK, db.Decks);
             }
             catch (Exception e)
@@ -30,9 +35,7 @@ namespace MemoryCardsWebApp.Controllers
         public IActionResult Get(int id)
         {
             try
-            {
-                MemoryCardsContext db = new MemoryCardsContext();
-        
+            { 
                 return StatusCode(StatusCodes.Status200OK, db.Decks.First(item=>item.Id == id));
             }
             catch (Exception e)
@@ -40,16 +43,12 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-        
-        
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 Deck findDeck = db.Decks.First(item => item.Id == id);
 
                 db.Decks.Remove(findDeck);
@@ -69,8 +68,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 db.Decks.Add(deck);
 
                 db.SaveChanges();
@@ -88,8 +85,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 Deck findDeck = db.Decks.First(item => item.Id == id);
 
                 findDeck.Title = deck.Title;
@@ -107,4 +102,3 @@ namespace MemoryCardsWebApp.Controllers
         }
     }
 }
-
