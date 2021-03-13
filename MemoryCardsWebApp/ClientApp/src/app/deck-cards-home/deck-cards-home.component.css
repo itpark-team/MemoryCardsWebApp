@@ -1,5 +1,10 @@
 mat-grid-tile {
-  background: lightblue;
+  background: #add8e6;
+}
+
+mat-card{
+  background: #f1f1f1;
+  margin-top: 2rem;
 }
 
 mat-grid-list {

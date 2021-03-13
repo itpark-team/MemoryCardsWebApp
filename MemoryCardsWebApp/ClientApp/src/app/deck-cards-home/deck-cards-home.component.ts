@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from 'rxjs';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {AddDeckDialog} from "../deck-home/deck-home.component";
 
 interface Card {
   id: number;
@@ -36,11 +38,13 @@ export class DeckCardsHomeComponent implements OnInit {
   currentCards: Card[] = [];
   decksCards: DecksCard[] = [];
   currentDeck: Deck;
+  card: Card;
+  decksCard: DecksCard;
 
 
   private querySubscription: Subscription;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, public dialog: MatDialog) {
     this.querySubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         this.deckId = queryParam['deckId'];
@@ -54,6 +58,22 @@ export class DeckCardsHomeComponent implements OnInit {
     this.getCurrentDeck();
   }
 
+  showAddDialog():void{
+    this.clearCard();
+    const dialogRef = this.dialog.open(AddCardDialog,{data:this.card});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result!=""){
+        this.card = result;
+        this.postCard();
+      }
+    });
+  }
+
+  private clearCard(): void {
+    this.card = {id: 0, backText : "",frontText:"",backImage:"",color:"",frontImage:""};
+  }
+
   getCards(): void {
     this.http.get<Card[]>(`https://localhost:5001/api/cards`).subscribe(
       responseData => {
@@ -65,6 +85,44 @@ export class DeckCardsHomeComponent implements OnInit {
       }
     );
   }
+
+  postCard():void
+  {
+    let body = JSON.stringify(this.card);
+
+    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    this.http.post<Card>(`https://localhost:5001/api/cards`, body, {headers: headers}).subscribe(
+      responseData => {
+        this.cards.push(responseData);
+        this.postDeckCard(responseData.id);
+        this.clearCard();
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+
+  }
+
+  postDeckCard(cardId:number):void{
+    this.decksCard={cardId:cardId,deckId:this.currentDeck.id};
+
+    const body = JSON.stringify(this.decksCard);
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    this.http.post<DecksCard>(`https://localhost:5001/api/deckscards`, body, {headers: headers}).subscribe(
+      responseData => {
+        this.decksCards.push(responseData);
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
+
+
 
   getCurrentDeck(): void {
     this.http.get<Deck>(`https://localhost:5001/api/decks/${this.deckId}`).subscribe(
@@ -101,24 +159,28 @@ export class DeckCardsHomeComponent implements OnInit {
 
 
   setCards(): void {
-    console.log("set");
-    console.log(this.decksCards.length);
-    console.log(this.cards.length)
-
     if (this.decksCards.length != 0 && this.cards.length != 0) {
       for (let i = 0; i < this.decksCards.length; i++) {
-        console.log("for");
         if (this.decksCards[i].deckId == this.deckId) {
-          console.log("found");
-          console.log(this.cards.find(c => c.id == this.decksCards[i].cardId));
-
           this.currentCards.push(this.cards.find(c => c.id == this.decksCards[i].cardId));
-
-          console.log(this.currentCards[i]);
         }
       }
     }
   }
-
-
 }
+
+@Component({
+  selector: 'add-card-dialog',
+  templateUrl: 'add-card-dialog.html',
+})
+export class AddCardDialog {
+  constructor(public dialogRef: MatDialogRef<AddCardDialog>,@Inject(MAT_DIALOG_DATA) public card: Card ) {
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+

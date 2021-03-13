@@ -1,16 +1,28 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-8">
-      <button mat-raised-button color="warn" (click)="goBack()">back</button>
+      <div class="row justify-content-between">
+        <button mat-raised-button color="accent" (click)="goBack()">back</button>
+        <button mat-raised-button color="warn" (click)="goBack()">delete</button>
+      </div>
       <hr>
       <h1>Deck: {{currentDeck.title}}</h1>
       <hr>
-      <div class="deck-outer-div">
-        <mat-grid-list cols="3">
-          <ng-container *ngFor="let card of currentCards">
-            <mat-grid-tile (click)="changFrontAndBack(card)">{{card.frontText}}</mat-grid-tile>
-          </ng-container>
-        </mat-grid-list>
+
+      <div class="row justify-content-center">
+        <button class="row justify-content-center" mat-raised-button (click)="showAddDialog()">+ add card</button>
+      </div>
+
+      <div >
+        <ng-container *ngFor="let card of currentCards">
+          <mat-card>
+            <mat-card-title align="center" (click)="changFrontAndBack(card)">{{card.frontText}}</mat-card-title>
+            <img mat-card-lg-image src="C:\Users\Владислав\Pictures\billy.png">
+            <mat-card-actions align="end">
+              <button mat-raised-button color="warn">delete</button>
+            </mat-card-actions>
+          </mat-card>
+        </ng-container>
       </div>
     </div>
   </div>
