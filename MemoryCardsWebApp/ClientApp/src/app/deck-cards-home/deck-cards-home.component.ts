@@ -70,6 +70,29 @@ export class DeckCardsHomeComponent implements OnInit {
     });
   }
 
+  showDeleteCardDialog(cardId:number):void{
+    const dialogRef = this.dialog.open(DeleteDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result==true)
+      {
+        this.deleteCard(cardId);
+      }
+    });
+  }
+
+  showDeleteDeckDialog():void{
+    const dialogRef = this.dialog.open(DeleteDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result==true)
+      {
+        this.deleteDeck();
+      }
+    });
+  }
+
+
   private clearCard(): void {
     this.card = {id: 0, backText : "",frontText:"",backImage:"",color:"",frontImage:""};
   }
@@ -86,6 +109,8 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
+
+
   postCard():void
   {
     let body = JSON.stringify(this.card);
@@ -95,6 +120,7 @@ export class DeckCardsHomeComponent implements OnInit {
     this.http.post<Card>(`https://localhost:5001/api/cards`, body, {headers: headers}).subscribe(
       responseData => {
         this.cards.push(responseData);
+        this.currentCards.push(responseData);
         this.postDeckCard(responseData.id);
         this.clearCard();
       },
@@ -102,7 +128,31 @@ export class DeckCardsHomeComponent implements OnInit {
         alert(`error: ${error.status}, ${error.statusText}`);
       }
     );
+  }
 
+  deleteDeck(): void {
+    this.http.delete<number>(`https://localhost:5001/api/decks/${this.currentDeck.id}`).subscribe(
+      responseData => {
+        location.href='deck';
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
+
+  deleteCard(cardId:number): void {
+    this.http.delete<number>(`https://localhost:5001/api/cards/${cardId}`).subscribe(
+      responseData => {
+        const findIndex = this.cards.findIndex(item => item.id == responseData);
+        this.cards.splice(findIndex, 1);
+        const findIndex2 = this.currentCards.findIndex(item => item.id == responseData);
+        this.currentCards.splice(findIndex2, 1);
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
   }
 
   postDeckCard(cardId:number):void{
@@ -182,5 +232,20 @@ export class AddCardDialog {
     this.dialogRef.close();
   }
 }
+
+@Component({
+  selector: 'delete-dialog',
+  templateUrl: 'delete-dialog.html',
+})
+export class DeleteDialog {
+  constructor(public dialogRef: MatDialogRef<DeleteDialog>) {
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
 
 

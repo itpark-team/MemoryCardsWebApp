@@ -3,7 +3,7 @@
     <div class="col-8">
       <div class="row justify-content-between">
         <button mat-raised-button color="accent" (click)="goBack()">back</button>
-        <button mat-raised-button color="warn" (click)="goBack()">delete</button>
+        <button mat-raised-button color="warn" (click)="showDeleteDeckDialog()">delete</button>
       </div>
       <hr>
       <h1>Deck: {{currentDeck.title}}</h1>
@@ -15,11 +15,11 @@
 
       <div >
         <ng-container *ngFor="let card of currentCards">
-          <mat-card>
-            <mat-card-title align="center" (click)="changFrontAndBack(card)">{{card.frontText}}</mat-card-title>
+          <mat-card (click)="changFrontAndBack(card)">
+            <mat-card-title align="center" >{{card.frontText}}</mat-card-title>
             <img mat-card-lg-image src="C:\Users\Владислав\Pictures\billy.png">
             <mat-card-actions align="end">
-              <button mat-raised-button color="warn">delete</button>
+              <button mat-raised-button color="warn" (click)="showDeleteCardDialog(card.id)" (click)="changFrontAndBack(card)">delete</button>
             </mat-card-actions>
           </mat-card>
         </ng-container>

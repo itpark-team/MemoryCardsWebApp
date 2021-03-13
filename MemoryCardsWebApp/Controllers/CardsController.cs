@@ -44,5 +44,26 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+        
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                MemoryCardsContext db = new MemoryCardsContext();
+
+                Card findCard = db.Cards.First(item => item.Id == id);
+
+                db.Cards.Remove(findCard);
+
+                db.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, id);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
     }
 }
