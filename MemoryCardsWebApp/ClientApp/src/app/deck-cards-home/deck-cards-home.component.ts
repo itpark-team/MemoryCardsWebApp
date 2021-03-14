@@ -40,6 +40,7 @@ export class DeckCardsHomeComponent implements OnInit {
   currentDeck: Deck;
   card: Card;
   decksCard: DecksCard;
+  imageSource: string;
 
 
   private querySubscription: Subscription;
@@ -53,6 +54,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.imageSource="https://ae01.alicdn.com/kf/Hab8d768a8382459092f95334ef1970887/Women-Silicone-Bands-Strapless-Seamless-Lift-Ultimate-Bra.jpg_q50.jpg";
     this.getCards();
     this.getDecksCards();
     this.getCurrentDeck();
