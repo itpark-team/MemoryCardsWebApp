@@ -15,9 +15,9 @@
 
       <div >
         <ng-container *ngFor="let card of currentCards">
-          <mat-card (click)="changFrontAndBack(card)">
+          <mat-card (click)="changFrontAndBack(card)" style="background: {{card.color}}">
             <mat-card-title align="center" >{{card.frontText}}</mat-card-title>
-            <img  mat-card-image src="">
+            <img  mat-card-image src="{{imageSource}}">
             <mat-card-actions align="end">
               <button mat-raised-button color="warn" (click)="showDeleteCardDialog(card.id)" (click)="changFrontAndBack(card)">delete</button>
             </mat-card-actions>

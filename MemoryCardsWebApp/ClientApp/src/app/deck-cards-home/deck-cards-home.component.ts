@@ -203,6 +203,13 @@ export class DeckCardsHomeComponent implements OnInit {
     let temp = card.frontText;
     card.frontText = card.backText;
     card.backText = temp;
+    if(this.imageSource=="https://ae01.alicdn.com/kf/Hab8d768a8382459092f95334ef1970887/Women-Silicone-Bands-Strapless-Seamless-Lift-Ultimate-Bra.jpg_q50.jpg")
+    {
+      this.imageSource="https://petimer.ru/upload/iblock/fe4/fe484952014660639fd419f0e5590a8b.jpg";
+    }else
+    {
+      this.imageSource="https://ae01.alicdn.com/kf/Hab8d768a8382459092f95334ef1970887/Women-Silicone-Bands-Strapless-Seamless-Lift-Ultimate-Bra.jpg_q50.jpg";
+    }
   }
 
   goBack(): void {
