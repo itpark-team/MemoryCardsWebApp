@@ -95,12 +95,29 @@
       <hr>
 
       <div>
-        <button mat-raised-button (click)="showAddDialog()">+ add deck</button>
+        <!--<button mat-raised-button (click)="showAddDialog()">+ add deck</button>-->
+        <div style="vertical-align: center; text-align: center; font-size: 80px; background-color: azure" class="border border-dark mb-2 div-button" (click)="showAddDialog()">
+          <!--Рисовашки крестиков-->
+          <!--Векторная графика-->
+          <svg class="button-add-plus-symbol" style="color:black" viewBox="0 0 8 8">
+            <line x1="1" y1="4" x2="7" y2 = 4></line>
+            <line x1="4" y1="1" x2="4" y2 = 7></line>
+          </svg>
+        </div>
       </div>
 
       <div>
-        <div *ngFor="let deck of decks" (click)="openDeck(deck.id)" class="border border-dark mb-2">
-          {{deck.title}} | {{deck.description}} | {{deck.authorUserId}} | <button mat-raised-button (click)="openDeck(deck.id)"> view full</button>
+        <div *ngFor="let deck of decks" (click)="openDeck(deck.id)" style="background-color: azure" class="border border-dark mb-2 div-button">
+          <!--{{deck.title}} | {{deck.description}} | {{deck.authorUserId}} | <button mat-raised-button (click)="openDeck(deck.id)"> view full</button>-->
+          <div (click)="openDeck(deck.id)" >
+            <div>
+              {{deck.title}} {{deck.authorUserId}}
+            </div>
+
+            <hr>
+            {{deck.title}}
+            {{deck.description}}
+          </div>
         </div>
       </div>
 
