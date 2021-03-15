@@ -2,21 +2,21 @@ mat-grid-tile {
   background: lightblue;
 }
 
-.camouflage-background{
+.camouflage-background {
   background: aliceblue;
 }
 
-.deck-outer-div{
+.deck-outer-div {
   max-width: 40rem;
   background: aliceblue;
 }
 
-.inner{
+.inner {
   height: 10%;
   padding: 1rem;
 }
 
-.uncopyable-text{
+.uncopyable-text {
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -25,9 +25,9 @@ mat-grid-tile {
   user-select: none;
 }
 
-.div-button{
+.div-button {
   border-radius: 5px;
-  cursor:pointer;
+  cursor: pointer;
 
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -37,19 +37,34 @@ mat-grid-tile {
   user-select: none;
 }
 
-.button-add{
-  /*flex-flow: column;*/
-  /*display: flex;*/
-  /*justify-content: center;*/
-  /*text-align: center;*/
-  /*display: inline-block;*/
+.div-button-raise-fix{
+  display: block;
 }
 
-.button-add-plus-symbol{
-  width: 50px;
-  height: 50px;
-  margin: 2%;
+.button-add {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  color: rgb(214,214,214);
+}
+
+.button-add-plus-symbol {
+  width: 60px;
+  height: 60px;
+  padding: 2%;
   stroke: rgb(214, 214, 214); /*цвет линии через rgb*/
   stroke-linecap: round; /*тип линии*/
   stroke-width: 2; /*ширина линии*/
 }
+
+.deck-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  margin: 1%;
+
+}
+
