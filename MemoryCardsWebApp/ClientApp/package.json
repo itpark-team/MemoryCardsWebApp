@@ -27,7 +27,6 @@
     "@angular/router": "11.2.1",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "bootstrap": "^4.5.0",
-
     "core-js": "^3.3.3",
     "jquery": "^3.5.1",
     "oidc-client": "^1.9.1",
@@ -37,7 +36,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.29",
-    "@angular/cli": "^11.2.1",
+    "@angular/cli": "^11.2.4",
     "@angular/compiler-cli": "^11.2.1",
     "@angular/language-service": "^11.2.1",
     "@types/jasmine": "~3.4.4",

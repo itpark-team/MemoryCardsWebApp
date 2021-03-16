@@ -18,8 +18,6 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from "@angular/material/dialog";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 
 
 const appRoutes: Routes = [
@@ -50,7 +48,6 @@ const appRoutes: Routes = [
     MatGridListModule,
     MatCardModule,
     MatDialogModule,
-    NgbModule,
 ],
   providers: [],
   bootstrap: [AppComponent]

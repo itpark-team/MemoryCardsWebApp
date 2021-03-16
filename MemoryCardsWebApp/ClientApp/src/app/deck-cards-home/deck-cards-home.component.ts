@@ -119,7 +119,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   getCards(): void {
-    this.http.get<Card[]>(`https://localhost:5001/api/cards`).subscribe(
+    this.http.get<Card[]>(`/api/cards`).subscribe(
       responseData => {
         this.cards = responseData;
         this.setCards();
@@ -136,7 +136,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post<Card>(`https://localhost:5001/api/cards`, body, {headers: headers}).subscribe(
+    this.http.post<Card>(`/api/cards`, body, {headers: headers}).subscribe(
       responseData => {
         this.cards.push(responseData);
         this.currentCards.push(responseData);
@@ -156,7 +156,7 @@ export class DeckCardsHomeComponent implements OnInit {
 // console.log(this.cards);
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.put<Card>(`https://localhost:5001/api/cards/${this.card.id}`, body, {headers: headers}).subscribe(
+    this.http.put<Card>(`/api/cards/${this.card.id}`, body, {headers: headers}).subscribe(
       responseData => {
 
         const findIndex = this.cards.findIndex(item => item.id == responseData.id);
@@ -171,7 +171,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   deleteDeck(): void {
-    this.http.delete<number>(`https://localhost:5001/api/decks/${this.currentDeck.id}`).subscribe(
+    this.http.delete<number>(`/api/decks/${this.currentDeck.id}`).subscribe(
       responseData => {
         location.href = 'deck';
       },
@@ -182,7 +182,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   deleteCard(cardId: number): void {
-    this.http.delete<number>(`https://localhost:5001/api/cards/${cardId}`).subscribe(
+    this.http.delete<number>(`/api/cards/${cardId}`).subscribe(
       responseData => {
         const findIndex = this.cards.findIndex(item => item.id == responseData);
         this.cards.splice(findIndex, 1);
@@ -202,7 +202,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post<DecksCard>(`https://localhost:5001/api/deckscards`, body, {headers: headers}).subscribe(
+    this.http.post<DecksCard>(`/api/deckscards`, body, {headers: headers}).subscribe(
       responseData => {
         this.decksCards.push(responseData);
       },
@@ -214,7 +214,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
 
   getCurrentDeck(): void {
-    this.http.get<Deck>(`https://localhost:5001/api/decks/${this.deckId}`).subscribe(
+    this.http.get<Deck>(`/api/decks/${this.deckId}`).subscribe(
       responseData => {
         this.currentDeck = responseData;
       },
@@ -225,7 +225,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   getDecksCards(): void {
-    this.http.get<DecksCard[]>(`https://localhost:5001/api/deckscards`).subscribe(
+    this.http.get<DecksCard[]>(`/api/deckscards`).subscribe(
       responseData => {
         this.decksCards = responseData;
         this.setCards();

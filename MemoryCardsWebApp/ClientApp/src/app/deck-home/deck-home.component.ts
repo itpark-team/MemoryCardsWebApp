@@ -113,7 +113,7 @@ export class DeckHomeComponent implements OnInit {
 
 
   getCards(): void {
-    this.http.get<Card[]>(`https://localhost:5001/api/cards`).subscribe(
+    this.http.get<Card[]>(`/api/cards`).subscribe(
       responseData => {
         this.cards = responseData
       },
@@ -124,7 +124,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   getDecksCards(): void {
-    this.http.get<DecksCard[]>(`https://localhost:5001/api/deckscards`).subscribe(
+    this.http.get<DecksCard[]>(`/api/deckscards`).subscribe(
       responseData => {
         this.decksCards = responseData
       },
@@ -137,7 +137,7 @@ export class DeckHomeComponent implements OnInit {
   //======DECKS START======//
 
   getDecks(): void {
-    this.http.get<Deck[]>(`https://localhost:5001/api/decks`).subscribe(
+    this.http.get<Deck[]>(`/api/decks`).subscribe(
       responseData => {
         this.decks = responseData
         console.dir(this.decks[0])
@@ -149,7 +149,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   deleteDeck(id: number): void {
-    this.http.delete<number>(`https://localhost:5001/api/decks/${id}`).subscribe(
+    this.http.delete<number>(`/api/decks/${id}`).subscribe(
       responseData => {
         const findIndex = this.decks.findIndex(item => item.id == responseData);
         this.decks.splice(findIndex, 1);
@@ -166,7 +166,7 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post<Deck>(`https://localhost:5001/api/decks`, body, {headers: headers}).subscribe(
+    this.http.post<Deck>(`/api/decks`, body, {headers: headers}).subscribe(
       responseData => {
         this.decks.push(responseData);
         this.clearDeck();
@@ -183,7 +183,7 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.put<Deck>(`https://localhost:5001/api/decks/${this.deck.id}`, body, {headers: headers}).subscribe(
+    this.http.put<Deck>(`/api/decks/${this.deck.id}`, body, {headers: headers}).subscribe(
       responseData => {
 
         const findIndex = this.decks.findIndex(item => item.id == responseData.id);
@@ -200,7 +200,7 @@ export class DeckHomeComponent implements OnInit {
   //======DECKS FINISH======//
 
   getUser(id: number): void {
-    this.http.get<User>(`https://localhost:5001/api/users/${id}`).subscribe(
+    this.http.get<User>(`/api/users/${id}`).subscribe(
       responseData => {
         this.username = responseData.username;
       },
