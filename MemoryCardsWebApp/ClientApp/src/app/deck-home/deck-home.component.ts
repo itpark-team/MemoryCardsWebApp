@@ -64,6 +64,10 @@ export class DeckHomeComponent implements OnInit {
     console.log(this.cards);
   }
 
+  log(id: number) {
+    console.log(id);
+  }
+
   openDeck(deckId: number): void {
     location.href = 'deckcards?deckId=' + deckId;
   }
@@ -195,6 +199,9 @@ export class DeckHomeComponent implements OnInit {
     this.http.get<User>(`https://localhost:5001/api/users/${id}`).subscribe(
       responseData => {
         this.username = responseData.username;
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
       }
     );
   }

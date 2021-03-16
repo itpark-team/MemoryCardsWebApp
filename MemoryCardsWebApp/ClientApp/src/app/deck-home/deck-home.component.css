@@ -16,19 +16,12 @@ mat-grid-tile {
   padding: 1rem;
 }
 
-.uncopyable-text {
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
-
 .div-button {
   border-radius: 5px;
   cursor: pointer;
+}
 
+.div-button-unclickable-text{
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -48,8 +41,8 @@ mat-grid-tile {
   justify-content: center;
   align-items: center;
 
-  background-color: #CACACF;
-  color: #61616A;
+  background-color: #DADADF;
+  color: #AFAFAF;
 }
 
 .button-add-plus-symbol {
@@ -59,7 +52,7 @@ mat-grid-tile {
 
   padding: 2%;
 
-  stroke: #616161; /*цвет линии через rgb*/
+  stroke: #AFAFAF; /*цвет линии через rgb*/
   stroke-linecap: round; /*тип линии*/
 }
 
