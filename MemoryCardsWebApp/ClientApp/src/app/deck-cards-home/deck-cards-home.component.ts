@@ -16,7 +16,7 @@ interface Card {
 
 interface DecksCard {
   deckId: number;
-  cardId: Number;
+  cardId: number;
 }
 
 interface Deck {
@@ -40,9 +40,7 @@ export class DeckCardsHomeComponent implements OnInit {
   currentDeck: Deck;
   card: Card;
   decksCard: DecksCard;
-  imageSource: string;
-
-
+  cardSide: string;
   private querySubscription: Subscription;
 
   constructor(private http: HttpClient, private route: ActivatedRoute, public dialog: MatDialog) {
@@ -54,41 +52,51 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.imageSource="https://ae01.alicdn.com/kf/Hab8d768a8382459092f95334ef1970887/Women-Silicone-Bands-Strapless-Seamless-Lift-Ultimate-Bra.jpg_q50.jpg";
     this.getCards();
     this.getDecksCards();
     this.getCurrentDeck();
+    this.cardSide = "front";
   }
 
-  showAddDialog():void{
+  showAddDialog(): void {
     this.clearCard();
-    const dialogRef = this.dialog.open(AddCardDialog,{data:this.card});
+    const dialogRef = this.dialog.open(AddCardDialog, {data: this.card});
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result!=""){
+      if (result != "") {
         this.card = result;
         this.postCard();
+        // После закрытия нужно обновить список карточек
       }
     });
   }
 
-  showDeleteCardDialog(cardId:number):void{
+  showEditCardDialog(card: Card): void {
+    this.clearCard();
+    const dialogRef = this.dialog.open(EditCardDialog, {data: card});
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != "") {
+        this.card = card;
+        this.putCard()
+      }
+    });
+  }
+
+  showDeleteCardDialog(cardId: number): void {
     const dialogRef = this.dialog.open(DeleteDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result==true)
-      {
+      if (result == true) {
         this.deleteCard(cardId);
       }
     });
   }
 
-  showDeleteDeckDialog():void{
+  showDeleteDeckDialog(): void {
     const dialogRef = this.dialog.open(DeleteDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result==true)
-      {
+      if (result == true) {
         this.deleteDeck();
       }
     });
@@ -96,7 +104,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
 
   private clearCard(): void {
-    this.card = {id: 0, backText : "",frontText:"",backImage:"",color:"",frontImage:""};
+    this.card = {id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
   }
 
   getCards(): void {
@@ -112,9 +120,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
 
-
-  postCard():void
-  {
+  postCard(): void {
     let body = JSON.stringify(this.card);
 
     let headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -132,10 +138,21 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-  deleteDeck(): void {
-    this.http.delete<number>(`https://localhost:5001/api/decks/${this.currentDeck.id}`).subscribe(
+  putCard(): void {
+
+    const body = JSON.stringify(this.card);
+
+    console.log(body);
+console.log(this.cards);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    this.http.put<Card>(`https://localhost:5001/api/cards/${this.card.id}`, body, {headers: headers}).subscribe(
       responseData => {
-        location.href='deck';
+
+        const findIndex = this.cards.findIndex(item => item.id == responseData.id);
+        this.cards.splice(findIndex, 1, responseData);
+
+        this.clearCard();
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -143,7 +160,18 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-  deleteCard(cardId:number): void {
+  deleteDeck(): void {
+    this.http.delete<number>(`https://localhost:5001/api/decks/${this.currentDeck.id}`).subscribe(
+      responseData => {
+        location.href = 'deck';
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
+
+  deleteCard(cardId: number): void {
     this.http.delete<number>(`https://localhost:5001/api/cards/${cardId}`).subscribe(
       responseData => {
         const findIndex = this.cards.findIndex(item => item.id == responseData);
@@ -157,8 +185,8 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-  postDeckCard(cardId:number):void{
-    this.decksCard={cardId:cardId,deckId:this.currentDeck.id};
+  postDeckCard(cardId: number): void {
+    this.decksCard = {cardId: cardId, deckId: this.currentDeck.id};
 
     const body = JSON.stringify(this.decksCard);
 
@@ -173,7 +201,6 @@ export class DeckCardsHomeComponent implements OnInit {
       }
     );
   }
-
 
 
   getCurrentDeck(): void {
@@ -199,21 +226,16 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-  changFrontAndBack(card: Card) {
-    let temp = card.frontText;
-    card.frontText = card.backText;
-    card.backText = temp;
-    if(this.imageSource=="https://ae01.alicdn.com/kf/Hab8d768a8382459092f95334ef1970887/Women-Silicone-Bands-Strapless-Seamless-Lift-Ultimate-Bra.jpg_q50.jpg")
-    {
-      this.imageSource="https://petimer.ru/upload/iblock/fe4/fe484952014660639fd419f0e5590a8b.jpg";
-    }else
-    {
-      this.imageSource="https://ae01.alicdn.com/kf/Hab8d768a8382459092f95334ef1970887/Women-Silicone-Bands-Strapless-Seamless-Lift-Ultimate-Bra.jpg_q50.jpg";
+  changeCardSide() {
+    if (this.cardSide == "front") {
+      this.cardSide = "back";
+    } else {
+      this.cardSide = "front"
     }
   }
 
   goBack(): void {
-    location.href='deck';
+    location.href = 'deck';
   }
 
 
@@ -233,8 +255,22 @@ export class DeckCardsHomeComponent implements OnInit {
   templateUrl: 'add-card-dialog.html',
 })
 export class AddCardDialog {
-  constructor(public dialogRef: MatDialogRef<AddCardDialog>,@Inject(MAT_DIALOG_DATA) public card: Card ) {
+  constructor(public dialogRef: MatDialogRef<AddCardDialog>, @Inject(MAT_DIALOG_DATA) public card: Card) {
 
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'edit-card-dialog',
+  templateUrl: 'edit-card-dialog.html',
+})
+
+export class EditCardDialog {
+  constructor(public dialogRef: MatDialogRef<EditCardDialog>, @Inject(MAT_DIALOG_DATA) public card: Card) {
   }
 
   onNoClick(): void {
@@ -250,6 +286,7 @@ export class DeleteDialog {
   constructor(public dialogRef: MatDialogRef<DeleteDialog>) {
 
   }
+
 
   onNoClick(): void {
     this.dialogRef.close();

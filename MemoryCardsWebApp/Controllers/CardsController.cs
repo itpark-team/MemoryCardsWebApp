@@ -45,6 +45,31 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
         
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Card card)
+        {
+            try
+            {
+                MemoryCardsContext db = new MemoryCardsContext();
+
+                Card findCard = db.Cards.First(item => item.Id == id);
+
+                findCard.FrontText = card.FrontText;
+                findCard.FrontImage = card.FrontImage;
+                findCard.BackText = card.BackText;
+                findCard.BackImage = card.BackImage;
+                findCard.Color = card.Color;
+
+                db.SaveChanges();
+              
+                return StatusCode(StatusCodes.Status200OK, findCard);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+        
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

@@ -30,8 +30,8 @@ namespace MemoryCardsWebApp.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-FAPJD6A\\SQLEXPRESS;Initial Catalog=MemoryCards;Trusted_Connection=True;");
-                //optionsBuilder.UseSqlServer("Data Source=u1236834.plsk.regruhosting.ru;Initial Catalog=u1236834_MemoryCards;User Id=u1236834_groups;Password=reallyStrongPwd123;Trusted_Connection=false;");
+                // optionsBuilder.UseSqlServer("Data Source=DESKTOP-FAPJD6A\\SQLEXPRESS;Initial Catalog=MemoryCards;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=u1236834.plsk.regruhosting.ru;Initial Catalog=u1236834_MemoryCards;User Id=u1236834_groups;Password=reallyStrongPwd123;Trusted_Connection=false;");
 
             }
         }

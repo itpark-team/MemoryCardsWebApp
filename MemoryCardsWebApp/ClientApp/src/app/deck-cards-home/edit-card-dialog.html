@@ -1,0 +1,34 @@
+﻿<h2 mat-dialog-title>Edit card:</h2>
+<mat-dialog-content class="mat-typography">
+  <label>
+    front text: <input type="text" [ngModel]="card.frontText" (ngModelChange)="card.frontText=$event" value="{{card.frontText}}">
+  </label>
+  <br>
+
+  <label>
+    back text: <input type="text" [ngModel]="card.backText" (ngModelChange)="card.backText=$event" value="{{card.backText}}">
+  </label>
+  <br>
+
+  <label>
+    front image: <input type="text" [ngModel]="card.frontImage" (ngModelChange)="card.frontImage=$event" value="{{card.frontImage}}">
+  </label>
+  <br>
+
+  <label>
+    back image: <input type="text" [ngModel]="card.backImage" (ngModelChange)=" card.backImage=$event" value="{{card.backImage}}">
+  </label>
+  <br>
+
+  <label>
+    color: <input type="text" [ngModel]="card.color" (ngModelChange)="card.color=$event" value="{{card.color}}">
+  </label>
+
+  <br>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="accent" [mat-dialog-close]="card" >Done</button>
+</mat-dialog-actions>
+

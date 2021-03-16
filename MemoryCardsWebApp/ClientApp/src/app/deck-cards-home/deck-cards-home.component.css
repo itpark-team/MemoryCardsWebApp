@@ -15,3 +15,8 @@ mat-grid-list {
   max-width: 40rem;
   background: aliceblue;
 }
+
+.cardText{
+  display: inline-block;
+  ;
+}

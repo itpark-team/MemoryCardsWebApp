@@ -13,15 +13,36 @@
         <button class="row justify-content-center" mat-raised-button (click)="showAddDialog()">+ add card</button>
       </div>
 
-      <div >
+      <div>
         <ng-container *ngFor="let card of currentCards">
-          <mat-card (click)="changFrontAndBack(card)" style="background: {{card.color}}">
-            <mat-card-title align="center" >{{card.frontText}}</mat-card-title>
-            <img  mat-card-image src="{{imageSource}}">
+          <mat-card (click)="changeCardSide()" style="background-color:{{card.color}}">
+            <div [ngSwitch]="cardSide" class="ml-5 mr-4 mt-5">
+              <!--              хз как тут сделать -->
+              <ng-template ngSwitchCase="front">
+                <img mat-card-image src="{{card.frontImage}}" class="img-fluid rounded">
+              </ng-template>
+              <ng-template ngSwitchCase="back">
+                <img mat-card-image src="{{card.backImage}}" class="img-fluid rounded">
+              </ng-template>
+            </div>
+            <div class="bg-light rounded-2">
+              <!--              блять я хуй знает как красиво выделить я ваш фронт ебал в рот-->
+              <mat-card-title class="text-center mt-4" [ngSwitch]="cardSide">
+                <ng-template ngSwitchCase="front"> {{card.frontText}}</ng-template>
+                <ng-template ngSwitchCase="back"> {{card.backText}}</ng-template>
+              </mat-card-title>
+            </div>
             <mat-card-actions align="end">
-              <button mat-raised-button color="warn" (click)="showDeleteCardDialog(card.id)" (click)="changFrontAndBack(card)">delete</button>
+              <button mat-raised-button color="primary" (click)="showEditCardDialog(card)"
+                      (click)="changeCardSide()">Edit
+              </button>
+              <button mat-raised-button color="warn" (click)="showDeleteCardDialog(card.id)" (click)="changeCardSide()">
+                delete
+              </button>
             </mat-card-actions>
           </mat-card>
+          <!--          БЫЛО БЫ НИХУЁВО СДЕЛАТЬ ТАК ЧТОБЫ ТОЛЬКО ОДНА КАРТОЧКА ВОРОЧАЛАСЬ-->
+          <!--          я бы лично въебал поле ещё одно в класс-->
         </ng-container>
       </div>
     </div>
