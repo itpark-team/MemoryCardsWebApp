@@ -72,10 +72,22 @@ export class DeckCardsHomeComponent implements OnInit {
 
   showEditCardDialog(editedCard: Card): void {
     this.clearCard();
-    const dialogRef = this.dialog.open(EditCardDialog, {data: editedCard});
+    this.card.id = editedCard.id;
+    this.card.color = editedCard.color;
+    this.card.frontImage = editedCard.frontImage;
+    this.card.backImage = editedCard.backImage;
+    this.card.frontText = editedCard.frontText;
+    this.card.backText = editedCard.backText;
+    const dialogRef = this.dialog.open(EditCardDialog, {data: this.card});
     dialogRef.afterClosed().subscribe(result => {
       if (result != "") {
-        this.card = editedCard;
+        this.card = result;
+        editedCard.id = this.card.id;
+        editedCard.color = this.card.color;
+        editedCard.frontImage = this.card.frontImage;
+        editedCard.backImage = this.card.backImage;
+        editedCard.frontText = this.card.frontText;
+        editedCard.backText = this.card.backText;
         this.putCard()
       }
     });

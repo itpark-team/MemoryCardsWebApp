@@ -2,7 +2,7 @@ mat-grid-tile {
   background: #add8e6;
 }
 
-mat-card{
+mat-card {
   background: #f1f1f1;
   margin-top: 2rem;
 }
@@ -11,12 +11,24 @@ mat-grid-list {
   background: aliceblue;
 }
 
-.deck-outer-div{
+.deck-outer-div {
   max-width: 40rem;
   background: aliceblue;
 }
 
-.cardText{
-  display: inline-block;
-  ;
+.cardText {
+  display: inline-block;;
+}
+
+#deck-title {
+  margin-top: -1.2rem;
+}
+
+#deck-description {
+  margin-top: -1.2rem;
+}
+
+.text-wrapper {
+  min-width: 30%;
+  border-radius: 5px;
 }

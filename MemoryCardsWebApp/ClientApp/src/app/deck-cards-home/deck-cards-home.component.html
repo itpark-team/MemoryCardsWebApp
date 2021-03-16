@@ -8,12 +8,11 @@
       <hr>
       <div>
         <h1 class="text-center">Deck:</h1>
-        <h1 class="text-center font-weight-bold">{{currentDeck.title}}</h1>
-<!--        хз как сделать его поближе-->
+        <h1 id="deck-title" class="text-center font-weight-bold">{{currentDeck.title}}</h1>
       </div>
       <div>
         <h2 class="text-center">Descritpion:</h2>
-        <h2 class="text-center font-weight-bold">{{currentDeck.description}}</h2>
+        <h2 id="deck-description" class="text-center font-weight-bold">{{currentDeck.description}}</h2>
       </div>
       <hr>
 
@@ -23,9 +22,10 @@
 
       <div>
         <ng-container *ngFor="let card of currentCards">
-          <mat-card (click)="changeCardSide()" style="background-color:{{card.color}}">
+          <mat-card (click)="changeCardSide()" [ngStyle]="{'background-color': card.color}" >
             <div [ngSwitch]="cardSide" class="ml-5 mr-4 mt-5">
-              <!--              хз как тут сделать -->
+<!--1 ng switch -->
+
               <ng-template ngSwitchCase="front">
                 <img mat-card-image src="{{card.frontImage}}" class="img-fluid rounded">
               </ng-template>
@@ -33,12 +33,13 @@
                 <img mat-card-image src="{{card.backImage}}" class="img-fluid rounded">
               </ng-template>
             </div>
-            <div class="bg-light rounded-2">
-              <!--блять я хуй знает как красиво выделить я ваш фронт ебал в рот-->
-              <mat-card-title class="text-center mt-4" [ngSwitch]="cardSide">
-                <ng-template ngSwitchCase="front"> {{card.frontText}}</ng-template>
-                <ng-template ngSwitchCase="back"> {{card.backText}}</ng-template>
-              </mat-card-title>
+            <div class="text-wrapper d-flex justify-content-center align-items-center">
+              <div class="bg-light d-flex align-items-center">
+                <mat-card-title class="text-center mt-4 align-items-center" [ngSwitch]="cardSide">
+                  <ng-template ngSwitchCase="front"> {{card.frontText}}</ng-template>
+                  <ng-template ngSwitchCase="back"> {{card.backText}}</ng-template>
+                </mat-card-title>
+              </div>
             </div>
             <mat-card-actions align="end">
               <button mat-raised-button color="primary" (click)="showEditCardDialog(card)"
