@@ -1,27 +1,27 @@
-﻿<h2 mat-dialog-title>Edit card:</h2>
+﻿<h2 mat-dialog-title>Edit editedCard:</h2>
 <mat-dialog-content class="mat-typography">
   <label>
-    front text: <input type="text" [ngModel]="card.frontText" (ngModelChange)="card.frontText=$event" value="{{card.frontText}}">
+    front text: <input type="text" [ngModel]="editedCard.frontText" (ngModelChange)="editedCard.frontText=$event" value="{{editedCard.frontText}}">
   </label>
   <br>
 
   <label>
-    back text: <input type="text" [ngModel]="card.backText" (ngModelChange)="card.backText=$event" value="{{card.backText}}">
+    back text: <input type="text" [ngModel]="editedCard.backText" (ngModelChange)="editedCard.backText=$event" value="{{editedCard.backText}}">
   </label>
   <br>
 
   <label>
-    front image: <input type="text" [ngModel]="card.frontImage" (ngModelChange)="card.frontImage=$event" value="{{card.frontImage}}">
+    front image: <input type="text" [ngModel]="editedCard.frontImage" (ngModelChange)="editedCard.frontImage=$event" value="{{editedCard.frontImage}}">
   </label>
   <br>
 
   <label>
-    back image: <input type="text" [ngModel]="card.backImage" (ngModelChange)=" card.backImage=$event" value="{{card.backImage}}">
+    back image: <input type="text" [ngModel]="editedCard.backImage" (ngModelChange)=" editedCard.backImage=$event" value="{{editedCard.backImage}}">
   </label>
   <br>
 
   <label>
-    color: <input type="text" [ngModel]="card.color" (ngModelChange)="card.color=$event" value="{{card.color}}">
+    color: <input type="text" [ngModel]="editedCard.color" (ngModelChange)="editedCard.color=$event" value="{{editedCard.color}}">
   </label>
 
   <br>
@@ -29,6 +29,6 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-raised-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button color="accent" [mat-dialog-close]="card" >Done</button>
+  <button mat-raised-button color="accent" [mat-dialog-close]="editedCard" >Done</button>
 </mat-dialog-actions>
 

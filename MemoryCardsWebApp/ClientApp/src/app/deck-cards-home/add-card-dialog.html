@@ -1,16 +1,30 @@
 ﻿<h2 mat-dialog-title>Add card:</h2>
 <mat-dialog-content class="mat-typography">
   <label>
-    front text: <input type="text" [ngModel]="card.frontText" (ngModelChange)="card.frontText=$event">
+    Front text: <input type="text" [ngModel]="card.frontText" (ngModelChange)="card.frontText=$event">
   </label>
   <br>
 
   <label>
-    back text: <input type="text" [ngModel]="card.backText" (ngModelChange)="card.backText=$event">
+    Back text: <input type="text" [ngModel]="card.backText" (ngModelChange)="card.backText=$event">
   </label>
   <br>
 
-<!--  Сделать картинки хуинки всю мушуру -->
+  <label>
+    Front image: <input type="text" [ngModel]="card.frontImage" (ngModelChange)="card.frontImage=$event">
+  </label>
+  <br>
+
+  <label>
+    Back image: <input type="text" [ngModel]="card.backImage" (ngModelChange)="card.backImage=$event">
+  </label>
+  <br>
+
+  <label>
+    Color: <input type="text" [ngModel]="card.color" (ngModelChange)="card.color=$event">
+  </label>
+  <br>
+
 
 </mat-dialog-content>
 <mat-dialog-actions align="end">

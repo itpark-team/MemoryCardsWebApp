@@ -66,17 +66,16 @@ export class DeckCardsHomeComponent implements OnInit {
       if (result != "") {
         this.card = result;
         this.postCard();
-        // После закрытия нужно обновить список карточек
       }
     });
   }
 
-  showEditCardDialog(card: Card): void {
+  showEditCardDialog(editedCard: Card): void {
     this.clearCard();
-    const dialogRef = this.dialog.open(EditCardDialog, {data: card});
+    const dialogRef = this.dialog.open(EditCardDialog, {data: editedCard});
     dialogRef.afterClosed().subscribe(result => {
       if (result != "") {
-        this.card = card;
+        this.card = editedCard;
         this.putCard()
       }
     });
@@ -141,9 +140,8 @@ export class DeckCardsHomeComponent implements OnInit {
   putCard(): void {
 
     const body = JSON.stringify(this.card);
-
-    console.log(body);
-console.log(this.cards);
+//     console.log(body);
+// console.log(this.cards);
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     this.http.put<Card>(`https://localhost:5001/api/cards/${this.card.id}`, body, {headers: headers}).subscribe(
@@ -270,7 +268,7 @@ export class AddCardDialog {
 })
 
 export class EditCardDialog {
-  constructor(public dialogRef: MatDialogRef<EditCardDialog>, @Inject(MAT_DIALOG_DATA) public card: Card) {
+  constructor(public dialogRef: MatDialogRef<EditCardDialog>, @Inject(MAT_DIALOG_DATA) public editedCard: Card) {
   }
 
   onNoClick(): void {

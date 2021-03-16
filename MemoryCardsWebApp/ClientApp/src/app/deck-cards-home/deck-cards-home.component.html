@@ -6,7 +6,15 @@
         <button mat-raised-button color="warn" (click)="showDeleteDeckDialog()">delete</button>
       </div>
       <hr>
-      <h1>Deck: {{currentDeck.title}}</h1>
+      <div>
+        <h1 class="text-center">Deck:</h1>
+        <h1 class="text-center font-weight-bold">{{currentDeck.title}}</h1>
+<!--        хз как сделать его поближе-->
+      </div>
+      <div>
+        <h2 class="text-center">Descritpion:</h2>
+        <h2 class="text-center font-weight-bold">{{currentDeck.description}}</h2>
+      </div>
       <hr>
 
       <div class="row justify-content-center">
@@ -26,7 +34,7 @@
               </ng-template>
             </div>
             <div class="bg-light rounded-2">
-              <!--              блять я хуй знает как красиво выделить я ваш фронт ебал в рот-->
+              <!--блять я хуй знает как красиво выделить я ваш фронт ебал в рот-->
               <mat-card-title class="text-center mt-4" [ngSwitch]="cardSide">
                 <ng-template ngSwitchCase="front"> {{card.frontText}}</ng-template>
                 <ng-template ngSwitchCase="back"> {{card.backText}}</ng-template>
@@ -41,7 +49,8 @@
               </button>
             </mat-card-actions>
           </mat-card>
-          <!--          БЫЛО БЫ НИХУЁВО СДЕЛАТЬ ТАК ЧТОБЫ ТОЛЬКО ОДНА КАРТОЧКА ВОРОЧАЛАСЬ-->
+          <!--          БЫЛО БЫ НИХУЁВО СДЕЛАТЬ ТАК ЧТОБЫ ТОЛЬКО ОДНА КАРТОЧКА ВОРОЧАЛАСЬ ну можно их ещё и поменьше сделать так то))) и уголки закруглить, я не смог((
+          -->
           <!--          я бы лично въебал поле ещё одно в класс-->
         </ng-container>
       </div>
