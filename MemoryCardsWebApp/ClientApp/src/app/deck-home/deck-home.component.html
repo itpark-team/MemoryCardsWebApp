@@ -117,24 +117,25 @@
             <div class="mat-raised-button div-button-raise-fix">
               <div class="deck-header">
                 <div class="div-button-unclickable-text">{{deck.title}}</div>
-                <div>{{deck.authorUserId}}</div>
-<!--                <div>-->
-                  <!--                                    <a style="text-decoration: underline" *ngIf="deck.authorUserId != null">#{{getAuthorUsername(deck.authorUserId)}}</a>-->
-                  <!--                  <a style="text-decoration: underline" *ngIf="deck.authorUserId != null">#{{deck.id}}</a>-->
-<!--                </div>-->
+
+                <div>
+                  <a style="text-decoration: underline">#{{deck.authorUser}}</a>
+                  <!--                  <a style="text-decoration: underline">#{{getAuthorUsername(deck.authorUserId)}}</a>-->
+                  <!--                  <a style="text-decoration: underline">#{{deck.id}}</a>-->
+                </div>
               </div>
 
               <hr style="margin-left: 1%; margin-right: 1%; background-color: #A1A1A1">
 
               <div style="padding-left: 1%; padding-right: 1%; padding-bottom: 1%;">
                 <p style="text-align: start"
-                   class="div-button-unclickable-text">{{log(deck.id)}}{{deck.description}}</p>
+                   class="div-button-unclickable-text">{{deck.description}}</p>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
 </div>

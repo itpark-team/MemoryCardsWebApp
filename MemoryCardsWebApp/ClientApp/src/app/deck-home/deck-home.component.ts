@@ -9,6 +9,7 @@ interface Deck {
   description: string;
   visibility: boolean;
   authorUserId: number;
+  authorUser: string;
 }
 
 interface Card {
@@ -21,14 +22,14 @@ interface Card {
 }
 
 interface User {
-id: number;
-username: string;
-email: string;
-passwordHash: string;
-avatarImage: string;
-subStatus: number;
-subExpire: Date;
-isActive: boolean;
+  id: number;
+  username: string;
+  email: string;
+  passwordHash: string;
+  avatarImage: string;
+  subStatus: number;
+  subExpire: Date;
+  isActive: boolean;
 }
 
 interface DecksCard {
@@ -47,7 +48,7 @@ export class DeckHomeComponent implements OnInit {
   decks: Deck[] = [];
   cards: Card[] = [];
   decksCards: DecksCard[] = [];
-  deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+  deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
   username: string = "";
 
   constructor(private http: HttpClient, public dialog: MatDialog) {
@@ -105,7 +106,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   private clearDeck(): void {
-    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
   }
 
 
@@ -137,6 +138,7 @@ export class DeckHomeComponent implements OnInit {
     this.http.get<Deck[]>(`https://localhost:5001/api/decks`).subscribe(
       responseData => {
         this.decks = responseData
+        console.dir(this.decks[0])
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
