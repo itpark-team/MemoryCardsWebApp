@@ -27,6 +27,7 @@
 
 <!--                <mat-grid-tile class="camouflage-background">-->
 <!--                  <button mat-raised-button (click)="openDeck(deck.id)" >-->
+
 <!--                    <a>view full</a>-->
 <!--                  </button>-->
 <!--                </mat-grid-tile>-->
@@ -43,6 +44,7 @@
 
 <!--</div>-->
 
+<!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
 
 <!--<ul>-->
 <!--  <li *ngFor="let deck of decks">{{deck.id}} | {{deck.title}} | {{deck.description}} | {{deck.visibility}} | <button (click)="deleteDeck(deck.id)">Delete</button></li>-->
@@ -84,26 +86,58 @@
 
 <!--</div>-->
 
-<div class="container" style="background-color: blue">
-  <div class="row justify-content-center" style="background-color: red">
-    <div class="col-8" style="background-color: orange">
+<body style="height: max-content; background-size: cover; background: #1A1A1A;">
+<div class="container" style="background-color: #1A1A1A">
+  <div class="row justify-content-center" style="background-color: #1F1F1F">
+    <div class="col-8" style="background-color: #1F1F1F">
 
-      <button mat-raised-button color="warn">back</button>
-      <hr>
-      <h1>Decks</h1>
-      <hr>
-
-      <div>
-        <button mat-raised-button (click)="showAddDialog()">+ add deck</button>
-      </div>
+      <button mat-raised-button style="background-color: #111111; color: #E8E9F3">back</button>
+      <hr style="background-color: #E7E7E7">
+      <h1 style="color: #E8E9F3">Decks</h1>
+      <hr style="background-color: #E7E7E7">
 
       <div>
-        <div *ngFor="let deck of decks">
-          {{deck.title}}|{{deck.description}}|<button mat-raised-button (click)="openDeck(deck.id)">view full</button>
+        <!--<button mat-raised-button (click)="showAddDialog()">+ add deck</button>-->
+        <div style="background-color: #AAAAAA;" class="div-button" (click)="showAddDialog()">
+          <!--Рисовашки крестиков-->
+          <!--Векторная графика-->
+          <div class="button-add mat-raised-button">
+            <svg class="button-add-plus-symbol" viewBox="0 0 8 8">
+              <line x1="1" y1="4" x2="7" y2=4></line>
+              <line x1="4" y1="1" x2="4" y2=7></line>
+            </svg>
+            <p>Add deck</p>
+          </div>
         </div>
       </div>
 
+      <div>
+        <div *ngFor="let deck of decks" class="div-button">
+          <!--{{deck.title}} | {{deck.description}} | {{deck.authorUserId}} | <button mat-raised-button (click)="openDeck(deck.id)"> view full</button>-->
+          <div (click)="openDeck(deck.id)">
+            <div class="mat-raised-button div-button-raise-fix">
+              <div class="deck-header">
+                <div class="div-button-unclickable-text">{{deck.title}}</div>
+
+                <div>
+                  <a style="text-decoration: underline">#{{deck.authorUser}}</a>
+                  <!--                  <a style="text-decoration: underline">#{{getAuthorUsername(deck.authorUserId)}}</a>-->
+                  <!--                  <a style="text-decoration: underline">#{{deck.id}}</a>-->
+                </div>
+              </div>
+
+              <hr style="margin-left: 1%; margin-right: 1%; background-color: #A1A1A1">
+
+              <div style="padding-left: 1%; padding-right: 1%; padding-bottom: 1%;">
+                <p style="text-align: start"
+                   class="div-button-unclickable-text">{{deck.description}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>
-
+</body>

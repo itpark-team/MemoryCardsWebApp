@@ -2,18 +2,66 @@ mat-grid-tile {
   background: lightblue;
 }
 
-.camouflage-background{
+.camouflage-background {
   background: aliceblue;
 }
 
-.deck-outer-div{
+.deck-outer-div {
   max-width: 40rem;
   background: aliceblue;
 }
 
-.inner{
+.inner {
   height: 10%;
   padding: 1rem;
 }
 
+.div-button {
+  border-radius: 5px;
+  cursor: pointer;
+}
 
+.div-button-unclickable-text{
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.div-button-raise-fix{
+  display: block;
+  background-color: #CACACF;
+}
+
+.button-add {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #DADADF;
+  color: #AFAFAF;
+}
+
+.button-add-plus-symbol {
+  width: 60px;
+  height: 60px;
+  stroke-width: 2; /*ширина линии*/
+
+  padding: 2%;
+
+  stroke: #AFAFAF; /*цвет линии через rgb*/
+  stroke-linecap: round; /*тип линии*/
+}
+
+.deck-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  margin: 1%;
+
+}

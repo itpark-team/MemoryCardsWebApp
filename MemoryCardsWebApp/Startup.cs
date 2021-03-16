@@ -1,10 +1,13 @@
+using MemoryCardsWebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace MemoryCardsWebApp
 {
@@ -21,6 +24,9 @@ namespace MemoryCardsWebApp
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddCors();
+
+            services.AddDbContext<MemoryCardsContext>(options => options.UseSqlServer(
+                Configuration["ConnectionStrings:DefaultConnection"]));
             
             services.AddControllers();
             

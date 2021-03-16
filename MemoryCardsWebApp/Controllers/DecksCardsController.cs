@@ -13,13 +13,18 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]/[action]/{id}")]
     public class DecksCardsController : Controller
     {
+        private MemoryCardsContext db;
+
+        public DecksCardsController(MemoryCardsContext context)
+        {
+            db = context;
+        }
+        
         [HttpGet]
         public IActionResult Get()
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 return StatusCode(StatusCodes.Status200OK, db.DecksCards);
             }
             catch (Exception e)
@@ -51,8 +56,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 int count = db.DecksCards.Count(i => i.DeckId == id);
 
                 return StatusCode(StatusCodes.Status200OK, count);
