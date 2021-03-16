@@ -749,7 +749,6 @@
     </database>
     <database id="188" parent="1" name="u0640305_dibudgetdb">
       <ObjectId>58</ObjectId>
-      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="189" parent="1" name="u0644599_hfsncfdb">
       <ObjectId>189</ObjectId>
@@ -925,7 +924,6 @@
     </database>
     <database id="233" parent="1" name="u1003810_rrc_novoaleksandrovsk">
       <ObjectId>255</ObjectId>
-      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="234" parent="1" name="u1003810_test_platilegko">
       <ObjectId>265</ObjectId>
@@ -1168,6 +1166,7 @@
     </database>
     <database id="295" parent="1" name="u1070112_NashaPoly">
       <ObjectId>376</ObjectId>
+      <Collation>SQL_Latin1_General_CP1_CI_AS</Collation>
     </database>
     <database id="296" parent="1" name="u1070670_0km">
       <ObjectId>349</ObjectId>
@@ -1313,7 +1312,6 @@
     </database>
     <database id="332" parent="1" name="u1158131_ASPState">
       <ObjectId>124</ObjectId>
-      <Collation>SQL_Latin1_General_CP1_CI_AS</Collation>
     </database>
     <database id="333" parent="1" name="u1158131_DatabaseAZRI">
       <ObjectId>236</ObjectId>
@@ -1569,7 +1567,6 @@
     </database>
     <database id="397" parent="1" name="u1230115_testSadaDoors">
       <ObjectId>252</ObjectId>
-      <Collation>Cyrillic_General_CI_AS</Collation>
     </database>
     <database id="398" parent="1" name="u1230319_gcmap">
       <ObjectId>453</ObjectId>
@@ -1963,7 +1960,7 @@
     </schema>
     <schema id="492" parent="404" name="dbo">
       <ObjectId>1</ObjectId>
-      <IntrospectionTimestamp>2021-03-16.16:13:29.513</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2021-03-16.21:18:27.773</IntrospectionTimestamp>
     </schema>
     <schema id="493" parent="404" name="guest">
       <ObjectId>2</ObjectId>
@@ -1973,7 +1970,7 @@
     </schema>
     <schema id="495" parent="404" name="u1236834_groups">
       <ObjectId>5</ObjectId>
-      <IntrospectionTimestamp>2021-03-16.16:13:29.920</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2021-03-16.21:18:28.053</IntrospectionTimestamp>
       <Current>1</Current>
     </schema>
     <role id="496" parent="404" name="public">
