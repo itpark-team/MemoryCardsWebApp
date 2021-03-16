@@ -39,6 +39,7 @@ mat-grid-tile {
 
 .div-button-raise-fix{
   display: block;
+  background-color: #CACACF;
 }
 
 .button-add {
@@ -46,16 +47,20 @@ mat-grid-tile {
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  color: rgb(214,214,214);
+
+  background-color: #CACACF;
+  color: #61616A;
 }
 
 .button-add-plus-symbol {
   width: 60px;
   height: 60px;
-  padding: 2%;
-  stroke: rgb(214, 214, 214); /*цвет линии через rgb*/
-  stroke-linecap: round; /*тип линии*/
   stroke-width: 2; /*ширина линии*/
+
+  padding: 2%;
+
+  stroke: #616161; /*цвет линии через rgb*/
+  stroke-linecap: round; /*тип линии*/
 }
 
 .deck-header {
@@ -67,4 +72,3 @@ mat-grid-tile {
   margin: 1%;
 
 }
-

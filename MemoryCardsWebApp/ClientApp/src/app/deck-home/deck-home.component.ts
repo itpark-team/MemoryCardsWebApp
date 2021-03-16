@@ -37,9 +37,9 @@ export class DeckHomeComponent implements OnInit {
   cards: Card[] = [];
   decksCards: DecksCard[] = [];
   deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+  userName: string = "";
 
-
-  constructor(private http: HttpClient,public dialog: MatDialog) {
+  constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -50,19 +50,19 @@ export class DeckHomeComponent implements OnInit {
 
   test(): void {
 
-    console.log( this.cards);
+    console.log(this.cards);
   }
 
   openDeck(deckId: number): void {
-    location.href='deckcards?deckId='+deckId;
+    location.href = 'deckcards?deckId=' + deckId;
   }
 
-  showAddDialog():void{
+  showAddDialog(): void {
     this.clearDeck();
-    const dialogRef = this.dialog.open(AddDeckDialog,{data:this.deck});
+    const dialogRef = this.dialog.open(AddDeckDialog, {data: this.deck});
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result!=""){
+      if (result != "") {
         this.deck = result;
         this.postDeck();
       }
@@ -76,10 +76,8 @@ export class DeckHomeComponent implements OnInit {
 
   getDeckCardsCount(deckId: number): number {
     let count = 0;
-    for (let i=0;i<this.decksCards.length ;i++)
-    {
-      if(this.decksCards[i].deckId==deckId)
-      {
+    for (let i = 0; i < this.decksCards.length; i++) {
+      if (this.decksCards[i].deckId == deckId) {
         count++;
       }
     }
@@ -87,14 +85,13 @@ export class DeckHomeComponent implements OnInit {
   }
 
   getCardText(deckId: number, cardNumber: number): string {
-    let realId=this.decksCards.filter(c=>c.deckId==deckId)[cardNumber-1].cardId;
-    return this.cards.find(c=>c.id==realId).frontText;
+    let realId = this.decksCards.filter(c => c.deckId == deckId)[cardNumber - 1].cardId;
+    return this.cards.find(c => c.id == realId).frontText;
   }
 
   private clearDeck(): void {
     this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
   }
-
 
 
   getCards(): void {
@@ -181,7 +178,19 @@ export class DeckHomeComponent implements OnInit {
       }
     );
   }
+
   //======DECKS FINISH======//
+
+  getUserWithId(id: number): void {
+    this.http.get<string>(`https://localhost:5001/api/decks/${id}`).subscribe(
+      responseData => {
+        this.userName = responseData
+       },
+       error => {
+         alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
 }
 
 
@@ -190,7 +199,7 @@ export class DeckHomeComponent implements OnInit {
   templateUrl: 'add-deck-dialog.html',
 })
 export class AddDeckDialog {
-  constructor(public dialogRef: MatDialogRef<AddDeckDialog>,@Inject(MAT_DIALOG_DATA) public deck: Deck ) {
+  constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
   }
 
   onNoClick(): void {

@@ -85,24 +85,24 @@
 
 <!--</div>-->
 
-<body style="background-color: #1A1A1A">
+<body style="height: max-content; background-size: cover; background: #1A1A1A;">
 
 <div class="container" style="background-color: #1A1A1A">
   <div class="row justify-content-center" style="background-color: #1F1F1F">
     <div class="col-8" style="background-color: #1F1F1F">
 
-      <button mat-raised-button color="warn">back</button>
-      <hr style="color: red">
+      <button mat-raised-button style="background-color: #1A1A1A; color: #E8E9F3">back</button>
+      <hr style="background-color: #E7E7E7">
       <h1 style="color: #E8E9F3">Decks</h1>
-      <hr>
+      <hr style="background-color: #E7E7E7">
 
       <div>
         <!--<button mat-raised-button (click)="showAddDialog()">+ add deck</button>-->
-        <div style="background-color: azure;" class="div-button" (click)="showAddDialog()">
+        <div style="background-color: #CECECE;" class="div-button" (click)="showAddDialog()">
           <!--Рисовашки крестиков-->
           <!--Векторная графика-->
           <div class="button-add mat-raised-button">
-            <svg class="button-add-plus-symbol" style="color:black" viewBox="0 0 8 8">
+            <svg class="button-add-plus-symbol" viewBox="0 0 8 8">
               <line x1="1" y1="4" x2="7" y2=4></line>
               <line x1="4" y1="1" x2="4" y2=7></line>
             </svg>
@@ -118,13 +118,14 @@
             <div class="mat-raised-button div-button-raise-fix">
               <div class="deck-header">
                 <div>{{deck.title}}</div>
-                <div>{{deck.authorUserId}}</div>
+<!--                <div>{{deck.authorUserId}}</div>-->
+                <div>{{userName}}</div>
               </div>
 
-              <hr style="margin-left: 1%; margin-right: 1%;">
+              <hr style="margin-left: 1%; margin-right: 1%; background-color: #A1A1A1">
 
               <div style="padding-left: 1%; padding-right: 1%; padding-bottom: 1%;">
-                <p style="text-align: start">{{deck.description}}</p>
+                <p style="text-align: start">{{deck.authorUserId}}</p>
               </div>
             </div>
           </div>
