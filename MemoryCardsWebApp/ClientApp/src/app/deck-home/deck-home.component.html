@@ -112,20 +112,20 @@
       </div>
 
       <div>
-        <div *ngFor="let deck of decks" (click)="openDeck(deck.id)" style="background-color: azure" class="div-button">
+        <div *ngFor="let deck of decks" style="background-color: azure" class="div-button">
           <!--{{deck.title}} | {{deck.description}} | {{deck.authorUserId}} | <button mat-raised-button (click)="openDeck(deck.id)"> view full</button>-->
           <div (click)="openDeck(deck.id)">
             <div class="mat-raised-button div-button-raise-fix">
               <div class="deck-header">
                 <div>{{deck.title}}</div>
-<!--                <div>{{deck.authorUserId}}</div>-->
-                <div>{{userName}}</div>
+                <!--                <div>{{deck.authorUserId}}</div>-->
+                <div>{{getAuthorUsername(deck.authorUserId)}}</div>
               </div>
 
               <hr style="margin-left: 1%; margin-right: 1%; background-color: #A1A1A1">
 
               <div style="padding-left: 1%; padding-right: 1%; padding-bottom: 1%;">
-                <p style="text-align: start">{{deck.authorUserId}}</p>
+                <p style="text-align: start">{{deck.description}}</p>
               </div>
             </div>
           </div>

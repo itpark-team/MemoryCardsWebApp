@@ -24,14 +24,14 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                List<Deck> decks = db.Decks.ToList();
-                foreach (var deck in decks)
-                {
-                    deck.AuthorUser = db.Users.First(item => item.Id == deck.AuthorUserId);
-                }
-                //todo get author user for parsing author user name on front
-                return StatusCode(StatusCodes.Status200OK, decks);
-                //return StatusCode(StatusCodes.Status200OK, db.Decks);
+                // List<Deck> decks = db.Decks.ToList();
+                // foreach (var deck in decks)
+                // {
+                //     deck.AuthorUser = db.Users.First(item => item.Id == deck.AuthorUserId);
+                // }
+                // //todo get author user for parsing author user name on front
+                // return StatusCode(StatusCodes.Status200OK, decks);
+                return StatusCode(StatusCodes.Status200OK, db.Decks);
             }
             catch (Exception e)
             {
@@ -39,19 +39,6 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetUserWithId(int id)
-        {
-            try
-            { 
-                return StatusCode(StatusCodes.Status200OK, db.Users.First(item=>item.Id == id).Username);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-        
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {

@@ -20,6 +20,17 @@ interface Card {
   color: string;
 }
 
+interface User {
+id: number;
+username: string;
+email: string;
+passwordHash: string;
+avatarImage: string;
+subStatus: number;
+subExpire: Date;
+isActive: boolean;
+}
+
 interface DecksCard {
   deckId: number;
   cardId: Number;
@@ -37,7 +48,7 @@ export class DeckHomeComponent implements OnInit {
   cards: Card[] = [];
   decksCards: DecksCard[] = [];
   deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
-  userName: string = "";
+  username: string = "";
 
   constructor(private http: HttpClient, public dialog: MatDialog) {
   }
@@ -159,7 +170,6 @@ export class DeckHomeComponent implements OnInit {
   }
 
   putDeck(): void {
-
     const body = JSON.stringify(this.deck);
 
 
@@ -181,15 +191,17 @@ export class DeckHomeComponent implements OnInit {
 
   //======DECKS FINISH======//
 
-  getUserWithId(id: number): void {
-    this.http.get<string>(`https://localhost:5001/api/decks/${id}`).subscribe(
+  getUser(id: number): void {
+    this.http.get<User>(`https://localhost:5001/api/users/${id}`).subscribe(
       responseData => {
-        this.userName = responseData
-       },
-       error => {
-         alert(`error: ${error.status}, ${error.statusText}`);
+        this.username = responseData.username;
       }
     );
+  }
+
+  getAuthorUsername(id: number): string {
+    this.getUser(id);
+    return this.username;
   }
 }
 
