@@ -20,6 +20,8 @@ interface Card {
   backImage: string;
   color: string;
 }
+// interface Displayed
+
 
 interface User {
   id: number;

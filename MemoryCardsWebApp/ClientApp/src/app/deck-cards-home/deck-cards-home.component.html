@@ -1,17 +1,59 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-8">
-<!--      <img src="https://superpu.ru/wp-content/uploads/2019/05/faec3b6f0dde707765c599837216e175.jpg">-->
-      <button mat-raised-button color="warn" (click)="goBack()">back</button>
+      <div class="row justify-content-between">
+        <button mat-raised-button color="accent" (click)="goBack()">back</button>
+        <button mat-raised-button color="warn" (click)="showDeleteDeckDialog()">delete</button>
+      </div>
       <hr>
-      <h1>Deck: {{currentDeck.title}}</h1>
+      <div>
+        <h1 class="text-center">Deck:</h1>
+        <h1 id="deck-title" class="text-center font-weight-bold">{{currentDeck.title}}</h1>
+      </div>
+      <div>
+        <h2 class="text-center">Descritpion:</h2>
+        <h2 id="deck-description" class="text-center font-weight-bold">{{currentDeck.description}}</h2>
+      </div>
       <hr>
-      <div class="deck-outer-div">
-        <mat-grid-list cols="3">
-          <ng-container *ngFor="let card of currentCards">
-            <mat-grid-tile (click)="changFrontAndBack(card)">{{card.frontText}}</mat-grid-tile>
-          </ng-container>
-        </mat-grid-list>
+
+      <div class="row justify-content-center">
+        <button class="row justify-content-center" mat-raised-button (click)="showAddDialog()">+ add card</button>
+      </div>
+
+      <div>
+        <ng-container *ngFor="let card of currentCards">
+          <mat-card (click)="changeCardSide()" [ngStyle]="{'background-color': card.color}" >
+            <div [ngSwitch]="cardSide" class="ml-5 mr-4 mt-5">
+<!--1 ng switch -->
+
+              <ng-template ngSwitchCase="front">
+                <img mat-card-image src="{{card.frontImage}}" class="img-fluid rounded">
+              </ng-template>
+              <ng-template ngSwitchCase="back">
+                <img mat-card-image src="{{card.backImage}}" class="img-fluid rounded">
+              </ng-template>
+            </div>
+            <div class="text-wrapper d-flex justify-content-center align-items-center">
+              <div class="bg-light d-flex align-items-center">
+                <mat-card-title class="text-center mt-4 align-items-center" [ngSwitch]="cardSide">
+                  <ng-template ngSwitchCase="front"> {{card.frontText}}</ng-template>
+                  <ng-template ngSwitchCase="back"> {{card.backText}}</ng-template>
+                </mat-card-title>
+              </div>
+            </div>
+            <mat-card-actions align="end">
+              <button mat-raised-button color="primary" (click)="showEditCardDialog(card)"
+                      (click)="changeCardSide()">Edit
+              </button>
+              <button mat-raised-button color="warn" (click)="showDeleteCardDialog(card.id)" (click)="changeCardSide()">
+                delete
+              </button>
+            </mat-card-actions>
+          </mat-card>
+          <!--          БЫЛО БЫ НИХУЁВО СДЕЛАТЬ ТАК ЧТОБЫ ТОЛЬКО ОДНА КАРТОЧКА ВОРОЧАЛАСЬ ну можно их ещё и поменьше сделать так то))) и уголки закруглить, я не смог((
+          -->
+          <!--          я бы лично въебал поле ещё одно в класс-->
+        </ng-container>
       </div>
     </div>
   </div>

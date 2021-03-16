@@ -32,6 +32,25 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+        
+        [HttpPost]
+        public IActionResult Post([FromBody] DecksCard decksCard)
+        {
+            try
+            {
+                MemoryCardsContext db = new MemoryCardsContext();
+
+                db.DecksCards.Add(decksCard);
+
+                db.SaveChanges();
+
+                return StatusCode(StatusCodes.Status200OK, decksCard);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
 
         public IActionResult DeckCardsCount(int id)
         {
