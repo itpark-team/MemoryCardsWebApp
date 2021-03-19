@@ -74,8 +74,7 @@ export class DeckHomeComponent implements OnInit {
     subStatus: 0
   };
   currentUserId = 1;
-  isEditable: boolean = false;
-  public actionWithDeck: string = "";
+  isEditing: boolean = true;
 
   constructor(private http: HttpClient, public dialog: MatDialog) {
   }
@@ -100,25 +99,48 @@ export class DeckHomeComponent implements OnInit {
     location.href = 'deckcards?deckId=' + deckId;
   }
 
-  showAddDialog(action: string): void {
+  showAddDialog(): void {
     this.clearDeck();
     const dialogRef = this.dialog.open(AddDeckDialog, {
       data: this.deckToAction
     });
-
     dialogRef.afterClosed().subscribe(result => {
       if (result != "") {
-        if (action == "add") {
+        this.deckToAction = result;
+        this.postDeck();
+      }
+    });
+  }
+
+
+  showEditDialog(id: number) {
+    this.clearDeck();
+    const dialogRef = this.dialog.open(EditDeckDialog, {
+      data: this.deckToAction
+    });
+    dialogRef.afterClosed().subscribe(result => {
+        if (result == true) {
+          this.deleteDeck(id)
+        } else if (result != "") {
           this.deckToAction = result;
-          this.actionWithDeck = "Add";
-          this.postDeck();
-        } else if (action == "edit") {
-          this.deckToAction = result;
-          this.actionWithDeck = "Edit";
+          this.deckToAction.id = id;
           this.putDeck();
         }
       }
-    });
+    );
+  }
+
+  changeEditable() : void {
+    this.isEditing = !this.isEditing;
+    console.log(this.isEditing);
+  }
+
+  someActionWitdhDeck(id: number): void {
+    if (this.isEditing) {
+      this.showEditDialog(id);
+    } else {
+      this.openDeck(id);
+    }
   }
 
   cardExists(deckId: number, cardNumber: number): boolean {
@@ -169,7 +191,7 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-  //======DECKS START======//
+//======DECKS START======//
 
   getDecks(): void {
     this.http.get<Deck[]>(`https://localhost:5001/api/decks`).subscribe(
@@ -196,7 +218,6 @@ export class DeckHomeComponent implements OnInit {
   }
 
   postDeck(): void {
-
     const body = JSON.stringify(this.deckToAction);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -216,15 +237,15 @@ export class DeckHomeComponent implements OnInit {
   putDeck(): void {
     const body = JSON.stringify(this.deckToAction);
 
-
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.put<Deck>(`https://localhost:5001/api/decks/${this.deck.id}`, body, {headers: headers}).subscribe(
+    this.http.put<Deck>(`https://localhost:5001/api/decks/${this.deckToAction.id}`, body, {headers: headers}).subscribe(
       responseData => {
 
         const findIndex = this.decks.findIndex(item => item.id == responseData.id);
         this.decks.splice(findIndex, 1, responseData);
         this.decks[findIndex].authorUser = this.getAuthorUsername(this.user.id);
+        console.log(this.deckToAction.id);
         this.clearDeck();
       },
       error => {
@@ -233,7 +254,7 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-  //======DECKS FINISH======//
+//======DECKS FINISH======//
 
   getUser(id: number): void {
     this.http.get<User>(`https://localhost:5001/api/users/${id}`).subscribe(
@@ -264,6 +285,19 @@ export class DeckHomeComponent implements OnInit {
 })
 export class AddDeckDialog {
   constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'edit-deck-dialog',
+  templateUrl: 'edit-deck-dialog.html',
+})
+export class EditDeckDialog {
+  constructor(public dialogRef: MatDialogRef<EditDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
   }
 
   onNoClick(): void {
