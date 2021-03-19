@@ -45,26 +45,6 @@ namespace MemoryCardsWebApp.Controllers
                     });
                 }
                 
-                // for (int i = 0; i < decks.Count; i++)
-                // {
-                //     decksToSend.Add(new DeckToSend()
-                //     {
-                //         Id = decks[i].Id;
-                //     decksToSend[i].Title = decks[i].Title;
-                //     decksToSend[i].Description = decks[i].Description;
-                //     decksToSend[i].Visibility = decks[i].Visibility;
-                //     decksToSend[i].AuthorUserId = decks[i].AuthorUserId;
-                //     decksToSend[i].AuthorUser = decks[i].AuthorUser.Username;
-                //     });
-                //     Console.WriteLine(decksToSend[i]);
-                // }
-                
-                // foreach (var deck in decks)
-                // {
-                //     deck.AuthorUser = db.Users.First(item => item.Id == deck.AuthorUserId);
-                // }
-                // //todo get author user for parsing author user name on front
-                // return StatusCode(StatusCodes.Status200OK, decks);
                 return StatusCode(StatusCodes.Status200OK, decksToSend);
             }
             catch (Exception e)
