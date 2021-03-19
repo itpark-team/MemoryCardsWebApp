@@ -1,6 +1,8 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
+import {Action} from "rxjs/internal/scheduler/Action";
 
 
 interface Deck {
@@ -12,6 +14,14 @@ interface Deck {
   authorUser: string;
 }
 
+interface DeckToPost {
+  id: number;
+  title: string;
+  description: string;
+  visibility: boolean;
+  authorUserId: number;
+}
+
 interface Card {
   id: number;
   frontText: string;
@@ -20,6 +30,7 @@ interface Card {
   backImage: string;
   color: string;
 }
+
 // interface Displayed
 
 
@@ -51,7 +62,20 @@ export class DeckHomeComponent implements OnInit {
   cards: Card[] = [];
   decksCards: DecksCard[] = [];
   deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
-  username: string = "";
+  deckToAction: DeckToPost = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+  user: User = {
+    id: 0,
+    subExpire: new Date(),
+    isActive: false,
+    email: '',
+    avatarImage: '',
+    username: '',
+    passwordHash: '',
+    subStatus: 0
+  };
+  currentUserId = 1;
+  isEditable: boolean = false;
+  public actionWithDeck: string = "";
 
   constructor(private http: HttpClient, public dialog: MatDialog) {
   }
@@ -60,6 +84,7 @@ export class DeckHomeComponent implements OnInit {
     this.getDecks();
     this.getCards();
     this.getDecksCards();
+    this.getUser(this.currentUserId);
   }
 
   test(): void {
@@ -75,14 +100,23 @@ export class DeckHomeComponent implements OnInit {
     location.href = 'deckcards?deckId=' + deckId;
   }
 
-  showAddDialog(): void {
+  showAddDialog(action: string): void {
     this.clearDeck();
-    const dialogRef = this.dialog.open(AddDeckDialog, {data: this.deck});
+    const dialogRef = this.dialog.open(AddDeckDialog, {
+      data: this.deckToAction
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != "") {
-        this.deck = result;
-        this.postDeck();
+        if (action == "add") {
+          this.deckToAction = result;
+          this.actionWithDeck = "Add";
+          this.postDeck();
+        } else if (action == "edit") {
+          this.deckToAction = result;
+          this.actionWithDeck = "Edit";
+          this.putDeck();
+        }
       }
     });
   }
@@ -109,11 +143,12 @@ export class DeckHomeComponent implements OnInit {
 
   private clearDeck(): void {
     this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
+    this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
   }
 
 
   getCards(): void {
-    this.http.get<Card[]>(`/api/cards`).subscribe(
+    this.http.get<Card[]>(`https://localhost:5001/api/cards`).subscribe(
       responseData => {
         this.cards = responseData
       },
@@ -124,7 +159,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   getDecksCards(): void {
-    this.http.get<DecksCard[]>(`/api/deckscards`).subscribe(
+    this.http.get<DecksCard[]>(`https://localhost:5001/api/deckscards`).subscribe(
       responseData => {
         this.decksCards = responseData
       },
@@ -137,7 +172,7 @@ export class DeckHomeComponent implements OnInit {
   //======DECKS START======//
 
   getDecks(): void {
-    this.http.get<Deck[]>(`/api/decks`).subscribe(
+    this.http.get<Deck[]>(`https://localhost:5001/api/decks`).subscribe(
       responseData => {
         this.decks = responseData
         console.dir(this.decks[0])
@@ -149,7 +184,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   deleteDeck(id: number): void {
-    this.http.delete<number>(`/api/decks/${id}`).subscribe(
+    this.http.delete<number>(`https://localhost:5001/api/decks/${id}`).subscribe(
       responseData => {
         const findIndex = this.decks.findIndex(item => item.id == responseData);
         this.decks.splice(findIndex, 1);
@@ -162,13 +197,14 @@ export class DeckHomeComponent implements OnInit {
 
   postDeck(): void {
 
-    const body = JSON.stringify(this.deck);
+    const body = JSON.stringify(this.deckToAction);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post<Deck>(`/api/decks`, body, {headers: headers}).subscribe(
+    this.http.post<Deck>(`https://localhost:5001/api/decks`, body, {headers: headers}).subscribe(
       responseData => {
         this.decks.push(responseData);
+        this.decks[this.decks.length - 1].authorUser = this.getAuthorUsername(this.user.id);
         this.clearDeck();
       },
       error => {
@@ -178,17 +214,17 @@ export class DeckHomeComponent implements OnInit {
   }
 
   putDeck(): void {
-    const body = JSON.stringify(this.deck);
+    const body = JSON.stringify(this.deckToAction);
 
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.put<Deck>(`/api/decks/${this.deck.id}`, body, {headers: headers}).subscribe(
+    this.http.put<Deck>(`https://localhost:5001/api/decks/${this.deck.id}`, body, {headers: headers}).subscribe(
       responseData => {
 
         const findIndex = this.decks.findIndex(item => item.id == responseData.id);
         this.decks.splice(findIndex, 1, responseData);
-
+        this.decks[findIndex].authorUser = this.getAuthorUsername(this.user.id);
         this.clearDeck();
       },
       error => {
@@ -200,9 +236,14 @@ export class DeckHomeComponent implements OnInit {
   //======DECKS FINISH======//
 
   getUser(id: number): void {
-    this.http.get<User>(`/api/users/${id}`).subscribe(
+    this.http.get<User>(`https://localhost:5001/api/users/${id}`).subscribe(
       responseData => {
-        this.username = responseData.username;
+        this.user.id = responseData.id;
+        this.user.username = responseData.username;
+        this.user.avatarImage = responseData.avatarImage;
+        this.user.subStatus = responseData.subStatus;
+        this.user.isActive = responseData.isActive;
+        this.user.subExpire = responseData.subExpire;
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -212,7 +253,7 @@ export class DeckHomeComponent implements OnInit {
 
   getAuthorUsername(id: number): string {
     this.getUser(id);
-    return this.username;
+    return this.user.username;
   }
 }
 
