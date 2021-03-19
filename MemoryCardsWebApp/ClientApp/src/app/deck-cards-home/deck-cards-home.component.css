@@ -32,3 +32,25 @@ mat-grid-list {
   min-width: 30%;
   border-radius: 5px;
 }
+
+.resize-img{
+  height: 10rem;
+  width: auto;
+}
+
+.img-container{
+  display: flex;
+  justify-content: center;
+}
+
+.toned-body{
+  height: max-content;
+  background-size: cover;
+  background: #1A1A1A;
+}
+
+.button-black{
+  background-color: #111111;
+  color: #E8E9F3;
+}
+
