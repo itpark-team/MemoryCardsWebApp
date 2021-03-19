@@ -1,10 +1,15 @@
-<body>
 <header></header>
 
 <main>
   <div class="decks-container row justify-content-center">
     <div class="col-md-8 m-2">
-      <button mat-raised-button id="back-btn">Back</button>
+      <div class="d-flex justify-content-between">
+        <button mat-raised-button class="top-btn">Back</button>
+
+        <button mat-raised-button class="top-btn" id="edit-btn">
+          Edit <i class="fas fa-edit"></i>
+        </button>
+      </div>
       <hr>
       <h1>Decks</h1>
       <hr>
@@ -28,14 +33,17 @@
       <div *ngFor="let deck of decks" class="deck-container row justify-content-center m-3" (click)="openDeck(deck.id)">
         <div class="mat-raised-button div-button-raise-fix col-10 col-md-12 p-1">
           <div class="deck-header row m-0 p-1 pl-2">
-            <div class="deck-header-text col-9 p-0 div-button-unclickable-text text-capitalize">{{ deck.title }}</div>
+            <div class="deck-header-text col-9 p-0 div-button-unclickable-text text-capitalize overflow-auto">
+              {{ deck.title }}
+            </div>
             <div class="col-3 p-0 author-link-wrapper pr-1">
               <a class="author-link">#{{ deck.authorUser }}</a>
             </div>
           </div>
           <div class="deck-description p-1">
-<!--            <p class="deck-description-text div-button-unclickable-text">{{deck.description}}</p>-->
-            <p class="deck-description-text text-break">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id iste, laudantium. A aperiam cumque dolorem esse id itaque qui sunt! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi autem dolores eaque facere maiores minus molestias nobis obcaecati quaerat velit.</p>
+            <p class="deck-description-text div-button-unclickable-text text-break">
+              {{ deck.description }}
+            </p>
           </div>
         </div>
       </div>
@@ -44,5 +52,3 @@
 </main>
 
 <footer></footer>
-
-</body>
