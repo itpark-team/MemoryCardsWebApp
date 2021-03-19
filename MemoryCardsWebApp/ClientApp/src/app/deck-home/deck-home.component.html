@@ -1,143 +1,48 @@
-<!--<div class="container">-->
-<!--  <div class="row justify-content-center">-->
-<!--    <div class="col-8">-->
+<body>
+<header></header>
 
-<!--      <button mat-raised-button color="warn">back</button>-->
-<!--      <hr>-->
-<!--      <h1>Decks</h1>-->
-<!--      <hr>-->
+<main>
+  <div class="decks-container row justify-content-center">
+    <div class="col-md-8 m-2">
+      <button mat-raised-button id="back-btn">Back</button>
+      <hr>
+      <h1>Decks</h1>
+      <hr>
 
-<!--      <div>-->
-<!--        <button mat-raised-button (click)="showAddDialog()">+ add deck</button>-->
-<!--      </div>-->
-
-<!--      <div>-->
-<!--        <div *ngFor="let deck of decks">-->
-<!--          <div>-->
-<!--            {{deck.title}}-->
-<!--            <div class="deck-outer-div">-->
-
-<!--              <mat-grid-list cols="7">-->
-<!--                <mat-grid-tile *ngIf="cardExists(deck.id,1)">{{getCardText(deck.id, 1)}}</mat-grid-tile>-->
-<!--                <mat-grid-tile *ngIf="cardExists(deck.id,2)">{{getCardText(deck.id, 2)}}</mat-grid-tile>-->
-<!--                <mat-grid-tile *ngIf="cardExists(deck.id,3)">{{getCardText(deck.id, 3)}}</mat-grid-tile>-->
-<!--                <mat-grid-tile *ngIf="cardExists(deck.id,4)">{{getCardText(deck.id, 4)}}</mat-grid-tile>-->
-<!--                <mat-grid-tile *ngIf="cardExists(deck.id,5)">{{getCardText(deck.id, 5)}}</mat-grid-tile>-->
-<!--                <mat-grid-tile *ngIf="cardExists(deck.id,6)">{{getCardText(deck.id, 6)}}</mat-grid-tile>-->
-
-<!--                <mat-grid-tile class="camouflage-background">-->
-<!--                  <button mat-raised-button (click)="openDeck(deck.id)" >-->
-
-<!--                    <a>view full</a>-->
-<!--                  </button>-->
-<!--                </mat-grid-tile>-->
-
-<!--              </mat-grid-list>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
-
-<!--  </div>-->
-
-<!--</div>-->
-
-<!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
-
-<!--<ul>-->
-<!--  <li *ngFor="let deck of decks">{{deck.id}} | {{deck.title}} | {{deck.description}} | {{deck.visibility}} | <button (click)="deleteDeck(deck.id)">Delete</button></li>-->
-<!--</ul>-->
-
-<!--<button (click)="getDecks()">Load</button>-->
-
-<!--<div>-->
-<!--  <label>-->
-<!--    id: <input type="number" [ngModel]="deck.id" (ngModelChange)="deck.id=$event">-->
-<!--  </label>-->
-<!--  <br>-->
-
-<!--  <label>-->
-<!--    title: <input type="text" [ngModel]="deck.title" (ngModelChange)="deck.title=$event">-->
-<!--  </label>-->
-<!--  <br>-->
-
-<!--  <label>-->
-<!--    description: <input type="text" [ngModel]="deck.description" (ngModelChange)="deck.description=$event">-->
-<!--  </label>-->
-<!--  <br>-->
-
-<!--  <label>-->
-<!--    visibility: <input type="checkbox" [ngModel]="deck.visibility" (ngModelChange)="deck.visibility=$event">-->
-<!--  </label>-->
-<!--  <br>-->
-
-<!--  <label>-->
-<!--    authorUserId: <input type="text" [ngModel]="deck.authorUserId" (ngModelChange)="deck.description=$event">-->
-<!--  </label>-->
-<!--  <br>-->
-
-<!--  <button (click)="postDeck()" mat-raised-button color="primary">Add new Deck</button>-->
-<!--  <br>-->
-
-<!--  <button (click)="putDeck()">Update Deck</button>-->
-<!--  <br>-->
-
-<!--</div>-->
-
-<body style="height: max-content; background-size: cover; background: #1A1A1A;">
-<div class="container" style="background-color: #1A1A1A">
-  <div class="row justify-content-center" style="background-color: #1F1F1F">
-    <div class="col-8" style="background-color: #1F1F1F">
-
-      <button mat-raised-button style="background-color: #111111; color: #E8E9F3">back</button>
-      <hr style="background-color: #E7E7E7">
-      <h1 style="color: #E8E9F3">Decks</h1>
-      <hr style="background-color: #E7E7E7">
-
-      <div>
-        <!--<button mat-raised-button (click)="showAddDialog()">+ add deck</button>-->
-        <div style="background-color: #AAAAAA;" class="div-button" (click)="showAddDialog()">
-          <!--Рисовашки крестиков-->
-          <!--Векторная графика-->
-          <div class="button-add mat-raised-button">
-            <svg class="button-add-plus-symbol" viewBox="0 0 8 8">
-              <line x1="1" y1="4" x2="7" y2=4></line>
-              <line x1="4" y1="1" x2="4" y2=7></line>
-            </svg>
-            <p>Add deck</p>
+      <div class="row justify-content-center">
+        <div class="col-4 pt-3 add-deck-cross-btn mat-raised-button" (click)="showAddDialog()">
+          <svg class="svg-cross svg-cross" viewBox="0 0 8 8">
+            <line x1="1" y1="4" x2="7" y2=4></line>
+            <line x1="4" y1="1" x2="4" y2=7></line>
+          </svg>
+          <div class="add-deck-title">
+            <p class="add-deck-title-text">Add deck</p>
+          </div>
+          <div class="add-deck-title-md d-none">
+            <span class="add-deck-title-text m-0">Add</span>
+            <span class="add-deck-title-text m-0">deck</span>
           </div>
         </div>
       </div>
 
-      <div>
-        <div *ngFor="let deck of decks" class="div-button">
-          <!--{{deck.title}} | {{deck.description}} | {{deck.authorUserId}} | <button mat-raised-button (click)="openDeck(deck.id)"> view full</button>-->
-          <div (click)="openDeck(deck.id)">
-            <div class="mat-raised-button div-button-raise-fix">
-              <div class="deck-header">
-                <div class="div-button-unclickable-text">{{deck.title}}</div>
-
-                <div>
-                  <a style="text-decoration: underline">#{{deck.authorUser}}</a>
-                  <!--                  <a style="text-decoration: underline">#{{getAuthorUsername(deck.authorUserId)}}</a>-->
-                  <!--                  <a style="text-decoration: underline">#{{deck.id}}</a>-->
-                </div>
-              </div>
-
-              <hr style="margin-left: 1%; margin-right: 1%; background-color: #A1A1A1">
-
-              <div style="padding-left: 1%; padding-right: 1%; padding-bottom: 1%;">
-                <p style="text-align: start"
-                   class="div-button-unclickable-text">{{deck.description}}</p>
-              </div>
+      <div *ngFor="let deck of decks" class="deck-container row justify-content-center m-3" (click)="openDeck(deck.id)">
+        <div class="mat-raised-button div-button-raise-fix col-10 col-md-12 p-1">
+          <div class="deck-header row m-0 p-1 pl-2">
+            <div class="deck-header-text col-9 p-0 div-button-unclickable-text text-capitalize">{{ deck.title }}</div>
+            <div class="col-3 p-0 author-link-wrapper pr-1">
+              <a class="author-link">#{{ deck.authorUser }}</a>
             </div>
           </div>
+          <div class="deck-description p-1">
+<!--            <p class="deck-description-text div-button-unclickable-text">{{deck.description}}</p>-->
+            <p class="deck-description-text text-break">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id iste, laudantium. A aperiam cumque dolorem esse id itaque qui sunt! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi autem dolores eaque facere maiores minus molestias nobis obcaecati quaerat velit.</p>
+          </div>
         </div>
-
       </div>
     </div>
   </div>
-</div>
+</main>
+
+<footer></footer>
+
 </body>
