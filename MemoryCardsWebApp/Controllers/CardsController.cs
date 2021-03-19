@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MemoryCardsWebApp.Models;
-using MemoryCardsWebApp.Models.Entities;
+using MemoryCardsWebApp.Models.DbEntities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace MemoryCardsWebApp.Models.Entities
+namespace MemoryCardsWebApp.Models.TsEntities
 {
     public class DeckToSend
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace MemoryCardsWebApp.Models.Entities
+namespace MemoryCardsWebApp.Models.DbEntities
 {
     public partial class InviteLink
     {

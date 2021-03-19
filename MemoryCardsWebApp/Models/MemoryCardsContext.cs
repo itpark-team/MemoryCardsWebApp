@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using MemoryCardsWebApp.Models.Entities;
+using MemoryCardsWebApp.Models.DbEntities;
 
 #nullable disable
 

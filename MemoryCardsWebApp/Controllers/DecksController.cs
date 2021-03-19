@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using MemoryCardsWebApp.Models;
-using MemoryCardsWebApp.Models.Entities;
+using MemoryCardsWebApp.Models.DbEntities;
+using MemoryCardsWebApp.Models.TsEntities;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
