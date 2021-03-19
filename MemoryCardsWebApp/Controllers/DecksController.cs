@@ -7,6 +7,7 @@ using MemoryCardsWebApp.Models.TsEntities;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MemoryCardsWebApp.Controllers
 {
@@ -26,9 +27,9 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                // List<DeckToSend> decks = 
-                
-                List<Deck> decks = db.Decks.ToList();
+                List<Deck> decks =
+                    db.Decks.FromSqlRaw(
+                        "SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId=1)").ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
                 List<User> users = db.Users.ToList();
 
