@@ -170,7 +170,7 @@ export class DeckHomeComponent implements OnInit {
 
 
   getCards(): void {
-    this.http.get<Card[]>(`https://localhost:5001/api/cards`).subscribe(
+    this.http.get<Card[]>(`/api/cards`).subscribe(
       responseData => {
         this.cards = responseData
       },
@@ -181,7 +181,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   getDecksCards(): void {
-    this.http.get<DecksCard[]>(`https://localhost:5001/api/deckscards`).subscribe(
+    this.http.get<DecksCard[]>(`/api/deckscards`).subscribe(
       responseData => {
         this.decksCards = responseData
       },
@@ -239,7 +239,7 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.put<Deck>(`https://localhost:5001/api/decks/${this.deckToAction.id}`, body, {headers: headers}).subscribe(
+    this.http.put<Deck>(`/api/decks/${this.deckToAction.id}`, body, {headers: headers}).subscribe(
       responseData => {
 
         const findIndex = this.decks.findIndex(item => item.id == responseData.id);
@@ -257,7 +257,7 @@ export class DeckHomeComponent implements OnInit {
 //======DECKS FINISH======//
 
   getUser(id: number): void {
-    this.http.get<User>(`https://localhost:5001/api/users/${id}`).subscribe(
+    this.http.get<User>(`/api/users/${id}`).subscribe(
       responseData => {
         this.user.id = responseData.id;
         this.user.username = responseData.username;
