@@ -194,7 +194,7 @@ export class DeckHomeComponent implements OnInit {
 //======DECKS START======//
 
   getDecks(): void {
-    this.http.get<Deck[]>(`https://localhost:5001/api/decks`).subscribe(
+    this.http.get<Deck[]>(`/api/decks`).subscribe(
       responseData => {
         this.decks = responseData
         console.dir(this.decks[0])
@@ -206,7 +206,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   deleteDeck(id: number): void {
-    this.http.delete<number>(`https://localhost:5001/api/decks/${id}`).subscribe(
+    this.http.delete<number>(`/api/decks/${id}`).subscribe(
       responseData => {
         const findIndex = this.decks.findIndex(item => item.id == responseData);
         this.decks.splice(findIndex, 1);
@@ -222,7 +222,7 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post<Deck>(`https://localhost:5001/api/decks`, body, {headers: headers}).subscribe(
+    this.http.post<Deck>(`/api/decks`, body, {headers: headers}).subscribe(
       responseData => {
         this.decks.push(responseData);
         this.decks[this.decks.length - 1].authorUser = this.getAuthorUsername(this.user.id);
