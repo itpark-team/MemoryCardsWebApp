@@ -2,7 +2,12 @@ body {
   height: max-content;
 }
 
-#back-btn {
+hr {
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.top-btn {
   background-color: #e69a8e;
   /*color: #E8E9F3;*/
   color: black;

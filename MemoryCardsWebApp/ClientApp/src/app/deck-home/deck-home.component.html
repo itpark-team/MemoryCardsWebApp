@@ -1,10 +1,15 @@
-<body>
 <header></header>
 
 <main>
   <div class="decks-container row justify-content-center">
     <div class="col-md-8 m-2">
-      <button mat-raised-button id="back-btn">Back</button>
+      <div class="d-flex justify-content-between">
+        <button mat-raised-button class="top-btn">Back</button>
+
+        <button mat-raised-button class="top-btn" id="edit-btn">
+          Edit <i class="fas fa-edit"></i>
+        </button>
+      </div>
       <hr>
       <h1>Decks</h1>
       <hr>
@@ -47,5 +52,3 @@
 </main>
 
 <footer></footer>
-
-</body>

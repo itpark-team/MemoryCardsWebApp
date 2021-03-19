@@ -20,6 +20,7 @@ interface Card {
   backImage: string;
   color: string;
 }
+
 // interface Displayed
 
 
