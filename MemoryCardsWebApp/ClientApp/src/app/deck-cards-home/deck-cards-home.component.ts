@@ -4,6 +4,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Subscription} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AddDeckDialog} from "../deck-home/deck-home.component";
+import {EditDeckDialog} from "../deck-home/deck-home.component";
 
 interface Card {
   id: number;
