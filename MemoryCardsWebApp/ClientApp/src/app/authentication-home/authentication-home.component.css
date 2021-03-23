@@ -12,10 +12,11 @@ main {
   color: #E8E9F3;
   border-radius: 10px;
   border: 2px solid #e69a8e;
+  margin-bottom: 15rem;
 }
 
 .authentication-items {
-  padding: 2vw;
+  margin: 2rem;
   flex-direction: column;
   display: flex;
 }

@@ -5,7 +5,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog
 import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 import {Action} from "rxjs/internal/scheduler/Action";
 
-interface UseraAuthenticationData {
+interface UserAuthenticationData {
   login: string;
   password: string;
 }
@@ -32,7 +32,7 @@ export class AuthenticationHomeComponent implements OnInit {
   constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
-  userAuthenticationData: UseraAuthenticationData = null;
+  userAuthenticationData: UserAuthenticationData = {login: '', password: ''};
 
   ngOnInit(): void {
 

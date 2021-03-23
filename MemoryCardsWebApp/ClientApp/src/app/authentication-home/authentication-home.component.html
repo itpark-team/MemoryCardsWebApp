@@ -1,37 +1,39 @@
 <main>
   <div class="authentication-form d-flex justify-content-center align-items-center">
-    <div class="authentication-container">
+    <div class="col-md-4 m-2">
+      <div class="authentication-container ">
 
-      <div class="header">
-        <div class="header-text d-inline-block">
-          Memory Cards
-        </div>
-      </div>
-
-      <div class="authentication-items">
-
-        <input type="text" placeholder="Login" [ngModel]="userAuthenticationData"
-               (ngModelChange)="userAuthenticationData.login=$event">
-        <br>
-
-        <input type="password" placeholder="Password" [ngModel]="userAuthenticationData"
-               (ngModelChange)="userAuthenticationData.password=$event">
-        <br>
-
-        <div class="flex-wrap d-flex justify-content-between">
-
-          <div class="d-flex justify-content-center">
-            <button mat-raised-button class="top-btn">Sign Up</button>
+        <div class="header">
+          <div class="header-text d-inline-block">
+            Memory Cards
           </div>
+        </div>
 
+        <div class="authentication-items">
+
+          <input type="text" placeholder="Login" [ngModel]="userAuthenticationData.login"
+                 (ngModelChange)="userAuthenticationData.login=$event">
           <br>
 
-          <div class="d-flex justify-content-center">
-            <button mat-raised-button class="top-btn" (click)="authenticate()">Sign In</button>
+          <input type="password" placeholder="Password" [ngModel]="userAuthenticationData.password"
+                 (ngModelChange)="userAuthenticationData.password=$event">
+          <br>
+
+          <div class="flex-wrap d-flex justify-content-between">
+
+            <div class="d-flex justify-content-center">
+              <button mat-raised-button class="top-btn">Sign Up</button>
+            </div>
+
+            <br>
+
+            <div class="d-flex justify-content-center">
+              <button mat-raised-button class="top-btn" (click)="authenticate()">Sign In</button>
+            </div>
+
           </div>
 
         </div>
-
       </div>
     </div>
   </div>
