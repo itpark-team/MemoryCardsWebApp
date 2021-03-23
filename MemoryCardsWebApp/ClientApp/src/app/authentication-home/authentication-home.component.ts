@@ -6,8 +6,8 @@ import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 import {Action} from "rxjs/internal/scheduler/Action";
 
 interface UserAuthenticationData {
-  login: string;
-  password: string;
+  email: string;
+  passwordHash: string;
 }
 
 interface User{
@@ -32,7 +32,7 @@ export class AuthenticationHomeComponent implements OnInit {
   constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
-  userAuthenticationData: UserAuthenticationData = {login: '', password: ''};
+  userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
 
   ngOnInit(): void {
 
@@ -45,8 +45,7 @@ export class AuthenticationHomeComponent implements OnInit {
 
     this.http.post<User>(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
-        this.userAuthenticationData;
-//хэшировать потом))))
+        alert(responseData['access_token']);
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
