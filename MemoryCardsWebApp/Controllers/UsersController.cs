@@ -32,9 +32,23 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
+        
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+                return StatusCode(StatusCodes.Status200OK, db.Users.First(item => item.Id == id));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+
+        }
 
         [HttpPost]
-        public IActionResult Post([FromBody] string[] userData)
+        public IActionResult Get([FromBody] string[] userData)
         {
             Console.WriteLine(userData[0] + " " + userData[1]);
             try
