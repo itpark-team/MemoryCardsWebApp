@@ -159,6 +159,7 @@ export class DeckCardsHomeComponent implements OnInit {
         alert(`error: ${error.status}, ${error.statusText}`);
       }
     );
+    this.fillCardSides();
   }
 
   putCard(): void {
@@ -205,6 +206,7 @@ export class DeckCardsHomeComponent implements OnInit {
         alert(`error: ${error.status}, ${error.statusText}`);
       }
     );
+    this.fillCardSides();
   }
 
   postDeckCard(cardId: number): void {
