@@ -1,32 +1,38 @@
 <main>
   <div class="authentication-form d-flex justify-content-center align-items-center">
-    <div class="col-md-5 m-2 authentication-container">
+    <div class="authentication-container">
 
-      <header class="header-text d-flex justify-content-center">
-        Memory Cards
-      </header>
-      <br>
-
-      <input type="text" placeholder="Login" [ngModel]="user.username" (ngModelChange)="user.username=$event.toHash()">
-      <br>
-
-      <input type="password" placeholder="Password" [ngModel]="user.passwordHash"
-             (ngModelChange)="user.passwordHash=$event.toHash()">
-      <br>
-
-      <div class="flex-wrap d-flex justify-content-between">
-
-        <div class="d-flex justify-content-center">
-          <button mat-raised-button class="top-btn">Sign In</button>
-        </div>
-
-        <br>
-
-        <div class="d-flex justify-content-center">
-          <button mat-raised-button class="top-btn">Log In</button>
+      <div class="header">
+        <div class="header-text d-inline-block">
+          Memory Cards
         </div>
       </div>
 
+      <div class="authentication-items">
+
+        <input type="text" placeholder="Login" [ngModel]="login"
+               (ngModelChange)="user.username=$event.toHash()">
+        <br>
+
+        <input type="password" placeholder="Password" [ngModel]="passwordHash"
+               (ngModelChange)="user.passwordHash=$event.toHash()">
+        <br>
+
+        <div class="flex-wrap d-flex justify-content-between">
+
+          <div class="d-flex justify-content-center">
+            <button mat-raised-button class="top-btn">Sign In</button>
+          </div>
+
+          <br>
+
+          <div class="d-flex justify-content-center">
+            <button mat-raised-button class="top-btn">Log In</button>
+          </div>
+
+        </div>
+
+      </div>
     </div>
   </div>
 </main>

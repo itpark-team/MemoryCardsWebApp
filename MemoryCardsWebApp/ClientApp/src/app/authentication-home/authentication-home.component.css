@@ -12,9 +12,12 @@ main {
   color: #E8E9F3;
   border-radius: 10px;
   border: 2px solid #e69a8e;
+}
+
+.authentication-items {
+  padding: 2vw;
   flex-direction: column;
   display: flex;
-  padding: 2vw;
 }
 
 .top-btn {
@@ -28,21 +31,23 @@ main {
 input {
   border-color: #e69a8e;
   background-color: #E8E9F3;
-  color:   #254661;
-  font-size: 20px;
+  color: #254661;
+  border-radius: 5px;
+  font-size: 1.3rem;
+  padding: 10px;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.header {
   background-color: #e69a8e;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  text-align: start;
+  border-radius: 10px 10px 0 0;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
 }
 
 .header-text {
   white-space: normal !important;
-  color: #1d1d1f
+  color: #1d1d1f;
+  font-size: 2rem;
+  margin: 10px;
 }

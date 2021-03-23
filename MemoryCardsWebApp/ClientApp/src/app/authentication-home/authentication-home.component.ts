@@ -34,9 +34,23 @@ export class AuthenticationHomeComponent implements OnInit {
     subStatus: 0
   };
 
-  constructor() { }
+  login: string = "";
+  passwordHash: string = "";
+
+  constructor(private http: HttpClient, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+  authenticate(login: string, password: string): void {
+    this.http.get<User>(`/api/users/${login}`).subscribe(
+      responseData => {
+        this.user = responseData;
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
   }
 
 }
