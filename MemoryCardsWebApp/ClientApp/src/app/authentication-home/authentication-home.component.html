@@ -11,13 +11,11 @@
 
         <div class="authentication-items">
 
-          <input type="text" placeholder="Login" [ngModel]="userAuthenticationData.login"
+          <input class="md-4" type="text" placeholder="Login" [ngModel]="userAuthenticationData.login"
                  (ngModelChange)="userAuthenticationData.login=$event">
-          <br>
 
-          <input type="password" placeholder="Password" [ngModel]="userAuthenticationData.password"
+          <input class="md-4" type="password" placeholder="Password" [ngModel]="userAuthenticationData.password"
                  (ngModelChange)="userAuthenticationData.password=$event">
-          <br>
 
           <div class="flex-wrap d-flex justify-content-between">
 
