@@ -46,12 +46,13 @@ namespace MemoryCardsWebApp.Controllers
                         AuthorUser = user.Username
                     });
                 }
-                
+
                 return StatusCode(StatusCodes.Status200OK, decksToSend);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Fuck yourself and your fucking DecksToSend, cyka!");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Fuck yourself and your fucking DecksToSend, cyka!");
             }
         }
 
@@ -59,8 +60,8 @@ namespace MemoryCardsWebApp.Controllers
         public IActionResult Get(int id)
         {
             try
-            { 
-                return StatusCode(StatusCodes.Status200OK, db.Decks.First(item=>item.Id == id));
+            {
+                return StatusCode(StatusCodes.Status200OK, db.Decks.First(item => item.Id == id));
             }
             catch (Exception e)
             {
