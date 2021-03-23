@@ -20,6 +20,10 @@ interface DecksCard {
   cardId: number;
 }
 
+interface CardSides {
+  [id: number]: string;
+}
+
 interface Deck {
   id: number;
   title: string;
@@ -34,6 +38,7 @@ interface Deck {
   styleUrls: ['./deck-cards-home.component.css']
 })
 export class DeckCardsHomeComponent implements OnInit {
+  cardSides: CardSides = {};
   cards: Card[] = [];
   deckId: number;
   currentCards: Card[] = [];
@@ -41,7 +46,6 @@ export class DeckCardsHomeComponent implements OnInit {
   currentDeck: Deck;
   card: Card;
   decksCard: DecksCard;
-  cardSide: string;
   private querySubscription: Subscription;
 
   constructor(private http: HttpClient, private route: ActivatedRoute, public dialog: MatDialog) {
@@ -52,11 +56,18 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
+
   ngOnInit(): void {
     this.getCards();
     this.getDecksCards();
     this.getCurrentDeck();
-    this.cardSide = "front";
+  }
+
+  fillCardSides(): void {
+    this.cardSides = {};
+    for (let i = 0; i < this.currentCards.length; i++) {
+      this.cardSides[this.currentCards[i].id] = 'front';
+    }
   }
 
   showAddDialog(): void {
@@ -237,11 +248,11 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-  changeCardSide() {
-    if (this.cardSide == "front") {
-      this.cardSide = "back";
+  changeCardSide(id: number): void {
+    if (this.cardSides[id]=='front') {
+      this.cardSides[id] = 'back';
     } else {
-      this.cardSide = "front"
+      this.cardSides[id] = 'front';
     }
   }
 
@@ -258,6 +269,7 @@ export class DeckCardsHomeComponent implements OnInit {
         }
       }
     }
+    this.fillCardSides();
   }
 }
 
