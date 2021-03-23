@@ -33,18 +33,19 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpPost]
+        public IActionResult Post([FromBody] string[] userData)
         {
+            Console.WriteLine(userData[0] + " " + userData[1]);
             try
             {
-                return StatusCode(StatusCodes.Status200OK, db.Users.First(item => item.Id == id));
+                return StatusCode(StatusCodes.Status200OK,
+                    db.Users.First(item => item.Username == userData[0] && item.PasswordHash == userData[1]));
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
-
         }
     }
 }

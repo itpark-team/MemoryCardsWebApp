@@ -43,7 +43,12 @@ export class AuthenticationHomeComponent implements OnInit {
   }
 
   authenticate(login: string, password: string): void {
-    this.http.get<User>(`/api/users/${login}`).subscribe(
+    let userData: string[] = [login, password]
+    const body = JSON.stringify(userData);
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    this.http.post<User>(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
         this.user = responseData;
       },
