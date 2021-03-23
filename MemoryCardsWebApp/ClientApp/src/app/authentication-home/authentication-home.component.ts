@@ -5,6 +5,11 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog
 import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 import {Action} from "rxjs/internal/scheduler/Action";
 
+interface UseraAuthenticationData {
+  login: string;
+  password: string;
+}
+
 interface User{
   id: number;
   username: string;
@@ -23,34 +28,25 @@ interface User{
 })
 export class AuthenticationHomeComponent implements OnInit {
 
-  user: User = {
-    id: 0,
-    subExpire: new Date(),
-    isActive: false,
-    email: '',
-    avatarImage: '',
-    username: '',
-    passwordHash: '',
-    subStatus: 0
-  };
 
-  login: string = "";
-  passwordHash: string = "";
-
-  constructor(private http: HttpClient, public dialog: MatDialog) { }
-
-  ngOnInit(): void {
+  constructor(private http: HttpClient, public dialog: MatDialog) {
   }
 
-  authenticate(login: string, password: string): void {
-    let userData: string[] = [login, password]
-    const body = JSON.stringify(userData);
+  userAuthenticationData: UseraAuthenticationData = null;
+
+  ngOnInit(): void {
+
+  }
+
+  authenticate(): void {
+    const body = JSON.stringify(this.userAuthenticationData);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     this.http.post<User>(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
-        this.user = responseData;
+        this.userAuthenticationData;
+//хэшировать потом))))
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);

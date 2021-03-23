@@ -10,24 +10,24 @@
 
       <div class="authentication-items">
 
-        <input type="text" placeholder="Login" [ngModel]="login"
-               (ngModelChange)="user.username=$event">
+        <input type="text" placeholder="Login" [ngModel]="userAuthenticationData"
+               (ngModelChange)="userAuthenticationData.login=$event">
         <br>
 
-        <input type="password" placeholder="Password" [ngModel]="passwordHash"
-               (ngModelChange)="user.passwordHash=$event">
+        <input type="password" placeholder="Password" [ngModel]="userAuthenticationData"
+               (ngModelChange)="userAuthenticationData.password=$event">
         <br>
 
         <div class="flex-wrap d-flex justify-content-between">
 
           <div class="d-flex justify-content-center">
-            <button mat-raised-button class="top-btn">Sign In</button>
+            <button mat-raised-button class="top-btn">Sign Up</button>
           </div>
 
           <br>
 
           <div class="d-flex justify-content-center">
-            <button mat-raised-button class="top-btn" (click)="authenticate(login, passwordHash)">Log In</button>
+            <button mat-raised-button class="top-btn" (click)="authenticate()">Sign In</button>
           </div>
 
         </div>
