@@ -1,0 +1,18 @@
+
+<header></header>
+
+<main>
+  <div class="authentication-form row justify-content-center">
+    <div class="authentication-container col-md-8 m-2 row justify-content-center">
+      <label>
+        Login: <input type="text" [ngModel]="user.username" (ngModelChange)="user.username=$event.toHash()">
+      </label>
+      <br>
+
+      <label>
+        Password: <input type="password" [ngModel]="user.passwordHash" (ngModelChange)="user.passwordHash=$event.toHash()">
+      </label>
+      <br>
+    </div>
+  </div>
+</main>

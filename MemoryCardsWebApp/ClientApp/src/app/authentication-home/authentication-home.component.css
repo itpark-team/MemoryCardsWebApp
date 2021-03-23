@@ -1,0 +1,11 @@
+.authentication-form {
+  background-color: #254661;
+}
+
+.authentication-container {
+  background-color: #254661;
+  border-radius: 10px;
+  border: 2px solid #e69a8e;
+  flex-direction: column;
+  display: flex;
+}
