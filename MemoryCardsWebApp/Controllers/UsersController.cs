@@ -9,6 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace MemoryCardsWebApp.Controllers
 {
+    
+    
+    
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
@@ -32,7 +35,7 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-
+        
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -45,6 +48,28 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
 
+        }
+
+        public class UserAuthenticationData
+        {
+            public string Login { get; set; }
+            public string  PasswordHash { get; set; }
+        }//я считаю нужен класс на незареганного юзера
+        //пока кинул здесь, хз как лучше сделать(понятное дело так оставлять - хуйня)
+        
+        [HttpPost]
+        public IActionResult Get([FromBody]  UserAuthenticationData userAuthenticationData)
+        {
+            Console.WriteLine(userAuthenticationData);
+            try
+            {
+                return StatusCode(StatusCodes.Status200OK,
+                    db.Users.First(item => item.Username == userAuthenticationData.Login && item.PasswordHash == userAuthenticationData.PasswordHash ));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
     }
 }

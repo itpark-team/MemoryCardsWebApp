@@ -27,10 +27,9 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                List<Deck> decks = db.Decks
-                    .FromSqlRaw("SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId=1)")
-                    .ToList();
-
+                List<Deck> decks =
+                    db.Decks.FromSqlRaw(
+                        "SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId=1)").ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
                 List<User> users = db.Users.ToList();
 
