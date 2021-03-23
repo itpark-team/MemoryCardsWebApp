@@ -9,7 +9,6 @@ using MemoryCardsWebApp.Models.ExtEntities;
 using MemoryCardsWebApp.Models.TsEntities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
