@@ -1,18 +1,32 @@
-
-<header></header>
-
 <main>
-  <div class="authentication-form row justify-content-center">
-    <div class="authentication-container col-md-8 m-2 row justify-content-center">
-      <label>
-        Login: <input type="text" [ngModel]="user.username" (ngModelChange)="user.username=$event.toHash()">
-      </label>
+  <div class="authentication-form d-flex justify-content-center align-items-center">
+    <div class="col-md-5 m-2 authentication-container">
+
+      <header class="header-text d-flex justify-content-center">
+        Memory Cards
+      </header>
       <br>
 
-      <label>
-        Password: <input type="password" [ngModel]="user.passwordHash" (ngModelChange)="user.passwordHash=$event.toHash()">
-      </label>
+      <input type="text" placeholder="Login" [ngModel]="user.username" (ngModelChange)="user.username=$event.toHash()">
       <br>
+
+      <input type="password" placeholder="Password" [ngModel]="user.passwordHash"
+             (ngModelChange)="user.passwordHash=$event.toHash()">
+      <br>
+
+      <div class="flex-wrap d-flex justify-content-between">
+
+        <div class="d-flex justify-content-center">
+          <button mat-raised-button class="top-btn">Sign In</button>
+        </div>
+
+        <br>
+
+        <div class="d-flex justify-content-center">
+          <button mat-raised-button class="top-btn">Log In</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </main>
