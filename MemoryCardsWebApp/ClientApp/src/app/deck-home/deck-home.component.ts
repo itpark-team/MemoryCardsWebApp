@@ -74,7 +74,7 @@ export class DeckHomeComponent implements OnInit {
     subStatus: 0
   };
   currentUserId = 1;
-  isEditing: boolean = true;
+  isEditing: boolean = false;
 
   constructor(private http: HttpClient, public dialog: MatDialog) {
   }
