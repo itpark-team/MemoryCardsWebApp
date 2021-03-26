@@ -12,7 +12,6 @@ namespace MemoryCardsWebApp.Models.DbEntities
             Decks = new HashSet<Deck>();
             UsersDecks = new HashSet<UsersDeck>();
         }
-
         public int Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }

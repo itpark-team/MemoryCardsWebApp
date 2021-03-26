@@ -33,24 +33,28 @@ mat-grid-list {
   border-radius: 5px;
 }
 
-.resize-img{
+.resize-img {
   height: 10rem;
   width: auto;
 }
 
-.img-container{
+.img-container {
   display: flex;
   justify-content: center;
 }
 
-.toned-body{
+.toned-body {
   height: max-content;
   background-size: cover;
   background: #1A1A1A;
 }
 
-.button-black{
+.button-black {
   background-color: #111111;
   color: #E8E9F3;
 }
 
+.fullCard {
+  border-radius: 30px;
+  display: inline-flex;
+}

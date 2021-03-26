@@ -56,7 +56,7 @@ interface DecksCard {
   styleUrls: ['./deck-home.component.css']
 })
 export class DeckHomeComponent implements OnInit {
-  canOpen: boolean = false;
+  canOpen: boolean = true;
 
   decks: Deck[] = [];
   cards: Card[] = [];

@@ -1,5 +1,5 @@
-<body class="toned-body" >
-<div class="container" style="background-color: #1F1F1F">
+<body class="toned-body">
+<div class="container" style="background-color: lightskyblue">
   <div class="row justify-content-center">
     <div class="col-8">
       <div class="row justify-content-between">
@@ -21,41 +21,59 @@
         <button class="row justify-content-center" mat-raised-button (click)="showAddDialog()">+ add card</button>
       </div>
 
-      <div>
-        <ng-container *ngFor="let card of currentCards">
-          <mat-card (click)="changeCardSide(card.id)" [ngStyle]="{'background-color': card.color}">
-            <div [ngSwitch]="cardSides[card.id]" class="ml-5 mr-4 mt-5">
-              <!--1 ng switch -->
 
-              <ng-template ngSwitchCase="front">
-                <div class="img-container" >
-                  <img mat-card-image src="{{card.frontImage}}" class="img-fluid rounded resize-img">
-                </div>
-              </ng-template>
-              <ng-template ngSwitchCase="back">
-                <div class="img-container">
-                  <img mat-card-image src="{{card.backImage}}" class="img-fluid rounded resize-img">
-                </div>
-              </ng-template>
-            </div>
-            <div class="text-wrapper d-flex justify-content-center align-items-center">
-              <div class="bg-light d-flex align-items-center">
-                <mat-card-title class="text-center mt-4 align-items-center" [ngSwitch]="cardSides[card.id]">
-                  <ng-template ngSwitchCase="front"> {{card.frontText}}</ng-template>
-                  <ng-template ngSwitchCase="back"> {{card.backText}}</ng-template>
-                </mat-card-title>
-              </div>
-            </div>
-            <mat-card-actions align="end">
-              <button mat-raised-button color="accent" (click)="showEditCardDialog(card)"
-                      (click)="changeCardSide(card.id) ">Edit
-              </button>
-              <button mat-raised-button color="warn" (click)="showDeleteCardDialog(card.id)" (click)="changeCardSide(card.id)">
-                delete
-              </button>
-            </mat-card-actions>
-          </mat-card>
-        </ng-container>
+      <div *ngFor="let card of currentCards" class="fullCard mt-4 mr-3" style="border:5px solid {{card.color}}">
+        <div class=" card pl-3 pt-3 pr-3" style="width: 13rem;border-radius: 25px; ">
+          <img src="{{card.frontImage}}" class="card-img-top img-fluid resize-img" style="border-radius: 10px">
+          <div class="card-body">
+            <h1 class="card-title text-center font-weight-bold">{{card.frontText}}</h1>
+          </div>
+        </div>
+        <div class=" card pl-3 pt-3 pr-3" style="width: 13rem; border-radius: 25px">
+          <img src="{{card.backImage}}" class="card-img-top img-fluid  resize-img" style="border-radius: 10px">
+          <div class="card-body">
+            <h1 class="card-title text-center font-weight-bold">{{card.backText}}</h1>
+          </div>
+        </div>
+      </div>
+      <div>
+
+
+<!--        <ng-container *ngFor="let card of currentCards">-->
+<!--          <mat-card (click)="changeCardSide(card.id)" [ngStyle]="{'background-color': card.color}">-->
+<!--            <div [ngSwitch]="cardSides[card.id]" class="ml-5 mr-4 mt-5">-->
+<!--              &lt;!&ndash;1 ng switch &ndash;&gt;-->
+
+<!--              <ng-template ngSwitchCase="front">-->
+<!--                <div class="img-container">-->
+<!--                  <img mat-card-image src="{{card.frontImage}}" class="img-fluid rounded resize-img">-->
+<!--                </div>-->
+<!--              </ng-template>-->
+<!--              <ng-template ngSwitchCase="back">-->
+<!--                <div class="img-container">-->
+<!--                  <img mat-card-image src="{{card.backImage}}" class="img-fluid rounded resize-img">-->
+<!--                </div>-->
+<!--              </ng-template>-->
+<!--            </div>-->
+<!--            <div class="text-wrapper d-flex justify-content-center align-items-center">-->
+<!--              <div class="bg-light d-flex align-items-center">-->
+<!--                <mat-card-title class="text-center mt-4 align-items-center" [ngSwitch]="cardSides[card.id]">-->
+<!--                  <ng-template ngSwitchCase="front"> {{card.frontText}}</ng-template>-->
+<!--                  <ng-template ngSwitchCase="back"> {{card.backText}}</ng-template>-->
+<!--                </mat-card-title>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <mat-card-actions align="end">-->
+<!--              <button mat-raised-button color="accent" (click)="showEditCardDialog(card)"-->
+<!--                      (click)="changeCardSide(card.id) ">Edit-->
+<!--              </button>-->
+<!--              <button mat-raised-button color="warn" (click)="showDeleteCardDialog(card.id)"-->
+<!--                      (click)="changeCardSide(card.id)">-->
+<!--                delete-->
+<!--              </button>-->
+<!--            </mat-card-actions>-->
+<!--          </mat-card>-->
+<!--        </ng-container>-->
       </div>
     </div>
   </div>
