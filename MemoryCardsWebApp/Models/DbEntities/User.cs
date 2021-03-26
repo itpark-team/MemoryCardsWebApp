@@ -19,7 +19,7 @@ namespace MemoryCardsWebApp.Models.DbEntities
         public string PasswordHash { get; set; }
         public string AvatarImage { get; set; }
         public byte SubStatus { get; set; }
-        public DateTime? SubExpire { get; set; }
+        public int SubExpire { get; set; }
         public bool? IsActive { get; set; }
 
         public virtual ICollection<Deck> Decks { get; set; }

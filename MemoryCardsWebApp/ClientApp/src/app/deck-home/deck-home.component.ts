@@ -56,7 +56,7 @@ interface DecksCard {
   styleUrls: ['./deck-home.component.css']
 })
 export class DeckHomeComponent implements OnInit {
-
+  canOpen: boolean = false;
 
   decks: Deck[] = [];
   cards: Card[] = [];
@@ -80,10 +80,15 @@ export class DeckHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(this.canOpen==false)
+    {
+      location.href = '';
+    }
     this.getDecks();
     this.getCards();
     this.getDecksCards();
     this.getUser(this.currentUserId);
+
   }
 
   test(): void {
