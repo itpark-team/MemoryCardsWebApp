@@ -12,14 +12,13 @@ namespace MemoryCardsWebApp.Models.DbEntities
             Decks = new HashSet<Deck>();
             UsersDecks = new HashSet<UsersDeck>();
         }
-
         public int Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string AvatarImage { get; set; }
         public byte SubStatus { get; set; }
-        public DateTime? SubExpire { get; set; }
+        public int SubExpire { get; set; }
         public bool? IsActive { get; set; }
 
         public virtual ICollection<Deck> Decks { get; set; }

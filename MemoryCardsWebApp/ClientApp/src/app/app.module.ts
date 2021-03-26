@@ -25,7 +25,7 @@ const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
   {path: 'deck', component: DeckHomeComponent},
   {path: 'deckcards', component: DeckCardsHomeComponent},
-  {path: 'authentication', component: AuthenticationHomeComponent}
+  {path: 'auth', component: AuthenticationHomeComponent}
 ];
 
 
