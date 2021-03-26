@@ -3,6 +3,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 import {Action} from "rxjs/internal/scheduler/Action";
+import {DataStorageService} from "../data-storage/data-storage.service";
+import {Router} from "@angular/router";
 
 
 interface Deck {
@@ -76,7 +78,9 @@ export class DeckHomeComponent implements OnInit {
   currentUserId = 1;
   isEditing: boolean = false;
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
+  constructor(private http: HttpClient, public dialog: MatDialog,  private dataStorage: DataStorageService, private router: Router) {
+
+    //alert('DECK: '+this.dataStorage.getData('access_token'));
   }
 
   ngOnInit(): void {
@@ -93,15 +97,16 @@ export class DeckHomeComponent implements OnInit {
 
   test(): void {
 
-    console.log(this.cards);
+    //console.log(this.cards);
   }
 
   log(id: number) {
-    console.log(id);
+    //console.log(id);
   }
 
   openDeck(deckId: number): void {
-    location.href = 'deckcards?deckId=' + deckId;
+    //location.href = 'deckcards?deckId=' + deckId;
+    this.router.navigateByUrl('deckcards?deckId=' + deckId);
   }
 
   showAddDialog(): void {
@@ -137,7 +142,7 @@ export class DeckHomeComponent implements OnInit {
 
   changeEditable() : void {
     this.isEditing = !this.isEditing;
-    console.log(this.isEditing);
+    //console.log(this.isEditing);
   }
 
   someActionWitdhDeck(id: number): void {
@@ -202,7 +207,7 @@ export class DeckHomeComponent implements OnInit {
     this.http.get<Deck[]>(`/api/decks`).subscribe(
       responseData => {
         this.decks = responseData
-        console.dir(this.decks[0])
+        //console.dir(this.decks[0])
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -250,7 +255,7 @@ export class DeckHomeComponent implements OnInit {
         const findIndex = this.decks.findIndex(item => item.id == responseData.id);
         this.decks.splice(findIndex, 1, responseData);
         this.decks[findIndex].authorUser = this.getAuthorUsername(this.user.id);
-        console.log(this.deckToAction.id);
+        //console.log(this.deckToAction.id);
         this.clearDeck();
       },
       error => {

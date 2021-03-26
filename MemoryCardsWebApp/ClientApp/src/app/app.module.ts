@@ -13,18 +13,20 @@ import {DeleteDialog} from "./deck-cards-home/deck-cards-home.component";
 import {EditCardDialog} from "./deck-cards-home/deck-cards-home.component";
 import {ProjectHomeComponent} from './project-home/project-home.component';
 import {DeckCardsHomeComponent} from './deck-cards-home/deck-cards-home.component';
-import { AuthenticationHomeComponent } from './authentication-home/authentication-home.component';
+import {AuthenticationHomeComponent} from './authentication-home/authentication-home.component';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from "@angular/material/dialog";
+import {DataStorageService} from "./data-storage/data-storage.service";
+import {AuthCheckService} from "./auth-check/auth-check.service";
 
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
-  {path: 'deck', component: DeckHomeComponent},
-  {path: 'deckcards', component: DeckCardsHomeComponent},
+  {path: 'deck', component: DeckHomeComponent, canActivate: [AuthCheckService]},
+  {path: 'deckcards', component: DeckCardsHomeComponent, canActivate: [AuthCheckService]},
   {path: 'auth', component: AuthenticationHomeComponent}
 ];
 
@@ -53,8 +55,9 @@ const appRoutes: Routes = [
     MatCardModule,
     MatDialogModule,
   ],
-  providers: [],
+  providers: [DataStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
 }

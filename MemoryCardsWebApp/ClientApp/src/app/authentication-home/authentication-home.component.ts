@@ -3,6 +3,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 import {Action} from "rxjs/internal/scheduler/Action";
+import {DataStorageService} from "../data-storage/data-storage.service";
+import {Router} from "@angular/router";
 
 interface UserAuthenticationData {
   email: string;
@@ -28,7 +30,8 @@ interface User{
 export class AuthenticationHomeComponent implements OnInit {
 
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
+  constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router) {
+    //alert('AUTH: '+this.dataStorage.getData('access_token'));
   }
 
   userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
@@ -42,10 +45,10 @@ export class AuthenticationHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post<User>(`/api/users/`, body, {headers: headers}).subscribe(
+    this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
-        alert(responseData['access_token']);
-        console.log(responseData['access_token']);
+        this.dataStorage.saveData('access_token', responseData['access_token']);
+        this.router.navigateByUrl('/deck');
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);

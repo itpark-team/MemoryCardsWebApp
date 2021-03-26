@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AddDeckDialog} from "../deck-home/deck-home.component";
 import {EditDeckDialog} from "../deck-home/deck-home.component";
+import {DataStorageService} from "../data-storage/data-storage.service";
 
 interface Card {
   id: number;
@@ -48,7 +49,10 @@ export class DeckCardsHomeComponent implements OnInit {
   decksCard: DecksCard;
   private querySubscription: Subscription;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, public dialog: MatDialog) {
+  constructor(private http: HttpClient, private route: ActivatedRoute, public dialog: MatDialog, private dataStorage: DataStorageService) {
+
+    //alert('DECK CARDS: '+this.dataStorage.getData('access_token'));
+
     this.querySubscription = route.queryParams.subscribe(
       (queryParam: any) => {
         this.deckId = queryParam['deckId'];
