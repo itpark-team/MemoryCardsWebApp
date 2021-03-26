@@ -351,3 +351,10 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+.idea/.idea.MemoryCardsWebApp/.idea/dataSources/dbfb4585-3879-4255-bec0-23fc94ed5d60.xml
+
+.idea/.idea.MemoryCardsWebApp/.idea/deployment.xml
+
+.idea/.idea.MemoryCardsWebApp/.idea/webServers.xml
+
+.idea/.idea.MemoryCardsWebApp/.idea/inspectionProfiles/Project_Default.xml

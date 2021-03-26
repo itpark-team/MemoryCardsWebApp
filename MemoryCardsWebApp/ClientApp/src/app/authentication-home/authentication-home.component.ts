@@ -45,6 +45,7 @@ export class AuthenticationHomeComponent implements OnInit {
     this.http.post<User>(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
         alert(responseData['access_token']);
+        console.log(responseData['access_token']);
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);

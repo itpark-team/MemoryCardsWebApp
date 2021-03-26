@@ -9,7 +9,6 @@ using MemoryCardsWebApp.Models.ExtEntities;
 using MemoryCardsWebApp.Models.TsEntities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -33,15 +32,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                // Console.WriteLine(id);
-                //
-                // Console.WriteLine("start");
-                // foreach (User user in db.Users)
-                // {
-                //     Console.WriteLine("id"+user.Id);
-                // }
-                //
-                // Console.WriteLine("end");
                 return StatusCode(StatusCodes.Status200OK, db.Users.First(item => item.Id == id));
             }
             catch (Exception e)
