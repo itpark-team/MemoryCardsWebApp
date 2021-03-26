@@ -23,10 +23,6 @@
 
       <div>
         <ng-container *ngFor="let card of currentCards">
-<!--          <div class="justify-content-center" style="display: flex; justify-content: center">-->
-<!--            <img mat-card-image src="{{card.backImage}}" class="img-fluid rounded resizeImg" style="">-->
-<!--          </div>-->
-<!--          <img mat-card-image src="{{card.backImage}}" class="img-fluid rounded resizeImg" style="text-align: justify;display:inline-block">-->
           <mat-card (click)="changeCardSide(card.id)" [ngStyle]="{'background-color': card.color}">
             <div [ngSwitch]="cardSides[card.id]" class="ml-5 mr-4 mt-5">
               <!--1 ng switch -->
@@ -59,9 +55,6 @@
               </button>
             </mat-card-actions>
           </mat-card>
-          <!--          БЫЛО БЫ НИХУЁВО СДЕЛАТЬ ТАК ЧТОБЫ ТОЛЬКО ОДНА КАРТОЧКА ВОРОЧАЛАСЬ ну можно их ещё и поменьше сделать так то))) и уголки закруглить, я не смог((
-          -->
-          <!--          я бы лично въебал поле ещё одно в класс-->
         </ng-container>
       </div>
     </div>
