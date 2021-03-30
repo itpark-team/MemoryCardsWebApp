@@ -5,11 +5,11 @@ import {Component, HostListener} from '@angular/core';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  @HostListener('window:unload', [ '$event' ])
+  /*@HostListener('window:unload', [ '$event' ])
   unloadHandler(event) {
     localStorage.removeItem('access_token');
    console.log('window:unload');
-  }
+  }*/
 
   /*@HostListener('window:beforeunload', [ '$event' ])
   beforeUnloadHandler(event) {

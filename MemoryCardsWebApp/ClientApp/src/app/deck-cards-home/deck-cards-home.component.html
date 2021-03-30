@@ -30,14 +30,14 @@
             <img *ngIf="card.frontImage!=''" src="{{card.frontImage}}" class="card-img-top img-fluid resize-img"
                  style="border-radius: 10px">
             <div class="card-body" style="display: flex;align-items: center;justify-content: center">
-              <h1 class="card-title text-center ">{{card.frontText}}</h1>
+              <span class="card-title text-center ">{{card.frontText}}</span>
             </div>
           </div>
           <div class="card pl-3 pt-3 pr-3" style="width: 10rem; height: 13rem">
             <img *ngIf="card.backImage!=''" src="{{card.backImage}}" class="card-img-top img-fluid resize-img"
                  style="border-radius: 10px">
             <div class="card-body" style="display: flex;align-items: center;justify-content: center">
-              <h1 class="card-title text-center">{{card.backText}}</h1>
+              <span class="card-title text-center">{{card.backText}}</span>
             </div>
           </div>
         </div>
