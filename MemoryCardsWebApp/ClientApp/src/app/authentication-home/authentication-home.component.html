@@ -36,10 +36,15 @@
 
             </span>
 
+            <!-- CHECK BOX -->
+            <div class="form-check">
+              <label><input type="checkbox" class="form-check-input" [checked]="saveUser" (change)="saveUser=!saveUser">Запомнить меня</label>
+            </div>
+
             <div class="flex-wrap d-flex justify-content-between">
 
               <div class="d-flex justify-content-center">
-                <button mat-raised-button class="top-btn">Sign Up</button>
+                <button mat-raised-button class="top-btn" (click)="test123()">Sign Up</button>
               </div>
 
               <br>
