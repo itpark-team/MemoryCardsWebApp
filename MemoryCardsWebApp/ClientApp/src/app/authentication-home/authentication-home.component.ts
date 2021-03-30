@@ -6,6 +6,9 @@ import {Action} from "rxjs/internal/scheduler/Action";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 
+
+
+
 interface UserAuthenticationData {
   email: string;
   passwordHash: string;
@@ -29,6 +32,16 @@ interface User{
 })
 export class AuthenticationHomeComponent implements OnInit {
 
+  clearInputFields():void{
+    this.userAuthenticationData.email = "";
+    this.userAuthenticationData.passwordHash = "";
+  }
+
+  showWrongLoginOrPasswordDialog(): void {
+    this.clearInputFields();
+    const dialogRef = this.dialog.open(WrongLoginOrPasswordDialog);
+  }
+
 
   constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router) {
     //alert('AUTH: '+this.dataStorage.getData('access_token'));
@@ -51,9 +64,28 @@ export class AuthenticationHomeComponent implements OnInit {
         this.router.navigateByUrl('/deck');
       },
       error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
+        if (error.status == 401 )
+        this.showWrongLoginOrPasswordDialog();
+        else
+          alert(`error: ${error.status}, ${error.statusText}`);
+
       }
     );
   }
 
+}
+
+@Component({
+  selector: 'wrong-login-or-password-dialog',
+  templateUrl: 'wrong-login-or-password-dialog.html',
+})
+
+export class WrongLoginOrPasswordDialog {
+  constructor(public dialogRef: MatDialogRef<WrongLoginOrPasswordDialog>) {
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

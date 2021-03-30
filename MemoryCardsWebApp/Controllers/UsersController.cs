@@ -39,44 +39,52 @@ namespace MemoryCardsWebApp.Controllers
                 Console.WriteLine("ERROR message: " + e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
-
         }
- 
+
         [HttpPost]
         public ActionResult Post([FromBody] UserAuthenticationData userAuthenticationData)
         {
-            ClaimsIdentity identity = GetIdentity(userAuthenticationData);
-
-            if (identity == null)
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Invalid username or password.");
+                ClaimsIdentity identity = GetIdentity(userAuthenticationData);
+
+                if (identity == null)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "Invalid username or password.");
+                }
+
+                DateTime now = DateTime.UtcNow;
+
+                AuthOptions authParams = authOptions.Value;
+
+                JwtSecurityToken jwt = new JwtSecurityToken(
+                    issuer: authParams.Issuer,
+                    audience: authParams.Audience,
+                    notBefore: now,
+                    claims: identity.Claims,
+                    expires: now.Add(TimeSpan.FromSeconds(authParams.TokenLifeTime)),
+                    signingCredentials: new SigningCredentials(authParams.GetSymmetricSecurityKey(),
+                        SecurityAlgorithms.HmacSha256));
+
+                string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                var response = new
+                {
+                    access_token = encodedJwt
+                };
+
+                return Ok(response);
             }
-
-            DateTime now = DateTime.UtcNow;
-
-            AuthOptions authParams = authOptions.Value;
-            
-            JwtSecurityToken jwt = new JwtSecurityToken(
-                issuer: authParams.Issuer,
-                audience: authParams.Audience,
-                notBefore: now,
-                claims: identity.Claims,
-                expires: now.Add(TimeSpan.FromSeconds(authParams.TokenLifeTime)),
-                signingCredentials: new SigningCredentials(authParams.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-
-            string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var response = new
+            catch (Exception e)
             {
-                access_token = encodedJwt
-            };
-
-            return Ok(response);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         private ClaimsIdentity GetIdentity(UserAuthenticationData userAuthenticationData)
         {
-            User findUser = db.Users.FirstOrDefault(item => item.Email == userAuthenticationData.Email && item.PasswordHash == userAuthenticationData.PasswordHash);
+            User findUser = db.Users.FirstOrDefault(item =>
+                item.Email == userAuthenticationData.Email && item.PasswordHash == userAuthenticationData.PasswordHash);
 
             if (findUser != null)
             {

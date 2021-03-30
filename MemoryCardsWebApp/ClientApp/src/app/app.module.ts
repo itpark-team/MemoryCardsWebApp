@@ -23,12 +23,16 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {DataStorageService} from "./data-storage/data-storage.service";
 import {AuthCheckService} from "./auth-check/auth-check.service";
 
+import {WrongLoginOrPasswordDialog} from "./authentication-home/authentication-home.component";
+
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
   {path: 'deck', component: DeckHomeComponent, canActivate: [AuthCheckService]},
   {path: 'deckcards', component: DeckCardsHomeComponent, canActivate: [AuthCheckService]},
   {path: 'auth', component: AuthenticationHomeComponent}
 ];
+
+
 
 
 @NgModule({
@@ -42,7 +46,8 @@ const appRoutes: Routes = [
     DeleteDialog,
     EditCardDialog,
     DeckCardsHomeComponent,
-    AuthenticationHomeComponent
+    AuthenticationHomeComponent,
+    WrongLoginOrPasswordDialog
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
