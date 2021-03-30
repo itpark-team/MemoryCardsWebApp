@@ -3,13 +3,17 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 import {Action} from "rxjs/internal/scheduler/Action";
+import {DataStorageService} from "../data-storage/data-storage.service";
+import {Router} from "@angular/router";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+
 
 interface UserAuthenticationData {
   email: string;
   passwordHash: string;
 }
 
-interface User{
+interface User {
   id: number;
   username: string;
   email: string;
@@ -27,30 +31,71 @@ interface User{
 })
 export class AuthenticationHomeComponent implements OnInit {
 
+  form: FormGroup;
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
+  password:string;
+
+  clearInputFields(): void {
+    this.userAuthenticationData.email = "";
+    this.userAuthenticationData.passwordHash = "";
+  }
+
+  showWrongLoginOrPasswordDialog(): void {
+    this.clearInputFields();
+    const dialogRef = this.dialog.open(WrongLoginOrPasswordDialog);
+  }
+
+
+  constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router) {
+    //alert('AUTH: '+this.dataStorage.getData('access_token'));
   }
 
   userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null,[Validators.required, Validators.minLength(3)])
+    })
+  }
+  onSubmit(){
 
   }
 
   authenticate(): void {
+    this.userAuthenticationData.passwordHash = this.password;
     const body = JSON.stringify(this.userAuthenticationData);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post<User>(`/api/users/`, body, {headers: headers}).subscribe(
+    this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
-        alert(responseData['access_token']);
-        console.log(responseData['access_token']);
+        this.dataStorage.saveData('access_token', responseData['access_token']);
+        this.router.navigateByUrl('/deck');
       },
       error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
+        if (error.status == 401)
+          this.showWrongLoginOrPasswordDialog();
+        else
+          alert(`error: ${error.status}, ${error.statusText}`);
+
       }
     );
   }
 
+}
+
+@Component({
+  selector: 'wrong-login-or-password-dialog',
+  templateUrl: 'wrong-login-or-password-dialog.html',
+})
+
+export class WrongLoginOrPasswordDialog {
+  constructor(public dialogRef: MatDialogRef<WrongLoginOrPasswordDialog>) {
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }
