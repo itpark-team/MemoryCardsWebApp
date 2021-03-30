@@ -5,8 +5,7 @@ import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 import {Action} from "rxjs/internal/scheduler/Action";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
-
-
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 
 
 interface UserAuthenticationData {
@@ -14,7 +13,7 @@ interface UserAuthenticationData {
   passwordHash: string;
 }
 
-interface User{
+interface User {
   id: number;
   username: string;
   email: string;
@@ -32,7 +31,11 @@ interface User{
 })
 export class AuthenticationHomeComponent implements OnInit {
 
-  clearInputFields():void{
+  form: FormGroup;
+
+  password:string;
+
+  clearInputFields(): void {
     this.userAuthenticationData.email = "";
     this.userAuthenticationData.passwordHash = "";
   }
@@ -50,10 +53,17 @@ export class AuthenticationHomeComponent implements OnInit {
   userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null,[Validators.required, Validators.minLength(3)])
+    })
+  }
+  onSubmit(){
 
   }
 
   authenticate(): void {
+    this.userAuthenticationData.passwordHash = this.password;
     const body = JSON.stringify(this.userAuthenticationData);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -64,8 +74,8 @@ export class AuthenticationHomeComponent implements OnInit {
         this.router.navigateByUrl('/deck');
       },
       error => {
-        if (error.status == 401 )
-        this.showWrongLoginOrPasswordDialog();
+        if (error.status == 401)
+          this.showWrongLoginOrPasswordDialog();
         else
           alert(`error: ${error.status}, ${error.statusText}`);
 
