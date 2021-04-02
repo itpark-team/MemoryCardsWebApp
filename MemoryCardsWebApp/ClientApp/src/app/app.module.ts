@@ -8,7 +8,7 @@ import {AppComponent} from './app.component';
 import {DeckHomeComponent} from './deck-home/deck-home.component';
 import {AddDeckDialog} from "./deck-home/deck-home.component";
 import {EditDeckDialog} from "./deck-home/deck-home.component";
-import {AddCardDialog} from "./deck-cards-home/deck-cards-home.component";
+import {AddCardDialog, EditImageDialog} from "./deck-cards-home/deck-cards-home.component";
 import {DeleteDialog} from "./deck-cards-home/deck-cards-home.component";
 import {EditCardDialog} from "./deck-cards-home/deck-cards-home.component";
 import {ProjectHomeComponent} from './project-home/project-home.component';
@@ -45,6 +45,7 @@ const appRoutes: Routes = [
     AddCardDialog,
     DeleteDialog,
     EditCardDialog,
+    EditImageDialog,
     DeckCardsHomeComponent,
     AuthenticationHomeComponent,
     WrongLoginOrPasswordDialog
