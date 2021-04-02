@@ -36,8 +36,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 db.Cards.Add(card);
 
                 db.SaveChanges();
@@ -55,8 +53,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 Card findCard = db.Cards.First(item => item.Id == id);
 
                 findCard.FrontText = card.FrontText;
@@ -80,8 +76,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 Card findCard = db.Cards.First(item => item.Id == id);
 
                 db.Cards.Remove(findCard);

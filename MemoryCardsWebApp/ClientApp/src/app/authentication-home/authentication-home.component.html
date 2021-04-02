@@ -14,7 +14,7 @@
               (ngSubmit)="onSubmit()"
         >
           <div class="authentication-items">
-            <input formControlName="email" id="email" class="md-4" type="text" placeholder="Login"
+            <input formControlName="email" id="email" class="mb-2" type="text" placeholder="Login"
                    [ngClass]="{'invalid':form.get('email').invalid && form.get('email').touched}"
                    [ngModel]="userAuthenticationData.email"
                    (ngModelChange)="userAuthenticationData.email=$event"
@@ -25,7 +25,7 @@
               <span *ngIf="form.get('email').errors['required']">Поле не может быть пустым</span>
               <span *ngIf="form.get('email').errors['email']">Неверный формат ввода почты</span>
             </span>
-            <input formControlName="password" id="password" class="md-4" type="password" placeholder="Password"
+            <input formControlName="password" id="password" class="mb-2" type="password" placeholder="Password"
                    [ngClass]="{'invalid':form.get('password').invalid && form.get('password').touched}"
                    [ngModel]="password"
                    (ngModelChange)="password=$event">
@@ -36,10 +36,15 @@
 
             </span>
 
+            <!-- CHECK BOX -->
+            <div class="form-check">
+              <label style="color: black"><input type="checkbox" class="form-check-input" [checked]="saveUser" (change)="saveUser=!saveUser">Запомнить меня</label>
+            </div>
+
             <div class="flex-wrap d-flex justify-content-between">
 
               <div class="d-flex justify-content-center">
-                <button mat-raised-button class="top-btn">Sign Up</button>
+                <button mat-raised-button class="top-btn" (click)="test123()">Sign Up</button>
               </div>
 
               <br>
