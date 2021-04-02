@@ -80,8 +80,8 @@ export class DeckCardsHomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != "" && result != null) {
-        this.card = result;
-        this.postCard();
+          this.card = result;
+          this.postCard();
       }
     });
   }
@@ -96,15 +96,20 @@ export class DeckCardsHomeComponent implements OnInit {
     this.card.backText = editedCard.backText;
     const dialogRef = this.dialog.open(EditCardDialog, {data: this.card});
     dialogRef.afterClosed().subscribe(result => {
-      if (result != "") {
-        this.card = result;
-        editedCard.id = this.card.id;
-        editedCard.color = this.card.color;
-        editedCard.frontImage = this.card.frontImage;
-        editedCard.backImage = this.card.backImage;
-        editedCard.frontText = this.card.frontText;
-        editedCard.backText = this.card.backText;
-        this.putCard()
+      if (result != ""&& result != null) {
+        if(result=="Delete")
+        {
+          this.showDeleteCardDialog(this.card.id);
+        }else {
+          this.card = result;
+          editedCard.id = this.card.id;
+          editedCard.color = this.card.color;
+          editedCard.frontImage = this.card.frontImage;
+          editedCard.backImage = this.card.backImage;
+          editedCard.frontText = this.card.frontText;
+          editedCard.backText = this.card.backText;
+          this.putCard()
+        }
       }
     });
   }
