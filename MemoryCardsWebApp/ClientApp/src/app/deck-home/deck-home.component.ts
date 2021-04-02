@@ -5,6 +5,7 @@ import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
 import {Action} from "rxjs/internal/scheduler/Action";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie-service";
 
 
 interface Deck {
@@ -78,14 +79,13 @@ export class DeckHomeComponent implements OnInit {
   currentUserId = 1;
   isEditing: boolean = false;
 
-  constructor(private http: HttpClient, public dialog: MatDialog,  private dataStorage: DataStorageService, private router: Router) {
+  constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router, private cookieService: CookieService) {
 
     //alert('DECK: '+this.dataStorage.getData('access_token'));
   }
 
   ngOnInit(): void {
-    if(this.canOpen==false)
-    {
+    if (this.canOpen == false) {
       location.href = '';
     }
     this.getDecks();
@@ -140,9 +140,17 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-  changeEditable() : void {
+  changeEditable(): void {
     this.isEditing = !this.isEditing;
     //console.log(this.isEditing);
+  }
+
+  logout(): void {
+    this.cookieService.delete('access_token');
+    this.cookieService.delete('login');
+    this.cookieService.delete('password');
+
+    this.router.navigateByUrl("/auth");
   }
 
   someActionWitdhDeck(id: number): void {

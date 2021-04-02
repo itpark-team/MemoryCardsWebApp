@@ -11,7 +11,7 @@ export class AuthCheckService implements CanActivate{
   canActivate(): boolean {
     //alert('CAN ACTIVATE: '+this.dataStorage.getData('access_token'));
    //return this.dataStorage.hasData('access_token');
-   //  return this.cookieService.check('access_token');
-    return  true;
+    return this.cookieService.check('access_token');
+    //return  true;
   }
 }
