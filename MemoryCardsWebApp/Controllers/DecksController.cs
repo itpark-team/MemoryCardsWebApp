@@ -22,6 +22,7 @@ namespace MemoryCardsWebApp.Controllers
             db = context;
         }
 
+        //api/decks/getbyuser/1
         [HttpGet]
         public IActionResult Get()
         {
@@ -94,6 +95,10 @@ namespace MemoryCardsWebApp.Controllers
             try
             {
                 db.Decks.Add(deck);
+
+                db.SaveChanges();
+
+                db.UsersDecks.Add(new UsersDeck() {UserId = deck.AuthorUserId, DeckId = deck.Id});
 
                 db.SaveChanges();
 
