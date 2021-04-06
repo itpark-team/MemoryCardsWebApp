@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace MemoryCardsWebApp
 {
@@ -28,9 +29,9 @@ namespace MemoryCardsWebApp
         {
             services.AddDbContext<MemoryCardsContext>(options => options.UseSqlServer(
                 Configuration["ConnectionStrings:DefaultConnection"]));
-            
+
             IConfigurationSection authOptionsConfiguration = Configuration.GetSection("Auth");
-            
+
             services.Configure<AuthOptions>(authOptionsConfiguration);
 
             AuthOptions authOptions = Configuration.GetSection("Auth").Get<AuthOptions>();
@@ -59,11 +60,16 @@ namespace MemoryCardsWebApp
                         ValidateIssuerSigningKey = true,
                     };
                 });
-     
-            services.AddControllers();
+
+            // services.AddControllers();
             
+            services.AddControllers().AddNewtonsoftJson(
+                options => {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
+                });
+
             services.AddControllersWithViews();
-            
+
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
 
@@ -82,17 +88,17 @@ namespace MemoryCardsWebApp
             }
 
             app.UseHttpsRedirection();
-            
-            
+
+
             app.UseStaticFiles();
-            
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
-            
+
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -101,7 +107,7 @@ namespace MemoryCardsWebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                
+
                 endpoints.MapControllers();
             });
 
