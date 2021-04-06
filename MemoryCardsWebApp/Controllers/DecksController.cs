@@ -98,7 +98,12 @@ namespace MemoryCardsWebApp.Controllers
 
                 db.SaveChanges();
 
-                db.UsersDecks.Add(new UsersDeck() {UserId = deck.AuthorUserId, DeckId = deck.Id});
+                db.UsersDecks.Add(new UsersDeck()
+                {
+                    UserId = deck.AuthorUserId,
+                    DeckId = deck.Id
+                });
+                
 
                 db.SaveChanges();
 
