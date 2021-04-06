@@ -79,9 +79,9 @@ export class DeckCardsHomeComponent implements OnInit {
     const dialogRef = this.dialog.open(AddCardDialog, {data: this.card});
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result != "") {
-        this.card = result;
-        this.postCard();
+      if (result != "" && result != null) {
+          this.card = result;
+          this.postCard();
       }
     });
   }
@@ -96,15 +96,20 @@ export class DeckCardsHomeComponent implements OnInit {
     this.card.backText = editedCard.backText;
     const dialogRef = this.dialog.open(EditCardDialog, {data: this.card});
     dialogRef.afterClosed().subscribe(result => {
-      if (result != "") {
-        this.card = result;
-        editedCard.id = this.card.id;
-        editedCard.color = this.card.color;
-        editedCard.frontImage = this.card.frontImage;
-        editedCard.backImage = this.card.backImage;
-        editedCard.frontText = this.card.frontText;
-        editedCard.backText = this.card.backText;
-        this.putCard()
+      if (result != ""&& result != null) {
+        if(result=="Delete")
+        {
+          this.showDeleteCardDialog(this.card.id);
+        }else {
+          this.card = result;
+          editedCard.id = this.card.id;
+          editedCard.color = this.card.color;
+          editedCard.frontImage = this.card.frontImage;
+          editedCard.backImage = this.card.backImage;
+          editedCard.frontText = this.card.frontText;
+          editedCard.backText = this.card.backText;
+          this.putCard()
+        }
       }
     });
   }
@@ -255,7 +260,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   changeCardSide(id: number): void {
-    if (this.cardSides[id]=='front') {
+    if (this.cardSides[id] == 'front') {
       this.cardSides[id] = 'back';
     } else {
       this.cardSides[id] = 'front';
@@ -299,7 +304,39 @@ export class AddCardDialog {
 })
 
 export class EditCardDialog {
-  constructor(public dialogRef: MatDialogRef<EditCardDialog>, @Inject(MAT_DIALOG_DATA) public editedCard: Card) {
+  constructor(public dialogRef: MatDialogRef<EditCardDialog>, @Inject(MAT_DIALOG_DATA) public editedCard: Card, public dialog: MatDialog) {
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  showEditBackImageDialog(editedCard: Card): void {
+    const dialogRef = this.dialog.open(EditImageDialog, {data: editedCard.backImage});
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null && result != "") {
+        editedCard.backImage = result;
+      }
+    });
+  }
+
+  showEditFrontImageDialog(editedCard: Card): void {
+    const dialogRef = this.dialog.open(EditImageDialog, {data: editedCard.frontImage});
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null && result != "") {
+        editedCard.frontImage = result;
+      }
+    });
+  }
+}
+
+@Component({
+  selector: 'edit-image-dialog',
+  templateUrl: 'edit-image-dialog.html',
+})
+
+export class EditImageDialog {
+  constructor(public dialogRef: MatDialogRef<EditImageDialog>, @Inject(MAT_DIALOG_DATA) public editedImage: string) {
   }
 
   onNoClick(): void {

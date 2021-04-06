@@ -6,6 +6,7 @@ import {Action} from "rxjs/internal/scheduler/Action";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {CookieService} from "ngx-cookie-service";
 
 
 interface UserAuthenticationData {
@@ -35,6 +36,8 @@ export class AuthenticationHomeComponent implements OnInit {
 
   password:string;
 
+  saveUser:boolean = false;
+
   clearInputFields(): void {
     this.userAuthenticationData.email = "";
     this.userAuthenticationData.passwordHash = "";
@@ -46,8 +49,32 @@ export class AuthenticationHomeComponent implements OnInit {
   }
 
 
-  constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router) {
+  constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router, private cookieService: CookieService) {
     //alert('AUTH: '+this.dataStorage.getData('access_token'));
+
+    if(this.cookieService.check('login') && this.cookieService.check('password'))
+    {
+      this.userAuthenticationData.email = this.cookieService.get('login');
+      this.userAuthenticationData.passwordHash = this.cookieService.get('password');
+
+      const body = JSON.stringify(this.userAuthenticationData);
+
+      const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+      this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
+        responseData => {
+          this.cookieService.set('access_token', responseData['access_token'], {expires:new Date(Date.now()+86400)});
+          this.router.navigateByUrl('/deck');
+        },
+        error => {
+          if (error.status == 401)
+            this.showWrongLoginOrPasswordDialog();
+          else
+            alert(`error: ${error.status}, ${error.statusText}`);
+
+        }
+      );
+    }
   }
 
   userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
@@ -70,7 +97,14 @@ export class AuthenticationHomeComponent implements OnInit {
 
     this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
-        this.dataStorage.saveData('access_token', responseData['access_token']);
+        this.cookieService.set('access_token', responseData['access_token'],{expires:new Date(Date.now()+86400)});
+
+        if(this.saveUser)
+        {
+          this.cookieService.set('login',this.userAuthenticationData.email,{expires:new Date(Date.now()+86400000)});
+          this.cookieService.set('password',this.userAuthenticationData.passwordHash,{expires:new Date(Date.now()+86400000)});
+        }
+
         this.router.navigateByUrl('/deck');
       },
       error => {
@@ -81,6 +115,10 @@ export class AuthenticationHomeComponent implements OnInit {
 
       }
     );
+  }
+
+  test123():void {
+    console.log(this.saveUser);
   }
 
 }
@@ -98,4 +136,7 @@ export class WrongLoginOrPasswordDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+
+
 }

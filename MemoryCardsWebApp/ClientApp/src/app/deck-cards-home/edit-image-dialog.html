@@ -1,0 +1,7 @@
+﻿<mat-dialog-content class="mat-typography">
+  <input type="text" [ngModel]="editedImage" (ngModelChange)="editedImage=$event"
+         value="{{editedImage}}">
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button style="background-color: #234560;color: white" [mat-dialog-close]="editedImage" >Save</button>
+</mat-dialog-actions>

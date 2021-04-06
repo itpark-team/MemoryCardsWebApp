@@ -38,8 +38,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                MemoryCardsContext db = new MemoryCardsContext();
-
                 db.DecksCards.Add(decksCard);
 
                 db.SaveChanges();

@@ -22,6 +22,7 @@ namespace MemoryCardsWebApp.Controllers
             db = context;
         }
 
+        //api/decks/getbyuser/1
         [HttpGet]
         public IActionResult Get()
         {
@@ -101,10 +102,9 @@ namespace MemoryCardsWebApp.Controllers
                 {
                     UserId = deck.AuthorUserId,
                     DeckId = deck.Id
-                    // User = db.Users.SingleOrDefault(u => u.Id == deck.AuthorUserId),
-                    // Deck = db.Decks.SingleOrDefault(d => d.Id == deck.Id)
                 });
                 
+
                 db.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, deck);
