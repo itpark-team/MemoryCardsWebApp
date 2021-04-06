@@ -7,6 +7,7 @@ using MemoryCardsWebApp.Models.TsEntities;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
 namespace MemoryCardsWebApp.Controllers
@@ -23,14 +24,14 @@ namespace MemoryCardsWebApp.Controllers
         }
 
         //api/decks/getbyuser/1
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("GetDecksByUserId/{id}")]
+        public IActionResult GetDecksByUserId(int id)
         {
             try
             {
                 List<Deck> decks =
                     db.Decks.FromSqlRaw(
-                        "SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId=1)").ToList();
+                        $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={id})").ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
                 List<User> users = db.Users.ToList();
 

@@ -76,7 +76,7 @@ export class DeckHomeComponent implements OnInit {
     passwordHash: '',
     subStatus: 0
   };
-  currentUserId = 1;
+  currentUserId: number = 0;
   isEditing: boolean = false;
 
   constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router, private cookieService: CookieService) {
@@ -88,7 +88,8 @@ export class DeckHomeComponent implements OnInit {
     if (this.canOpen == false) {
       location.href = '';
     }
-    this.getDecks();
+    this.currentUserId = +this.cookieService.get('id_user');
+    this.getDecksByUserId();
     this.getCards();
     this.getDecksCards();
     this.getUser(this.currentUserId);
@@ -210,9 +211,8 @@ export class DeckHomeComponent implements OnInit {
   }
 
 //======DECKS START======//
-
-  getDecks(): void {
-    this.http.get<Deck[]>(`/api/decks`).subscribe(
+  getDecksByUserId(): void {
+    this.http.get<Deck[]>(`/api/decks/GetDecksByUserId/${this.currentUserId}`).subscribe(
       responseData => {
         this.decks = responseData
         //console.dir(this.decks[0])
@@ -236,6 +236,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   postDeck(): void {
+    this.deckToAction.authorUserId = this.currentUserId;
     const body = JSON.stringify(this.deckToAction);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -253,6 +254,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   putDeck(): void {
+    this.deckToAction.authorUserId = this.currentUserId;
     const body = JSON.stringify(this.deckToAction);
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
