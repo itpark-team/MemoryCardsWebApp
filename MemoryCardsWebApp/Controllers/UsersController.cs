@@ -67,10 +67,11 @@ namespace MemoryCardsWebApp.Controllers
                         SecurityAlgorithms.HmacSha256));
 
                 string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
+                
                 var response = new
                 {
-                    access_token = encodedJwt
+                    access_token = encodedJwt,
+                    id_user = identity.Name
                 };
 
                 return Ok(response);

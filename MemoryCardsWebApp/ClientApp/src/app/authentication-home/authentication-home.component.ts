@@ -32,11 +32,14 @@ interface User {
 })
 export class AuthenticationHomeComponent implements OnInit {
 
+  delay24hours: number = 86400000;
+  delay1000days: number = this.delay24hours * 1000;
+
   form: FormGroup;
 
-  password:string;
+  password: string;
 
-  saveUser:boolean = false;
+  saveUser: boolean = false;
 
   clearInputFields(): void {
     this.userAuthenticationData.email = "";
@@ -52,8 +55,7 @@ export class AuthenticationHomeComponent implements OnInit {
   constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router, private cookieService: CookieService) {
     //alert('AUTH: '+this.dataStorage.getData('access_token'));
 
-    if(this.cookieService.check('login') && this.cookieService.check('password'))
-    {
+    if (this.cookieService.check('login') && this.cookieService.check('password')) {
       this.userAuthenticationData.email = this.cookieService.get('login');
       this.userAuthenticationData.passwordHash = this.cookieService.get('password');
 
@@ -63,7 +65,7 @@ export class AuthenticationHomeComponent implements OnInit {
 
       this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
         responseData => {
-          this.cookieService.set('access_token', responseData['access_token'], {expires:new Date(Date.now()+86400)});
+          this.cookieService.set('access_token', responseData['access_token'], {expires: new Date(Date.now() + this.delay24hours)});
           this.router.navigateByUrl('/deck');
         },
         error => {
@@ -82,10 +84,11 @@ export class AuthenticationHomeComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null,[Validators.required, Validators.minLength(3)])
+      password: new FormControl(null, [Validators.required, Validators.minLength(3)])
     })
   }
-  onSubmit(){
+
+  onSubmit() {
 
   }
 
@@ -97,12 +100,11 @@ export class AuthenticationHomeComponent implements OnInit {
 
     this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
-        this.cookieService.set('access_token', responseData['access_token'],{expires:new Date(Date.now()+86400)});
+        this.cookieService.set('access_token', responseData['access_token'], {expires: new Date(Date.now() + this.delay24hours)});
 
-        if(this.saveUser)
-        {
-          this.cookieService.set('login',this.userAuthenticationData.email,{expires:new Date(Date.now()+86400000)});
-          this.cookieService.set('password',this.userAuthenticationData.passwordHash,{expires:new Date(Date.now()+86400000)});
+        if (this.saveUser) {
+          this.cookieService.set('login', this.userAuthenticationData.email, {expires: new Date(Date.now() + this.delay1000days)});
+          this.cookieService.set('password', this.userAuthenticationData.passwordHash, {expires: new Date(Date.now() + this.delay1000days)});
         }
 
         this.router.navigateByUrl('/deck');
@@ -117,7 +119,7 @@ export class AuthenticationHomeComponent implements OnInit {
     );
   }
 
-  test123():void {
+  test123(): void {
     console.log(this.saveUser);
   }
 
@@ -136,7 +138,6 @@ export class WrongLoginOrPasswordDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 
 
 }
