@@ -84,14 +84,14 @@ namespace MemoryCardsWebApp.Controllers
 
         private ClaimsIdentity GetIdentity(UserAuthenticationData userAuthenticationData)
         {
-            User findUser = db.Users.FirstOrDefault(item =>
+            User foundUser = db.Users.FirstOrDefault(item =>
                 item.Email == userAuthenticationData.Email && item.PasswordHash == userAuthenticationData.PasswordHash);
 
-            if (findUser != null)
+            if (foundUser != null)
             {
                 List<Claim> claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, findUser.Id.ToString()),
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, foundUser.Id.ToString()),
                     new Claim(ClaimsIdentity.DefaultRoleClaimType, "user")
                 };
 

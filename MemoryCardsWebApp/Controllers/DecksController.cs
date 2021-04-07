@@ -24,7 +24,7 @@ namespace MemoryCardsWebApp.Controllers
         }
 
         //api/decks/getbyuser/1
-        [HttpGet("GetDecksByUserId/{id}")]
+            [HttpGet("GetDecksByUserId/{id}")]
         public IActionResult GetDecksByUserId(int id)
         {
             try

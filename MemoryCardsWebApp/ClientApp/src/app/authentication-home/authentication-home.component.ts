@@ -75,7 +75,6 @@ export class AuthenticationHomeComponent implements OnInit {
             this.showWrongLoginOrPasswordDialog();
           else
             alert(`error: ${error.status}, ${error.statusText}`);
-
         }
       );
     }
