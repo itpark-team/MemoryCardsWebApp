@@ -1,8 +1,6 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
-import {Action} from "rxjs/internal/scheduler/Action";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
@@ -181,27 +179,6 @@ export class DeckHomeComponent implements OnInit {
       }
     );
   }
-
-  // putDeck(): void {
-  //   this.deckToAction.authorUserId = this.currentUserId;
-  //   const body = JSON.stringify(this.deckToAction);
-  //
-  //   const headers = new HttpHeaders().set('Content-Type', 'application/json');
-  //
-  //   this.http.put<Deck>(`/api/decks/${this.deckToAction.id}`, body, {headers: headers}).subscribe(
-  //     responseData => {
-  //
-  //       const findIndex = this.decks.findIndex(item => item.id == responseData.id);
-  //       this.decks.splice(findIndex, 1, responseData);
-  //       this.decks[findIndex].authorUser = this.getAuthorUsername(this.user.id);
-  //       //console.log(this.deckToAction.id);
-  //       this.clearDeck();
-  //     },
-  //     error => {
-  //       alert(`error: ${error.status}, ${error.statusText}`);
-  //     }
-  //   );
-  // }
 
 //======DECKS FINISH======//
 

@@ -1,29 +1,20 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {createUrlResolverWithoutPackagePrefix} from "@angular/compiler";
-import {Action} from "rxjs/internal/scheduler/Action";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 
 
+
+//Entities
 interface UserAuthenticationData {
   email: string;
   passwordHash: string;
 }
 
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  passwordHash: string;
-  avatarImage: string;
-  subStatus: number;
-  subExpire: Date;
-  isActive: boolean;
-}
+
 
 @Component({
   selector: 'app-authentication-home',
@@ -32,28 +23,26 @@ interface User {
 })
 export class AuthenticationHomeComponent implements OnInit {
 
-  delay24hours: number = 86400000;
-  delay1000days: number = this.delay24hours * 1000;
+  private delay24hours: number = 86400000;
+  private delay1000days: number = this.delay24hours * 1000;
 
-  form: FormGroup;
+
 
   password: string;
-
   saveUser: boolean = false;
+  userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
+  form: FormGroup;
 
-  private clearInputFields(): void {
-    this.userAuthenticationData.email = "";
-    this.userAuthenticationData.passwordHash = "";
-  }
-
-  private showWrongLoginOrPasswordDialog(): void {
-    this.clearInputFields();
-    const dialogRef = this.dialog.open(WrongLoginOrPasswordDialog);
-  }
+  constructor(
+    private http: HttpClient,
+    public dialog: MatDialog,
+    private dataStorage: DataStorageService,
+    private router: Router,
+    private cookieService: CookieService) {
 
 
-  constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router, private cookieService: CookieService) {
     if (this.cookieService.check('login') && this.cookieService.check('password')) {
+
       this.userAuthenticationData.email = this.cookieService.get('login');
       this.userAuthenticationData.passwordHash = this.cookieService.get('password');
 
@@ -63,27 +52,28 @@ export class AuthenticationHomeComponent implements OnInit {
     }
   }
 
-  userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
-
   ngOnInit(): void {
+
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required, Validators.minLength(3)])
     })
+
   }
 
+  //???
   onSubmit() {
 
   }
-
 
   /**
    * Authenticate user
    * @param body is json.stringified user's authentication data.
    */
+
+  //======AUTH START======//
   authenticateWithAuthData(body: string): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
 
     this.http.post(`/api/users/login`, body, {headers: headers}).subscribe(
       responseData => {
@@ -113,19 +103,23 @@ export class AuthenticationHomeComponent implements OnInit {
     this.authenticateWithAuthData(body);
   }
 
-  authenticate(): void {
-    this.userAuthenticationData.passwordHash = this.password;
-    const body = JSON.stringify(this.userAuthenticationData);
+  //======AUTH FINISH======//
 
-    console.log(body)
 
-    this.authenticateWithAuthData(body);
+  private clearInputFields(): void {
+    this.userAuthenticationData.email = "";
+    this.userAuthenticationData.passwordHash = "";
   }
 
-  test123(): void {
+  private showWrongLoginOrPasswordDialog(): void {
+    this.clearInputFields();
+    const dialogRef = this.dialog.open(WrongLoginOrPasswordDialog);
+  }
+
+  //Methods from HTML
+   signUpStub(): void {
     console.log(this.saveUser);
   }
-
 }
 
 @Component({
@@ -134,7 +128,8 @@ export class AuthenticationHomeComponent implements OnInit {
 })
 
 export class WrongLoginOrPasswordDialog {
-  constructor(public dialogRef: MatDialogRef<WrongLoginOrPasswordDialog>) {
+  constructor(
+    public dialogRef: MatDialogRef<WrongLoginOrPasswordDialog>) {
 
   }
 

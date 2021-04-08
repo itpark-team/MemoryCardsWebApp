@@ -11,11 +11,11 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class CardsController : Controller
     {
-        private MemoryCardsContext db;
+        private MemoryCardsContext _dbContext;
 
         public CardsController(MemoryCardsContext context)
         {
-            db = context;
+            _dbContext = context;
         }
         
         [HttpGet]
@@ -23,7 +23,7 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                return StatusCode(StatusCodes.Status200OK, db.Cards);
+                return StatusCode(StatusCodes.Status200OK, _dbContext.Cards);
             }
             catch (Exception e)
             {
@@ -36,9 +36,9 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                db.Cards.Add(card);
+                _dbContext.Cards.Add(card);
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, card);
             }
@@ -53,7 +53,7 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                Card findCard = db.Cards.First(item => item.Id == id);
+                Card findCard = _dbContext.Cards.First(item => item.Id == id);
 
                 findCard.FrontText = card.FrontText;
                 findCard.FrontImage = card.FrontImage;
@@ -61,7 +61,7 @@ namespace MemoryCardsWebApp.Controllers
                 findCard.BackImage = card.BackImage;
                 findCard.Color = card.Color;
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
               
                 return StatusCode(StatusCodes.Status200OK, findCard);
             }
@@ -76,11 +76,11 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                Card findCard = db.Cards.First(item => item.Id == id);
+                Card findCard = _dbContext.Cards.First(item => item.Id == id);
 
-                db.Cards.Remove(findCard);
+                _dbContext.Cards.Remove(findCard);
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, id);
             }

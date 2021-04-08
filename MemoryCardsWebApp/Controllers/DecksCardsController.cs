@@ -13,11 +13,11 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]/[action]/{id}")]
     public class DecksCardsController : Controller
     {
-        private MemoryCardsContext db;
+        private MemoryCardsContext _dbContext;
 
         public DecksCardsController(MemoryCardsContext context)
         {
-            db = context;
+            _dbContext = context;
         }
         
         [HttpGet]
@@ -25,7 +25,7 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                return StatusCode(StatusCodes.Status200OK, db.DecksCards);
+                return StatusCode(StatusCodes.Status200OK, _dbContext.DecksCards);
             }
             catch (Exception e)
             {
@@ -38,9 +38,9 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                db.DecksCards.Add(decksCard);
+                _dbContext.DecksCards.Add(decksCard);
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, decksCard);
             }
@@ -54,7 +54,7 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                int count = db.DecksCards.Count(i => i.DeckId == id);
+                int count = _dbContext.DecksCards.Count(i => i.DeckId == id);
 
                 return StatusCode(StatusCodes.Status200OK, count);
             }
