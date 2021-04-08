@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div *ngFor="let deck of decks" class="deck-container row justify-content-center m-3" (click)="someActionWitdhDeck(deck.id)">
+      <div *ngFor="let deck of decks" class="deck-container row justify-content-center m-3" (click)="openDeck(deck.id)">
         <div class="mat-raised-button div-button-raise-fix col-10 col-md-12 p-1">
           <div class="deck-header row m-0 p-1 pl-2">
             <div class="deck-header-text col-9 p-0 div-button-unclickable-text text-capitalize overflow-auto">

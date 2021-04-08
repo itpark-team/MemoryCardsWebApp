@@ -41,42 +41,25 @@ export class AuthenticationHomeComponent implements OnInit {
 
   saveUser: boolean = false;
 
-  clearInputFields(): void {
+  private clearInputFields(): void {
     this.userAuthenticationData.email = "";
     this.userAuthenticationData.passwordHash = "";
   }
 
-  showWrongLoginOrPasswordDialog(): void {
+  private showWrongLoginOrPasswordDialog(): void {
     this.clearInputFields();
     const dialogRef = this.dialog.open(WrongLoginOrPasswordDialog);
   }
 
 
   constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router, private cookieService: CookieService) {
-    //alert('AUTH: '+this.dataStorage.getData('access_token'));
-
     if (this.cookieService.check('login') && this.cookieService.check('password')) {
       this.userAuthenticationData.email = this.cookieService.get('login');
       this.userAuthenticationData.passwordHash = this.cookieService.get('password');
 
       const body = JSON.stringify(this.userAuthenticationData);
 
-      const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-      this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
-        responseData => {
-          this.cookieService.set('access_token', responseData['access_token'], {expires: new Date(Date.now() + this.delay24hours)});
-          this.cookieService.set('id_user', responseData['id_user'], {expires: new Date(Date.now() + this.delay24hours)});
-
-          this.router.navigateByUrl('/deck');
-        },
-        error => {
-          if (error.status == 401)
-            this.showWrongLoginOrPasswordDialog();
-          else
-            alert(`error: ${error.status}, ${error.statusText}`);
-        }
-      );
+      this.authenticateWithAuthData(body);
     }
   }
 
@@ -93,13 +76,16 @@ export class AuthenticationHomeComponent implements OnInit {
 
   }
 
-  authenticate(): void {
-    this.userAuthenticationData.passwordHash = this.password;
-    const body = JSON.stringify(this.userAuthenticationData);
 
+  /**
+   * Authenticate user
+   * @param body is json.stringified user's authentication data.
+   */
+  authenticateWithAuthData(body: string): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
+
+    this.http.post(`/api/users/login`, body, {headers: headers}).subscribe(
       responseData => {
         this.cookieService.set('access_token', responseData['access_token'], {expires: new Date(Date.now() + this.delay24hours)});
         this.cookieService.set('id_user', responseData['id_user'], {expires: new Date(Date.now() + this.delay24hours)});
@@ -116,9 +102,24 @@ export class AuthenticationHomeComponent implements OnInit {
           this.showWrongLoginOrPasswordDialog();
         else
           alert(`error: ${error.status}, ${error.statusText}`);
-
       }
     );
+  }
+
+  async authenticateAsync(): Promise<void> {
+    this.userAuthenticationData.passwordHash = this.password;
+    const body = JSON.stringify(this.userAuthenticationData);
+
+    this.authenticateWithAuthData(body);
+  }
+
+  authenticate(): void {
+    this.userAuthenticationData.passwordHash = this.password;
+    const body = JSON.stringify(this.userAuthenticationData);
+
+    console.log(body)
+
+    this.authenticateWithAuthData(body);
   }
 
   test123(): void {
@@ -140,6 +141,4 @@ export class WrongLoginOrPasswordDialog {
   onNoClick(): void {
     this.dialogRef.close();
   }
-
-
 }

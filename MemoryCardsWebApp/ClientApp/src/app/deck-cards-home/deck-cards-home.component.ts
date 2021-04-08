@@ -6,7 +6,10 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {AddDeckDialog} from "../deck-home/deck-home.component";
 import {EditDeckDialog} from "../deck-home/deck-home.component";
 import {DataStorageService} from "../data-storage/data-storage.service";
+import {CookieService} from "ngx-cookie-service";
 
+
+//Entities
 interface Card {
   id: number;
   frontText: string;
@@ -33,25 +36,32 @@ interface Deck {
   authorUserId: number;
 }
 
+
 @Component({
   selector: 'app-deck-cards-home',
   templateUrl: './deck-cards-home.component.html',
   styleUrls: ['./deck-cards-home.component.css']
 })
 export class DeckCardsHomeComponent implements OnInit {
-  cardSides: CardSides = {};
-  cards: Card[] = [];
-  deckId: number;
-  currentCards: Card[] = [];
-  decksCards: DecksCard[] = [];
-  currentDeck: Deck;
-  card: Card;
-  decksCard: DecksCard;
+  private cardSides: CardSides = {};
+  private cards: Card[] = [];
+  private deckId: number;
+  private decksCards: DecksCard[] = [];
+  private card: Card;
+  private decksCard: DecksCard;
   private querySubscription: Subscription;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, public dialog: MatDialog, private dataStorage: DataStorageService) {
+  currentCards: Card[] = [];
+  currentDeck: Deck;
 
-    //alert('DECK CARDS: '+this.dataStorage.getData('access_token'));
+
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private dataStorage: DataStorageService,
+    private cookieService: CookieService) {
+
 
     this.querySubscription = route.queryParams.subscribe(
       (queryParam: any) => {
@@ -80,8 +90,8 @@ export class DeckCardsHomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != "" && result != null) {
-          this.card = result;
-          this.postCard();
+        this.card = result;
+        this.postCard();
       }
     });
   }
@@ -96,11 +106,10 @@ export class DeckCardsHomeComponent implements OnInit {
     this.card.backText = editedCard.backText;
     const dialogRef = this.dialog.open(EditCardDialog, {data: this.card});
     dialogRef.afterClosed().subscribe(result => {
-      if (result != ""&& result != null) {
-        if(result=="Delete")
-        {
+      if (result != "" && result != null) {
+        if (result == "Delete") {
           this.showDeleteCardDialog(this.card.id);
-        }else {
+        } else {
           this.card = result;
           editedCard.id = this.card.id;
           editedCard.color = this.card.color;
@@ -193,7 +202,11 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   deleteDeck(): void {
-    this.http.delete<number>(`/api/decks/${this.currentDeck.id}`).subscribe(
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    this.http.delete<number>(`/api/decks/${this.currentDeck.id}`, {headers: headers}).subscribe(
       responseData => {
         location.href = 'deck';
       },
@@ -237,7 +250,11 @@ export class DeckCardsHomeComponent implements OnInit {
 
 
   getCurrentDeck(): void {
-    this.http.get<Deck>(`/api/decks/${this.deckId}`).subscribe(
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    this.http.get<Deck>(`/api/decks/${this.deckId}`, {headers: headers}).subscribe(
       responseData => {
         this.currentDeck = responseData;
       },

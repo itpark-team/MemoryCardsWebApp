@@ -7,6 +7,7 @@ using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
 using MemoryCardsWebApp.Models.ExtEntities;
 using MemoryCardsWebApp.Models.TsEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -27,6 +28,7 @@ namespace MemoryCardsWebApp.Controllers
             this.authOptions = authOptions;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -41,7 +43,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public ActionResult Post([FromBody] UserAuthenticationData userAuthenticationData)
         {
             try
@@ -67,7 +69,7 @@ namespace MemoryCardsWebApp.Controllers
                         SecurityAlgorithms.HmacSha256));
 
                 string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-                
+
                 var response = new
                 {
                     access_token = encodedJwt,
@@ -84,8 +86,8 @@ namespace MemoryCardsWebApp.Controllers
 
         private ClaimsIdentity GetIdentity(UserAuthenticationData userAuthenticationData)
         {
-            User foundUser = db.Users.FirstOrDefault(item =>
-                item.Email == userAuthenticationData.Email && item.PasswordHash == userAuthenticationData.PasswordHash);
+            User foundUser = db.Users.FirstOrDefault(u =>
+                u.Email == userAuthenticationData.Email && u.PasswordHash == userAuthenticationData.PasswordHash);
 
             if (foundUser != null)
             {
@@ -101,6 +103,7 @@ namespace MemoryCardsWebApp.Controllers
                 return claimsIdentity;
             }
 
+            //not found user
             return null;
         }
     }

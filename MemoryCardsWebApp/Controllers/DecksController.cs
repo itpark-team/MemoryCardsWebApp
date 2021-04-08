@@ -4,6 +4,7 @@ using System.Linq;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
 using MemoryCardsWebApp.Models.TsEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,8 +24,9 @@ namespace MemoryCardsWebApp.Controllers
             db = context;
         }
 
-        //api/decks/getbyuser/1
-            [HttpGet("GetDecksByUserId/{id}")]
+
+        [Authorize]
+        [HttpGet("GetDecksByUserId/{id}")]
         public IActionResult GetDecksByUserId(int id)
         {
             try
@@ -58,6 +60,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -71,6 +74,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -90,6 +94,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] Deck deck)
         {
@@ -104,7 +109,7 @@ namespace MemoryCardsWebApp.Controllers
                     UserId = deck.AuthorUserId,
                     DeckId = deck.Id
                 });
-                
+
 
                 db.SaveChanges();
 
@@ -116,6 +121,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Deck deck)
         {

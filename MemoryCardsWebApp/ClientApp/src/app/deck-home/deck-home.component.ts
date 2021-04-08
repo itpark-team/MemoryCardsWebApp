@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 
 
+//Entities
 interface Deck {
   id: number;
   title: string;
@@ -25,18 +26,6 @@ interface DeckToPost {
   authorUserId: number;
 }
 
-interface Card {
-  id: number;
-  frontText: string;
-  backText: string;
-  frontImage: string;
-  backImage: string;
-  color: string;
-}
-
-// interface Displayed
-
-
 interface User {
   id: number;
   username: string;
@@ -48,10 +37,6 @@ interface User {
   isActive: boolean;
 }
 
-interface DecksCard {
-  deckId: number;
-  cardId: Number;
-}
 
 @Component({
   selector: 'app-deck-home',
@@ -59,54 +44,62 @@ interface DecksCard {
   styleUrls: ['./deck-home.component.css']
 })
 export class DeckHomeComponent implements OnInit {
-  canOpen: boolean = true;
+
+  private readonly isAuth: boolean;
 
   decks: Deck[] = [];
-  cards: Card[] = [];
-  decksCards: DecksCard[] = [];
-  deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
-  deckToAction: DeckToPost = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
-  user: User = {
-    id: 0,
-    subExpire: new Date(),
-    isActive: false,
-    email: '',
-    avatarImage: '',
-    username: '',
-    passwordHash: '',
-    subStatus: 0
-  };
-  currentUserId: number = 0;
-  isEditing: boolean = false;
+
+  private deck: Deck;
+  private deckToAction: DeckToPost;
+  private user: User;
+  private currentUserId: number;
+
 
   constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router, private cookieService: CookieService) {
 
-    //alert('DECK: '+this.dataStorage.getData('access_token'));
+    this.isAuth = this.cookieService.check("access_token");
+
+    this.user = {
+      id: 0,
+      subExpire: new Date(),
+      isActive: false,
+      email: '',
+      avatarImage: '',
+      username: '',
+      passwordHash: '',
+      subStatus: 0
+    };
+
+    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
+
+    this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+
+    this.currentUserId = 0;
   }
 
   ngOnInit(): void {
-    if (this.canOpen == false) {
+    if (this.isAuth == false) {
       location.href = '';
     }
     this.currentUserId = +this.cookieService.get('id_user');
+
     this.getDecksByUserId();
-    this.getCards();
-    this.getDecksCards();
+
     this.getUser(this.currentUserId);
-
   }
 
-  test(): void {
 
-    //console.log(this.cards);
-  }
+  //Methods from HTML
+  logout(): void {
+    this.cookieService.delete('id_user');
+    this.cookieService.delete('access_token');
+    this.cookieService.delete('login');
+    this.cookieService.delete('password');
 
-  log(id: number) {
-    //console.log(id);
+    this.router.navigateByUrl("/auth");
   }
 
   openDeck(deckId: number): void {
-    //location.href = 'deckcards?deckId=' + deckId;
     this.router.navigateByUrl('deckcards?deckId=' + deckId);
   }
 
@@ -124,98 +117,25 @@ export class DeckHomeComponent implements OnInit {
   }
 
 
-  showEditDialog(id: number) {
-    this.clearDeck();
-    const dialogRef = this.dialog.open(EditDeckDialog, {
-      data: this.deckToAction
-    });
-    dialogRef.afterClosed().subscribe(result => {
-        if (result == true) {
-          this.deleteDeck(id)
-        } else if (result != "") {
-          this.deckToAction = result;
-          this.deckToAction.id = id;
-          this.putDeck();
-        }
-      }
-    );
-  }
-
-  changeEditable(): void {
-    this.isEditing = !this.isEditing;
-    //console.log(this.isEditing);
-  }
-
-  logout(): void {
-    this.cookieService.delete('access_token');
-    this.cookieService.delete('login');
-    this.cookieService.delete('password');
-
-    this.router.navigateByUrl("/auth");
-  }
-
-  someActionWitdhDeck(id: number): void {
-    if (this.isEditing) {
-      this.showEditDialog(id);
-    } else {
-      this.openDeck(id);
-    }
-  }
-
-  cardExists(deckId: number, cardNumber: number): boolean {
-    let count = this.getDeckCardsCount(deckId);
-    return cardNumber <= count;
-  }
-
-  getDeckCardsCount(deckId: number): number {
-    let count = 0;
-    for (let i = 0; i < this.decksCards.length; i++) {
-      if (this.decksCards[i].deckId == deckId) {
-        count++;
-      }
-    }
-    return count;
-  }
-
-  getCardText(deckId: number, cardNumber: number): string {
-    let realId = this.decksCards.filter(c => c.deckId == deckId)[cardNumber - 1].cardId;
-    return this.cards.find(c => c.id == realId).frontText;
-  }
-
+  //Local methods
   private clearDeck(): void {
     this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
     this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
   }
 
 
-  getCards(): void {
-    this.http.get<Card[]>(`/api/cards`).subscribe(
-      responseData => {
-        this.cards = responseData
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
+  //======DECKS START======//
 
-  getDecksCards(): void {
-    this.http.get<DecksCard[]>(`/api/deckscards`).subscribe(
-      responseData => {
-        this.decksCards = responseData
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
 
-//======DECKS START======//
-  getDecksByUserId(): void {
-    this.http.get<Deck[]>(`/api/decks/GetDecksByUserId/${this.currentUserId}`).subscribe(
+  async getDecksByUserId(): Promise<void> {
+
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    this.http.get<Deck[]>(`/api/decks/GetDecksByUserId/${this.currentUserId}`, {headers: headers}).subscribe(
       responseData => {
         this.decks = responseData
-        //console.dir(this.decks[0])
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -239,12 +159,21 @@ export class DeckHomeComponent implements OnInit {
     this.deckToAction.authorUserId = this.currentUserId;
     const body = JSON.stringify(this.deckToAction);
 
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    console.log(body)
+
+    const token = this.cookieService.get('access_token');
+
+    //Order is important! 1st: Content-Type, then Authorization
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .append('Authorization', 'Bearer ' + token);
 
     this.http.post<Deck>(`/api/decks`, body, {headers: headers}).subscribe(
-      responseData => {
+      async responseData => {
         this.decks.push(responseData);
-        this.decks[this.decks.length - 1].authorUser = this.getAuthorUsername(this.user.id);
+        await this.getAuthorUsername(this.user.id).then((userName) => {
+          this.decks[this.decks.length - 1].authorUser = userName
+        })
         this.clearDeck();
       },
       error => {
@@ -253,31 +182,36 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-  putDeck(): void {
-    this.deckToAction.authorUserId = this.currentUserId;
-    const body = JSON.stringify(this.deckToAction);
-
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-    this.http.put<Deck>(`/api/decks/${this.deckToAction.id}`, body, {headers: headers}).subscribe(
-      responseData => {
-
-        const findIndex = this.decks.findIndex(item => item.id == responseData.id);
-        this.decks.splice(findIndex, 1, responseData);
-        this.decks[findIndex].authorUser = this.getAuthorUsername(this.user.id);
-        //console.log(this.deckToAction.id);
-        this.clearDeck();
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
+  // putDeck(): void {
+  //   this.deckToAction.authorUserId = this.currentUserId;
+  //   const body = JSON.stringify(this.deckToAction);
+  //
+  //   const headers = new HttpHeaders().set('Content-Type', 'application/json');
+  //
+  //   this.http.put<Deck>(`/api/decks/${this.deckToAction.id}`, body, {headers: headers}).subscribe(
+  //     responseData => {
+  //
+  //       const findIndex = this.decks.findIndex(item => item.id == responseData.id);
+  //       this.decks.splice(findIndex, 1, responseData);
+  //       this.decks[findIndex].authorUser = this.getAuthorUsername(this.user.id);
+  //       //console.log(this.deckToAction.id);
+  //       this.clearDeck();
+  //     },
+  //     error => {
+  //       alert(`error: ${error.status}, ${error.statusText}`);
+  //     }
+  //   );
+  // }
 
 //======DECKS FINISH======//
 
-  getUser(id: number): void {
-    this.http.get<User>(`/api/users/${id}`).subscribe(
+
+  async getUser(id: number): Promise<void> {
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    this.http.get<User>(`/api/users/${id}`, {headers: headers}).subscribe(
       responseData => {
         this.user.id = responseData.id;
         this.user.username = responseData.username;
@@ -292,8 +226,8 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-  getAuthorUsername(id: number): string {
-    this.getUser(id);
+  async getAuthorUsername(id: number): Promise<string> {
+    await this.getUser(id);
     return this.user.username;
   }
 }
