@@ -13,15 +13,16 @@
               [formGroup]="form"
               (ngSubmit)="onSubmit()"
         >
-          <div class="authentication-items">
+          <div class="authentication-items" >
             <input formControlName="email" id="email" class="mb-2" type="text" placeholder="Login"
                    [ngClass]="{'invalid':form.get('email').invalid && form.get('email').touched}"
                    [ngModel]="userAuthenticationData.email"
                    (ngModelChange)="userAuthenticationData.email=$event"
             >
+            <!--  здесь же и SPANы   -->
             <!--                   нужно сделать выделение красным-->
 
-            <span class="helper-text text-danger" *ngIf="form.get('email').invalid && form.get('email').touched">
+            <span   class="helper-text text-danger" style="padding-top: -10px" *ngIf="form.get('email').invalid && form.get('email').touched">
               <span *ngIf="form.get('email').errors['required']">Поле не может быть пустым</span>
               <span *ngIf="form.get('email').errors['email']">Неверный формат ввода почты</span>
             </span>
