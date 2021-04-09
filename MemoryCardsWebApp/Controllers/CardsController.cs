@@ -28,31 +28,28 @@ namespace MemoryCardsWebApp.Controllers
 
         [Authorize]
         [HttpGet("GetCardsByDeckId/{id}")]
-        public IActionResult GetCardsByDeckId([FromBody]string jwtTokenStr,[FromQuery] int id)
+        public IActionResult GetCardsByDeckId(int id)
         {
             try
             {
-                var token = new JwtSecurityTokenHandler().ReadJwtToken(jwtTokenStr);
-
-                
-                var claim = token.Claims.First(c => c.Type == "name").Value;
-                
                 var identity = HttpContext.User.Identity as ClaimsIdentity;
+
                 if (identity != null)
                 {
                     int userId;
-                    string claimName = identity.FindFirst("ClaimName").Value;
+                    string claimName = identity.Name;
                     bool succeded = int.TryParse(claimName, out userId);
 
                     if (!succeded)
                     {
-                        throw new Exception("Could not retrieve ClaimName.");
+                        throw new ArgumentException("Could not retrieve ClaimName.");
                     }
-                    
-                    User openingUser = db.Users.First(u => u.Id == userId);
+
+                    User openingUser = _dbContext.Users.First(u => u.Id == userId);
                     if (openingUser != null)
                     {
-                        var usersOpeningDeck = db.UsersDecks.First(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                        var usersOpeningDeck =
+                            _dbContext.UsersDecks.First(ud => ud.Deck.Id == id && ud.User.Id == userId);
                         if (usersOpeningDeck == null)
                         {
                             throw new WebException();
@@ -61,11 +58,15 @@ namespace MemoryCardsWebApp.Controllers
                 }
 
                 List<Card> cards =
-                    db.Cards.FromSqlRaw(
+                    _dbContext.Cards.FromSqlRaw(
                             $"SELECT * FROM dbo.Cards WHERE id IN (SELECT CardId FROM dbo.DecksCards WHERE DeckId={id.ToString()})")
                         .ToList();
 
                 return StatusCode(StatusCodes.Status200OK, cards);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
             }
             catch (WebException e)
             {

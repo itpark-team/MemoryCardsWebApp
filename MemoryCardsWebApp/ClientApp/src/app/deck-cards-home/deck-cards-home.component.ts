@@ -47,7 +47,7 @@ interface Deck {
 export class DeckCardsHomeComponent implements OnInit {
   private cardSides: CardSides = {};
   private cards: Card[] = [];
-  private deckId: number;
+  private readonly deckId: number;
   private decksCards: DecksCard[] = [];
   private card: Card;
   private decksCard: DecksCard;
@@ -62,20 +62,10 @@ export class DeckCardsHomeComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private dataStorage: DataStorageService,
-    private cookieService: CookieService,
-    private passerService: PasserService) {
+    private cookieService: CookieService) {
 
     //retrieve opened deck's id from DI
     this.deckId = +this.cookieService.get('opened_deck')
-    // this.deckId = passerService.getOpenedDeckId()
-
-    console.log(this.deckId)
-
-    // this.querySubscription = route.queryParams.subscribe(
-    //   (queryParam: any) => {
-    //     this.deckId = queryParam['deckId'];
-    //   }
-    // );
   }
 
 
