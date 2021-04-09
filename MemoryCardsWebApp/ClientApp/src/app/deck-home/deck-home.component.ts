@@ -105,9 +105,9 @@ export class DeckHomeComponent implements OnInit {
 
   openDeck(deckId: number): void {
 
-    this.cookieService.set('opened_deck', deckId.toString());
+    //this.cookieService.set('opened_deck', deckId.toString());
 
-    this.router.navigateByUrl('deckcards');
+    this.router.navigateByUrl('deckcards/'+deckId);
   }
 
   showAddDialog(): void {

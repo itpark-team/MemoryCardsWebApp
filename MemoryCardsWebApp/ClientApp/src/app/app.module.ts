@@ -28,12 +28,9 @@ import {WrongLoginOrPasswordDialog} from "./authentication-home/authentication-h
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
   {path: 'deck', component: DeckHomeComponent, canActivate: [AuthCheckService]},
-  {path: 'deckcards', component: DeckCardsHomeComponent, canActivate: [AuthCheckService]},
+  {path: 'deckcards/:id', component: DeckCardsHomeComponent, canActivate: [AuthCheckService]},
   {path: 'auth', component: AuthenticationHomeComponent}
 ];
-
-
-
 
 @NgModule({
   declarations: [

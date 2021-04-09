@@ -47,7 +47,7 @@ interface Deck {
 export class DeckCardsHomeComponent implements OnInit {
   private cardSides: CardSides = {};
   cards: Card[] = [];
-  private readonly deckId: number;
+  private deckId: number;
   private decksCards: DecksCard[] = [];
   private card: Card;
   private decksCard: DecksCard;
@@ -55,7 +55,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
   currentCards: Card[] = [];
   currentDeck: Deck;
-
+  private subscription: Subscription;
 
   constructor(
     private http: HttpClient,
@@ -66,7 +66,8 @@ export class DeckCardsHomeComponent implements OnInit {
     private router: Router) {
 
     //retrieve opened deck's id from DI
-    this.deckId = +this.cookieService.get('opened_deck')
+    //this.deckId = +this.cookieService.get('opened_deck')
+    this.subscription = route.params.subscribe(params=>this.deckId=params['id']);
   }
 
 
