@@ -7,6 +7,7 @@ import {AddDeckDialog} from "../deck-home/deck-home.component";
 import {EditDeckDialog} from "../deck-home/deck-home.component";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
+import {PasserService} from "../pass-params/passer.service";
 
 
 //Entities
@@ -60,21 +61,32 @@ export class DeckCardsHomeComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private dataStorage: DataStorageService,
-    private cookieService: CookieService) {
+    private cookieService: CookieService,
+    private passerService: PasserService) {
 
+    //retrieve opened deck's id from DI
+    this.deckId = +this.cookieService.get('opened_deck')
+    // this.deckId = passerService.getOpenedDeckId()
 
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        this.deckId = queryParam['deckId'];
-      }
-    );
+    console.log(this.deckId)
+
+    // this.querySubscription = route.queryParams.subscribe(
+    //   (queryParam: any) => {
+    //     this.deckId = queryParam['deckId'];
+    //   }
+    // );
   }
 
 
   ngOnInit(): void {
-    this.getCards();
-    this.getDecksCards();
+
     this.getCurrentDeck();
+
+    this.getCardsByDeckId();
+
+
+    // this.getCards();
+    this.getDecksCards();
   }
 
   fillCardSides(): void {
@@ -183,8 +195,6 @@ export class DeckCardsHomeComponent implements OnInit {
   putCard(): void {
 
     const body = JSON.stringify(this.card);
-//     console.log(body);
-// console.log(this.cards);
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     this.http.put<Card>(`/api/cards/${this.card.id}`, body, {headers: headers}).subscribe(
@@ -298,6 +308,21 @@ export class DeckCardsHomeComponent implements OnInit {
       }
     }
     this.fillCardSides();
+  }
+
+  private getCardsByDeckId(): void {
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    this.http.get<Card[]>(`/api/cards/GetCardsByDeckId/${this.deckId}`, {headers: headers}).subscribe(
+      responseData => {
+        this.cards = responseData
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
   }
 }
 

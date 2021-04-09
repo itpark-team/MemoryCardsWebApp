@@ -6,6 +6,7 @@ import {Action} from "rxjs/internal/scheduler/Action";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
+import {PasserService} from "../pass-params/passer.service";
 
 
 //Entities
@@ -55,7 +56,12 @@ export class DeckHomeComponent implements OnInit {
   private currentUserId: number;
 
 
-  constructor(private http: HttpClient, public dialog: MatDialog, private dataStorage: DataStorageService, private router: Router, private cookieService: CookieService) {
+  constructor(private http: HttpClient,
+              public dialog: MatDialog,
+              private dataStorage: DataStorageService,
+              private router: Router,
+              private cookieService: CookieService,
+              private passerService: PasserService) {
 
     this.isAuth = this.cookieService.check("access_token");
 
@@ -100,7 +106,13 @@ export class DeckHomeComponent implements OnInit {
   }
 
   openDeck(deckId: number): void {
-    this.router.navigateByUrl('deckcards?deckId=' + deckId);
+
+    this.cookieService.set('opened_deck', deckId.toString());
+    // this.passerService.setOpenedDeckId(deckId)
+
+    this.router.navigateByUrl('deckcards');
+
+    // this.router.navigateByUrl('deckcards?deckId=' + deckId);
   }
 
   showAddDialog(): void {
@@ -158,8 +170,6 @@ export class DeckHomeComponent implements OnInit {
   postDeck(): void {
     this.deckToAction.authorUserId = this.currentUserId;
     const body = JSON.stringify(this.deckToAction);
-
-    console.log(body)
 
     const token = this.cookieService.get('access_token');
 
