@@ -7,6 +7,7 @@ using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
 using MemoryCardsWebApp.Models.ExtEntities;
 using MemoryCardsWebApp.Models.TsEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,21 +19,22 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private MemoryCardsContext db;
-        private IOptions<AuthOptions> authOptions;
+        private MemoryCardsContext _dbContext;
+        private IOptions<AuthOptions> _authOptions;
 
         public UsersController(MemoryCardsContext context, IOptions<AuthOptions> authOptions)
         {
-            db = context;
-            this.authOptions = authOptions;
+            _dbContext = context;
+            _authOptions = authOptions;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             try
             {
-                return StatusCode(StatusCodes.Status200OK, db.Users.First(item => item.Id == id));
+                return StatusCode(StatusCodes.Status200OK, _dbContext.Users.First(item => item.Id == id));
             }
             catch (Exception e)
             {
@@ -41,7 +43,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public ActionResult Post([FromBody] UserAuthenticationData userAuthenticationData)
         {
             try
@@ -55,7 +57,7 @@ namespace MemoryCardsWebApp.Controllers
 
                 DateTime now = DateTime.UtcNow;
 
-                AuthOptions authParams = authOptions.Value;
+                AuthOptions authParams = _authOptions.Value;
 
                 JwtSecurityToken jwt = new JwtSecurityToken(
                     issuer: authParams.Issuer,
@@ -67,7 +69,7 @@ namespace MemoryCardsWebApp.Controllers
                         SecurityAlgorithms.HmacSha256));
 
                 string encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-                
+
                 var response = new
                 {
                     access_token = encodedJwt,
@@ -84,14 +86,14 @@ namespace MemoryCardsWebApp.Controllers
 
         private ClaimsIdentity GetIdentity(UserAuthenticationData userAuthenticationData)
         {
-            User findUser = db.Users.FirstOrDefault(item =>
-                item.Email == userAuthenticationData.Email && item.PasswordHash == userAuthenticationData.PasswordHash);
+            User foundUser = _dbContext.Users.FirstOrDefault(u =>
+                u.Email == userAuthenticationData.Email && u.PasswordHash == userAuthenticationData.PasswordHash);
 
-            if (findUser != null)
+            if (foundUser != null)
             {
                 List<Claim> claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, findUser.Id.ToString()),
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, foundUser.Id.ToString()),
                     new Claim(ClaimsIdentity.DefaultRoleClaimType, "user")
                 };
 
@@ -101,6 +103,7 @@ namespace MemoryCardsWebApp.Controllers
                 return claimsIdentity;
             }
 
+            //not found user
             return null;
         }
     }

@@ -24,7 +24,7 @@
     </div>
 
     <div class="row justify-content-around">
-      <div *ngFor="let card of currentCards" class="mt-4 " (click)="showEditCardDialog(card)">
+      <div *ngFor="let card of cards" class="mt-4 " (click)="showEditCardDialog(card)">
         <div class="fullCard mt-2 mb-2" style="border:5px solid {{card.color}}; overflow:hidden">
           <div class="card pl-3 pt-3 pr-3" style="width: 10rem; height: 13rem">
             <img *ngIf="card.frontImage!=''" src="{{card.frontImage}}" class="card-img-top img-fluid resize-img"
@@ -43,19 +43,5 @@
         </div>
       </div>
     </div>
-
-<!--    <!— <div class="card pl-3 pt-3 pr-3" style="width: 13rem; ">&ndash;&gt;-->
-<!--    <!— <img src="{{card.frontImage}}" class="card-img-top img-fluid resize-img" style="border-radius: 10px">&ndash;&gt;-->
-<!--    <!— <div class="card-body">&ndash;&gt;-->
-<!--      <!— <h1 class="card-title text-center font-weight-bold">{{card.frontText}}</h1>&ndash;&gt;-->
-<!--      <!— </div>&ndash;&gt;-->
-<!--    <!— </div>&ndash;&gt;-->
-<!--    <!— <div class=" card pl-3 pt-3 pr-3" style="width: 13rem;">&ndash;&gt;-->
-<!--    <!— <img src="{{card.backImage}}" class="card-img-top img-fluid resize-img" style="border-radius: 10px">&ndash;&gt;-->
-<!--    <!— <div class="card-body">&ndash;&gt;-->
-<!--      <!— <h1 class="card-title text-center font-weight-bold">{{card.backText}}</h1>&ndash;&gt;-->
-<!--      <!— </div>&ndash;&gt;-->
-<!--    <!— </div>&ndash;&gt;-->
-
   </div>
 </div>

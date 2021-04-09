@@ -4,6 +4,7 @@ using System.Linq;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
 using MemoryCardsWebApp.Models.TsEntities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,24 +17,25 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class DecksController : ControllerBase
     {
-        private MemoryCardsContext db;
+        private MemoryCardsContext _dbContext;
 
         public DecksController(MemoryCardsContext context)
         {
-            db = context;
+            _dbContext = context;
         }
 
-        //api/decks/getbyuser/1
+
+        [Authorize]
         [HttpGet("GetDecksByUserId/{id}")]
         public IActionResult GetDecksByUserId(int id)
         {
             try
             {
                 List<Deck> decks =
-                    db.Decks.FromSqlRaw(
+                    _dbContext.Decks.FromSqlRaw(
                         $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={id})").ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
-                List<User> users = db.Users.ToList();
+                List<User> users = _dbContext.Users.ToList();
 
                 foreach (Deck deck in decks)
                 {
@@ -58,12 +60,13 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             try
             {
-                return StatusCode(StatusCodes.Status200OK, db.Decks.First(item => item.Id == id));
+                return StatusCode(StatusCodes.Status200OK, _dbContext.Decks.First(item => item.Id == id));
             }
             catch (Exception e)
             {
@@ -71,16 +74,17 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             try
             {
-                Deck findDeck = db.Decks.First(item => item.Id == id);
+                Deck findDeck = _dbContext.Decks.First(item => item.Id == id);
 
-                db.Decks.Remove(findDeck);
+                _dbContext.Decks.Remove(findDeck);
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, id);
             }
@@ -90,23 +94,24 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] Deck deck)
         {
             try
             {
-                db.Decks.Add(deck);
+                _dbContext.Decks.Add(deck);
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
-                db.UsersDecks.Add(new UsersDeck()
+                _dbContext.UsersDecks.Add(new UsersDeck()
                 {
                     UserId = deck.AuthorUserId,
                     DeckId = deck.Id
                 });
-                
 
-                db.SaveChanges();
+
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, deck);
             }
@@ -116,18 +121,19 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Deck deck)
         {
             try
             {
-                Deck findDeck = db.Decks.First(item => item.Id == id);
+                Deck findDeck = _dbContext.Decks.First(item => item.Id == id);
 
                 findDeck.Title = deck.Title;
                 findDeck.Description = deck.Description;
                 findDeck.Visibility = deck.Visibility;
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, findDeck);
             }
