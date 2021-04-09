@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DataStorageService} from "../data-storage/data-storage.service";
@@ -46,7 +46,7 @@ interface Deck {
 })
 export class DeckCardsHomeComponent implements OnInit {
   private cardSides: CardSides = {};
-  private cards: Card[] = [];
+  cards: Card[] = [];
   private readonly deckId: number;
   private decksCards: DecksCard[] = [];
   private card: Card;
@@ -62,7 +62,8 @@ export class DeckCardsHomeComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private dataStorage: DataStorageService,
-    private cookieService: CookieService) {
+    private cookieService: CookieService,
+    private router: Router) {
 
     //retrieve opened deck's id from DI
     this.deckId = +this.cookieService.get('opened_deck')
@@ -74,10 +75,6 @@ export class DeckCardsHomeComponent implements OnInit {
     this.getCurrentDeck();
 
     this.getCardsByDeckId();
-
-
-    // this.getCards();
-    this.getDecksCards();
   }
 
   fillCardSides(): void {
@@ -152,7 +149,11 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   getCards(): void {
-    this.http.get<Card[]>(`/api/cards`).subscribe(
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
+
+    this.http.get<Card[]>(`/api/cards`, {headers:headers}).subscribe(
       responseData => {
         this.cards = responseData;
         this.setCards();
@@ -165,9 +166,11 @@ export class DeckCardsHomeComponent implements OnInit {
 
 
   postCard(): void {
-    let body = JSON.stringify(this.card);
+    const body = JSON.stringify(this.card);
 
-    let headers = new HttpHeaders().set('Content-Type', 'application/json');
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
     this.http.post<Card>(`/api/cards`, body, {headers: headers}).subscribe(
       responseData => {
@@ -186,7 +189,9 @@ export class DeckCardsHomeComponent implements OnInit {
   putCard(): void {
 
     const body = JSON.stringify(this.card);
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
     this.http.put<Card>(`/api/cards/${this.card.id}`, body, {headers: headers}).subscribe(
       responseData => {
@@ -205,7 +210,7 @@ export class DeckCardsHomeComponent implements OnInit {
   deleteDeck(): void {
     const token = this.cookieService.get('access_token');
 
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
     this.http.delete<number>(`/api/decks/${this.currentDeck.id}`, {headers: headers}).subscribe(
       responseData => {
@@ -218,7 +223,12 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   deleteCard(cardId: number): void {
-    this.http.delete<number>(`/api/cards/${cardId}`).subscribe(
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
+
+
+    this.http.delete<number>(`/api/cards/${cardId}`, {headers:headers}).subscribe(
       responseData => {
         const findIndex = this.cards.findIndex(item => item.id == responseData);
         this.cards.splice(findIndex, 1);
@@ -236,8 +246,9 @@ export class DeckCardsHomeComponent implements OnInit {
     this.decksCard = {cardId: cardId, deckId: this.currentDeck.id};
 
     const body = JSON.stringify(this.decksCard);
+    const token = this.cookieService.get('access_token');
 
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
     this.http.post<DecksCard>(`/api/deckscards`, body, {headers: headers}).subscribe(
       responseData => {
@@ -266,7 +277,12 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   getDecksCards(): void {
-    this.http.get<DecksCard[]>(`/api/deckscards`).subscribe(
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+
+    this.http.get<DecksCard[]>(`/api/deckscards`, {headers:headers}).subscribe(
       responseData => {
         this.decksCards = responseData;
         this.setCards();
@@ -286,7 +302,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   goBack(): void {
-    location.href = 'deck';
+    this.router.navigateByUrl("deck");
   }
 
 
@@ -308,7 +324,8 @@ export class DeckCardsHomeComponent implements OnInit {
 
     this.http.get<Card[]>(`/api/cards/GetCardsByDeckId/${this.deckId}`, {headers: headers}).subscribe(
       responseData => {
-        this.cards = responseData
+        this.cards = responseData;
+        console.dir(this.cards)
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);

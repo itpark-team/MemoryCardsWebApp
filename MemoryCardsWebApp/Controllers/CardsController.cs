@@ -32,7 +32,7 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
                 if (identity != null)
                 {
@@ -48,7 +48,7 @@ namespace MemoryCardsWebApp.Controllers
                     User openingUser = _dbContext.Users.First(u => u.Id == userId);
                     if (openingUser != null)
                     {
-                        var usersOpeningDeck =
+                        UsersDeck usersOpeningDeck =
                             _dbContext.UsersDecks.First(ud => ud.Deck.Id == id && ud.User.Id == userId);
                         if (usersOpeningDeck == null)
                         {
@@ -59,8 +59,7 @@ namespace MemoryCardsWebApp.Controllers
 
                 List<Card> cards =
                     _dbContext.Cards.FromSqlRaw(
-                            $"SELECT * FROM dbo.Cards WHERE id IN (SELECT CardId FROM dbo.DecksCards WHERE DeckId={id.ToString()})")
-                        .ToList();
+                            $"SELECT * FROM dbo.Cards WHERE id IN (SELECT CardId FROM dbo.DecksCards WHERE DeckId={id.ToString()})").ToList();
 
                 return StatusCode(StatusCodes.Status200OK, cards);
             }
@@ -80,20 +79,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, _dbContext.Cards);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] Card card)
         {
@@ -111,6 +97,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Card card)
         {
@@ -137,6 +124,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
