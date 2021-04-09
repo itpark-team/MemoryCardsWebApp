@@ -3,12 +3,13 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute} from "@angular/router";
 import {Subscription} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {AddDeckDialog} from "../deck-home/deck-home.component";
-import {EditDeckDialog} from "../deck-home/deck-home.component";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
 import {PasserService} from "../pass-params/passer.service";
 
+
+import {AddDeckDialog} from "../deck-home/deck-home.component";
+import {EditDeckDialog} from "../deck-home/deck-home.component";
 
 //Entities
 interface Card {

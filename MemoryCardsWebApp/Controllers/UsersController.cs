@@ -19,13 +19,13 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private MemoryCardsContext db;
-        private IOptions<AuthOptions> authOptions;
+        private MemoryCardsContext _dbContext;
+        private IOptions<AuthOptions> _authOptions;
 
         public UsersController(MemoryCardsContext context, IOptions<AuthOptions> authOptions)
         {
-            db = context;
-            this.authOptions = authOptions;
+            _dbContext = context;
+            _authOptions = authOptions;
         }
 
         [Authorize]
@@ -34,7 +34,7 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                return StatusCode(StatusCodes.Status200OK, db.Users.First(item => item.Id == id));
+                return StatusCode(StatusCodes.Status200OK, _dbContext.Users.First(item => item.Id == id));
             }
             catch (Exception e)
             {
@@ -57,7 +57,7 @@ namespace MemoryCardsWebApp.Controllers
 
                 DateTime now = DateTime.UtcNow;
 
-                AuthOptions authParams = authOptions.Value;
+                AuthOptions authParams = _authOptions.Value;
 
                 JwtSecurityToken jwt = new JwtSecurityToken(
                     issuer: authParams.Issuer,
@@ -86,7 +86,7 @@ namespace MemoryCardsWebApp.Controllers
 
         private ClaimsIdentity GetIdentity(UserAuthenticationData userAuthenticationData)
         {
-            User foundUser = db.Users.FirstOrDefault(u =>
+            User foundUser = _dbContext.Users.FirstOrDefault(u =>
                 u.Email == userAuthenticationData.Email && u.PasswordHash == userAuthenticationData.PasswordHash);
 
             if (foundUser != null)

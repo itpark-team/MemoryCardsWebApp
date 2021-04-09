@@ -17,11 +17,11 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class DecksController : ControllerBase
     {
-        private MemoryCardsContext db;
+        private MemoryCardsContext _dbContext;
 
         public DecksController(MemoryCardsContext context)
         {
-            db = context;
+            _dbContext = context;
         }
 
 
@@ -32,10 +32,10 @@ namespace MemoryCardsWebApp.Controllers
             try
             {
                 List<Deck> decks =
-                    db.Decks.FromSqlRaw(
+                    _dbContext.Decks.FromSqlRaw(
                         $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={id})").ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
-                List<User> users = db.Users.ToList();
+                List<User> users = _dbContext.Users.ToList();
 
                 foreach (Deck deck in decks)
                 {
@@ -66,7 +66,7 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                return StatusCode(StatusCodes.Status200OK, db.Decks.First(item => item.Id == id));
+                return StatusCode(StatusCodes.Status200OK, _dbContext.Decks.First(item => item.Id == id));
             }
             catch (Exception e)
             {
@@ -80,11 +80,11 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                Deck findDeck = db.Decks.First(item => item.Id == id);
+                Deck findDeck = _dbContext.Decks.First(item => item.Id == id);
 
-                db.Decks.Remove(findDeck);
+                _dbContext.Decks.Remove(findDeck);
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, id);
             }
@@ -100,18 +100,18 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                db.Decks.Add(deck);
+                _dbContext.Decks.Add(deck);
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
-                db.UsersDecks.Add(new UsersDeck()
+                _dbContext.UsersDecks.Add(new UsersDeck()
                 {
                     UserId = deck.AuthorUserId,
                     DeckId = deck.Id
                 });
 
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, deck);
             }
@@ -127,13 +127,13 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                Deck findDeck = db.Decks.First(item => item.Id == id);
+                Deck findDeck = _dbContext.Decks.First(item => item.Id == id);
 
                 findDeck.Title = deck.Title;
                 findDeck.Description = deck.Description;
                 findDeck.Visibility = deck.Visibility;
 
-                db.SaveChanges();
+                _dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, findDeck);
             }
