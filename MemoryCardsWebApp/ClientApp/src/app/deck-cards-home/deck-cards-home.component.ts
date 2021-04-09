@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
+import {PasserService} from "../pass-params/passer.service";
 
 
 import {AddDeckDialog} from "../deck-home/deck-home.component";
@@ -61,21 +62,32 @@ export class DeckCardsHomeComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private dataStorage: DataStorageService,
-    private cookieService: CookieService) {
+    private cookieService: CookieService,
+    private passerService: PasserService) {
 
+    //retrieve opened deck's id from DI
+    this.deckId = +this.cookieService.get('opened_deck')
+    // this.deckId = passerService.getOpenedDeckId()
 
-    this.querySubscription = route.queryParams.subscribe(
-      (queryParam: any) => {
-        this.deckId = queryParam['deckId'];
-      }
-    );
+    console.log(this.deckId)
+
+    // this.querySubscription = route.queryParams.subscribe(
+    //   (queryParam: any) => {
+    //     this.deckId = queryParam['deckId'];
+    //   }
+    // );
   }
 
 
   ngOnInit(): void {
-    this.getCards();
-    this.getDecksCards();
+
     this.getCurrentDeck();
+
+    this.getCardsByDeckId();
+
+
+    // this.getCards();
+    this.getDecksCards();
   }
 
   fillCardSides(): void {
@@ -297,6 +309,21 @@ export class DeckCardsHomeComponent implements OnInit {
       }
     }
     this.fillCardSides();
+  }
+
+  private getCardsByDeckId(): void {
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    this.http.get<Card[]>(`/api/cards/GetCardsByDeckId/${this.deckId}`, {headers: headers}).subscribe(
+      responseData => {
+        this.cards = responseData
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
   }
 }
 
