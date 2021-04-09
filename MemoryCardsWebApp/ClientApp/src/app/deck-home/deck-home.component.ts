@@ -85,7 +85,7 @@ export class DeckHomeComponent implements OnInit {
     if (this.isAuth == false) {
       location.href = '';
     }
-    this.currentUserId = +this.cookieService.get('id_user');
+    //this.currentUserId = +this.cookieService.get('id_user');
 
     this.getDecksByUserId();
 
@@ -140,7 +140,7 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 
-    this.http.get<Deck[]>(`/api/decks/GetDecksByUserId/${this.currentUserId}`, {headers: headers}).subscribe(
+    this.http.get<Deck[]>(`/api/decks/GetDecksByUserId`, {headers: headers}).subscribe(
       responseData => {
         this.decks = responseData
       },
@@ -151,7 +151,12 @@ export class DeckHomeComponent implements OnInit {
   }
 
   deleteDeck(id: number): void {
-    this.http.delete<number>(`/api/decks/${id}`).subscribe(
+
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    this.http.delete<number>(`/api/decks/${id}`,{headers:headers}).subscribe(
       responseData => {
         const findIndex = this.decks.findIndex(item => item.id == responseData);
         this.decks.splice(findIndex, 1);
@@ -163,7 +168,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   postDeck(): void {
-    this.deckToAction.authorUserId = this.currentUserId;
+    //this.deckToAction.authorUserId = this.currentUserId;
     const body = JSON.stringify(this.deckToAction);
 
     const token = this.cookieService.get('access_token');
@@ -195,7 +200,7 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 
-    this.http.get<User>(`/api/users/${id}`, {headers: headers}).subscribe(
+    this.http.get<User>(`/api/users`, {headers: headers}).subscribe(
       responseData => {
         this.user.id = responseData.id;
         this.user.username = responseData.username;

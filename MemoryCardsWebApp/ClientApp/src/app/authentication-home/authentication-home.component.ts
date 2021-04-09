@@ -78,7 +78,7 @@ export class AuthenticationHomeComponent implements OnInit {
     this.http.post(`/api/users/login`, body, {headers: headers}).subscribe(
       responseData => {
         this.cookieService.set('access_token', responseData['access_token'], {expires: new Date(Date.now() + this.delay24hours)});
-        this.cookieService.set('id_user', responseData['id_user'], {expires: new Date(Date.now() + this.delay24hours)});
+        //this.cookieService.set('id_user', responseData['id_user'], {expires: new Date(Date.now() + this.delay24hours)});
 
         if (this.saveUser) {
           this.cookieService.set('login', this.userAuthenticationData.email, {expires: new Date(Date.now() + this.delay1000days)});

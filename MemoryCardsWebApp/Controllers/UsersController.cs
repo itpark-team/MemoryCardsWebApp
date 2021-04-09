@@ -29,12 +29,18 @@ namespace MemoryCardsWebApp.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet]
+        public IActionResult Get()
         {
             try
             {
-                return StatusCode(StatusCodes.Status200OK, _dbContext.Users.First(item => item.Id == id));
+                ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+                
+                int userId;
+                string claimName = identity.Name;
+                bool succeded = int.TryParse(claimName, out userId);
+                
+                return StatusCode(StatusCodes.Status200OK, _dbContext.Users.First(item => item.Id == userId));
             }
             catch (Exception e)
             {

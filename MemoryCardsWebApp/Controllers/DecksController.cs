@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
 using MemoryCardsWebApp.Models.TsEntities;
@@ -26,14 +27,20 @@ namespace MemoryCardsWebApp.Controllers
 
 
         [Authorize]
-        [HttpGet("GetDecksByUserId/{id}")]
-        public IActionResult GetDecksByUserId(int id)
+        [HttpGet("GetDecksByUserId")]
+        public IActionResult GetDecksByUserId()
         {
             try
             {
+                ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+                
+                int userId;
+                string claimName = identity.Name;
+                bool succeded = int.TryParse(claimName, out userId);
+                
                 List<Deck> decks =
                     _dbContext.Decks.FromSqlRaw(
-                        $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={id})").ToList();
+                        $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={userId})").ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
                 List<User> users = _dbContext.Users.ToList();
 
