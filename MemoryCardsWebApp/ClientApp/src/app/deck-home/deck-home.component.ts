@@ -151,7 +151,12 @@ export class DeckHomeComponent implements OnInit {
   }
 
   deleteDeck(id: number): void {
-    this.http.delete<number>(`/api/decks/${id}`).subscribe(
+
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    this.http.delete<number>(`/api/decks/${id}`,{headers:headers}).subscribe(
       responseData => {
         const findIndex = this.decks.findIndex(item => item.id == responseData);
         this.decks.splice(findIndex, 1);

@@ -158,6 +158,31 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
+                ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+                if (identity != null)
+                {
+                    int userId;
+                    string claimName = identity.Name;
+                    bool succeded = int.TryParse(claimName, out userId);
+
+                    if (!succeded)
+                    {
+                        throw new ArgumentException("Could not retrieve ClaimName.");
+                    }
+
+                    User deletingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    if (deletingUser != null)
+                    {
+                        UsersDeck usersDeletingDeck =
+                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                        if (usersDeletingDeck == null)
+                        {
+                            throw new WebException();
+                        }
+                    }
+                }
+
                 Deck findDeck = _dbContext.Decks.First(item => item.Id == id);
 
                 _dbContext.Decks.Remove(findDeck);
@@ -166,8 +191,16 @@ namespace MemoryCardsWebApp.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, id);
             }
+            catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
+            }
 
-
+            catch (WebException we)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                    "Trying to delete deck which does not belong to you!");
+            }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
@@ -291,7 +324,7 @@ namespace MemoryCardsWebApp.Controllers
             catch (WebException we)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized,
-                    "Trying to put deck where you are not an author!");
+                    "Trying to edit deck that don't belong to you!");
             }
 
             catch (Exception e)
