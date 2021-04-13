@@ -51,7 +51,7 @@ export class DeckHomeComponent implements OnInit {
   private deck: Deck;
   private deckToAction: DeckToPost;
   private user: User;
-  private currentUserId: number;
+  private readonly currentUserId: number;
 
 
   constructor(private http: HttpClient,

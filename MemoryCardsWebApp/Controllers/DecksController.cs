@@ -26,7 +26,6 @@ namespace MemoryCardsWebApp.Controllers
             _dbContext = context;
         }
 
-
         [Authorize]
         [HttpGet("GetDecksByUserId")]
         public IActionResult GetDecksByUserId()
@@ -41,9 +40,7 @@ namespace MemoryCardsWebApp.Controllers
 
                 List<Deck> decks =
                     _dbContext.Decks.FromSqlRaw(
-                            $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={userId})")
-                        .ToList();
-
+                        $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={userId})").ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
                 List<User> users = _dbContext.Users.ToList();
 
