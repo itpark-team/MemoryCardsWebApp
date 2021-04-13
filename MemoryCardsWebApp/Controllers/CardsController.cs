@@ -129,7 +129,7 @@ namespace MemoryCardsWebApp.Controllers
         public IActionResult Delete(int id)
         {
             try
-            {
+            { 
                 Card findCard = _dbContext.Cards.First(item => item.Id == id);
 
                 _dbContext.Cards.Remove(findCard);
