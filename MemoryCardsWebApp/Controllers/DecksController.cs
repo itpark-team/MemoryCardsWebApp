@@ -46,11 +46,11 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User openingUser = _dbContext.Users.First(u => u.Id == userId);
+                    User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (openingUser != null)
                     {
                         User usersOpeningDecks =
-                            _dbContext.Users.First(u => u.Id == userId);
+                            _dbContext.Users.FirstOrDefault(u => u.Id == userId);
 
                         if (usersOpeningDecks == null || usersOpeningDecks.Id != id)
                         {
@@ -107,7 +107,43 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
+                ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+                if (identity != null)
+                {
+                    int userId;
+                    string claimName = identity.Name;
+                    bool succeded = int.TryParse(claimName, out userId);
+
+                    if (!succeded)
+                    {
+                        throw new ArgumentException("Could not retrieve ClaimName.");
+                    }
+
+                    User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    if (openingUser != null)
+                    {
+                        UsersDeck usersOpeningDeck =
+                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                        if (usersOpeningDeck == null)
+                        {
+                            throw new WebException();
+                        }
+                    }
+                }
                 return StatusCode(StatusCodes.Status200OK, _dbContext.Decks.First(item => item.Id == id));
+            }
+            
+            
+            catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
+            }
+
+            catch (WebException we)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                    "Trying to get someones deck which does not belong to current user!");
             }
             catch (Exception e)
             {
@@ -129,6 +165,8 @@ namespace MemoryCardsWebApp.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, id);
             }
+            
+            
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
