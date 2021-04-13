@@ -131,10 +131,11 @@ namespace MemoryCardsWebApp.Controllers
                         }
                     }
                 }
+
                 return StatusCode(StatusCodes.Status200OK, _dbContext.Decks.First(item => item.Id == id));
             }
-            
-            
+
+
             catch (ArgumentException e)
             {
                 return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
@@ -165,8 +166,8 @@ namespace MemoryCardsWebApp.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, id);
             }
-            
-            
+
+
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
@@ -205,7 +206,7 @@ namespace MemoryCardsWebApp.Controllers
                         }
                     }
                 }
-                
+
                 _dbContext.Decks.Add(deck);
 
                 _dbContext.SaveChanges();
@@ -221,7 +222,7 @@ namespace MemoryCardsWebApp.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, deck);
             }
-            
+
             catch (ArgumentException e)
             {
                 return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
@@ -232,7 +233,7 @@ namespace MemoryCardsWebApp.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized,
                     "Trying to put deck where you are not an author!");
             }
-            
+
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
@@ -245,6 +246,32 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
+                // не нашёл метод на фронте
+                ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+                if (identity != null)
+                {
+                    int userId;
+                    string claimName = identity.Name;
+                    bool succeded = int.TryParse(claimName, out userId);
+
+                    if (!succeded)
+                    {
+                        throw new ArgumentException("Could not retrieve ClaimName.");
+                    }
+
+                    User editingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    if (editingUser != null)
+                    {
+                        UsersDeck usersOpeningDeck =
+                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                        if (usersOpeningDeck == null)
+                        {
+                            throw new WebException();
+                        }
+                    }
+                }
+
                 Deck findDeck = _dbContext.Decks.First(item => item.Id == id);
 
                 findDeck.Title = deck.Title;
@@ -255,6 +282,18 @@ namespace MemoryCardsWebApp.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, findDeck);
             }
+
+            catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
+            }
+
+            catch (WebException we)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                    "Trying to put deck where you are not an author!");
+            }
+
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
