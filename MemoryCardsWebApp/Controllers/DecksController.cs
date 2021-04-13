@@ -26,43 +26,21 @@ namespace MemoryCardsWebApp.Controllers
             _dbContext = context;
         }
 
-
         [Authorize]
         [HttpGet("GetDecksByUserId")]
         public IActionResult GetDecksByUserId()
         {
-            int userId = -1;
             try
             {
                 ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
-                if (identity != null)
-                {
-                    string claimName = identity.Name;
-                    bool succeded = int.TryParse(claimName, out userId);
-
-                    if (!succeded)
-                    {
-                        throw new ArgumentException("Could not retrieve ClaimName.");
-                    }
-
-                    User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
-                    if (openingUser != null)
-                    {
-                        User userOpeningDecks =
-                            _dbContext.Users.FirstOrDefault(u => u.Id == userId);
-
-                        if (userOpeningDecks == null || userOpeningDecks.Id != userId)
-                        {
-                            throw new WebException();
-                        }
-                    }
-                }
+                int userId;
+                string claimName = identity.Name;
+                bool succeded = int.TryParse(claimName, out userId);
 
                 List<Deck> decks =
                     _dbContext.Decks.FromSqlRaw(
-                            $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={userId})")
-                        .ToList();
+                        $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={userId})").ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
                 List<User> users = _dbContext.Users.ToList();
 
@@ -82,24 +60,13 @@ namespace MemoryCardsWebApp.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, decksToSend);
             }
-
-            catch (ArgumentException e)
-            {
-                return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
-            }
-
-            catch (WebException we)
-            {
-                return StatusCode(StatusCodes.Status401Unauthorized,
-                    "Trying to get someones deck which does not belong to current user!");
-            }
-
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Fuck yourself and your fucking DecksToSend, cyka!");
             }
         }
+
 
         [Authorize]
         [HttpGet("{id}")]
@@ -195,7 +162,6 @@ namespace MemoryCardsWebApp.Controllers
             {
                 return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
             }
-
             catch (WebException we)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized,
@@ -213,7 +179,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                // не проверял
                 ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
                 if (identity != null)
@@ -228,18 +193,14 @@ namespace MemoryCardsWebApp.Controllers
                     }
 
                     User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
-                    if (openingUser != null)
+                    if (openingUser == null)
                     {
-                        User usersAddingDeck =
-                            _dbContext.Users.FirstOrDefault(u => u.Id == userId);
-
-                        if (usersAddingDeck == null || usersAddingDeck.Id != deck.AuthorUserId)
-                        {
-                            throw new WebException();
-                        }
+                        throw new WebException();
                     }
-                }
 
+                    deck.AuthorUserId = userId;
+                }
+                
                 _dbContext.Decks.Add(deck);
 
                 _dbContext.SaveChanges();
@@ -279,7 +240,6 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                // не нашёл метод на фронте
                 ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
                 if (identity != null)

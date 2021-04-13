@@ -26,10 +26,6 @@ interface DecksCard {
   cardId: number;
 }
 
-interface CardSides {
-  [id: number]: string;
-}
-
 interface Deck {
   id: number;
   title: string;
@@ -45,7 +41,6 @@ interface Deck {
   styleUrls: ['./deck-cards-home.component.css']
 })
 export class DeckCardsHomeComponent implements OnInit {
-  private cardSides: CardSides = {};
   cards: Card[] = [];
   private deckId: number;
   private decksCards: DecksCard[] = [];
@@ -77,12 +72,6 @@ export class DeckCardsHomeComponent implements OnInit {
     this.getCardsByDeckId();
   }
 
-  fillCardSides(): void {
-    this.cardSides = {};
-    for (let i = 0; i < this.currentCards.length; i++) {
-      this.cardSides[this.currentCards[i].id] = 'front';
-    }
-  }
 
   showAddDialog(): void {
     this.clearCard();
@@ -186,7 +175,6 @@ export class DeckCardsHomeComponent implements OnInit {
         alert(`error: ${error.status}, ${error.statusText}`);
       }
     );
-    this.fillCardSides();
   }
 
   putCard(): void {
@@ -248,8 +236,6 @@ export class DeckCardsHomeComponent implements OnInit {
         );
       }
     );
-
-    this.fillCardSides();
   }
 
   postDeckCard(cardId: number): void {
@@ -303,13 +289,6 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-  changeCardSide(id: number): void {
-    if (this.cardSides[id] == 'front') {
-      this.cardSides[id] = 'back';
-    } else {
-      this.cardSides[id] = 'front';
-    }
-  }
 
   goBack(): void {
     this.router.navigateByUrl("deck");
@@ -324,7 +303,6 @@ export class DeckCardsHomeComponent implements OnInit {
         }
       }
     }
-    this.fillCardSides();
   }
 
   private getCardsByDeckId(): void {
