@@ -45,11 +45,11 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User openingUser = _dbContext.Users.First(u => u.Id == userId);
+                    User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (openingUser != null)
                     {
                         UsersDeck usersOpeningDeck =
-                            _dbContext.UsersDecks.First(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
                         if (usersOpeningDeck == null)
                         {
                             throw new WebException();
@@ -129,7 +129,7 @@ namespace MemoryCardsWebApp.Controllers
         public IActionResult Delete(int id)
         {
             try
-            {
+            { 
                 Card findCard = _dbContext.Cards.First(item => item.Id == id);
 
                 _dbContext.Cards.Remove(findCard);
