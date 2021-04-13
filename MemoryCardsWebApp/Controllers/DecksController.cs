@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
 using MemoryCardsWebApp.Models.TsEntities;
@@ -31,9 +33,36 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
+                ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+
+                if (identity != null)
+                {
+                    int userId;
+                    string claimName = identity.Name;
+                    bool succeded = int.TryParse(claimName, out userId);
+
+                    if (!succeded)
+                    {
+                        throw new ArgumentException("Could not retrieve ClaimName.");
+                    }
+
+                    User openingUser = _dbContext.Users.First(u => u.Id == userId);
+                    if (openingUser != null)
+                    {
+                        User usersOpeningDecks =
+                            _dbContext.Users.First(u => u.Id == userId);
+
+                        if (usersOpeningDecks == null || usersOpeningDecks.Id != id)
+                        {
+                            throw new WebException();
+                        }
+                    }
+                }
+
                 List<Deck> decks =
                     _dbContext.Decks.FromSqlRaw(
-                        $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={id})").ToList();
+                            $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={id})")
+                        .ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
                 List<User> users = _dbContext.Users.ToList();
 
@@ -53,6 +82,18 @@ namespace MemoryCardsWebApp.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, decksToSend);
             }
+
+            catch (ArgumentException e)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
+            }
+
+            catch (WebException we)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized,
+                    "Trying to get someones deck which does not belong to current user!");
+            }
+
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
