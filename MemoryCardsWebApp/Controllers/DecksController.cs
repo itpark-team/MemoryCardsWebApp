@@ -28,16 +28,16 @@ namespace MemoryCardsWebApp.Controllers
 
 
         [Authorize]
-        [HttpGet("GetDecksByUserId/{id}")]
-        public IActionResult GetDecksByUserId(int id)
+        [HttpGet("GetDecksByUserId")]
+        public IActionResult GetDecksByUserId()
         {
+            int userId = -1;
             try
             {
                 ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
                 if (identity != null)
                 {
-                    int userId;
                     string claimName = identity.Name;
                     bool succeded = int.TryParse(claimName, out userId);
 
@@ -49,10 +49,10 @@ namespace MemoryCardsWebApp.Controllers
                     User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (openingUser != null)
                     {
-                        User usersOpeningDecks =
+                        User userOpeningDecks =
                             _dbContext.Users.FirstOrDefault(u => u.Id == userId);
 
-                        if (usersOpeningDecks == null || usersOpeningDecks.Id != id)
+                        if (userOpeningDecks == null || userOpeningDecks.Id != userId)
                         {
                             throw new WebException();
                         }
@@ -61,7 +61,7 @@ namespace MemoryCardsWebApp.Controllers
 
                 List<Deck> decks =
                     _dbContext.Decks.FromSqlRaw(
-                            $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={id})")
+                            $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={userId})")
                         .ToList();
                 List<DeckToSend> decksToSend = new List<DeckToSend>();
                 List<User> users = _dbContext.Users.ToList();
