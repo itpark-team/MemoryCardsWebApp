@@ -1,6 +1,6 @@
-namespace MemoryCardsWebApp.Models.TsEntities
+namespace MemoryCardsWebApp.Models.DtoEntities
 {
-    public class UserAuthenticationData
+    public class UserAuthDTO
     {
         public string Email { get; set; }
         public string PasswordHash { get; set; }

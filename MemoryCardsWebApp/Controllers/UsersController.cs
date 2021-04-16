@@ -5,8 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
+using MemoryCardsWebApp.Models.DtoEntities;
 using MemoryCardsWebApp.Models.ExtEntities;
-using MemoryCardsWebApp.Models.TsEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +19,13 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private MemoryCardsContext _dbContext;
-        private IOptions<AuthOptions> _authOptions;
+        private MemoryCardsContext dbContext;
+        private IOptions<AuthOptions> authOptions;
 
         public UsersController(MemoryCardsContext context, IOptions<AuthOptions> authOptions)
         {
-            _dbContext = context;
-            _authOptions = authOptions;
+            dbContext = context;
+            this.authOptions = authOptions;
         }
 
         [Authorize]
@@ -40,7 +40,7 @@ namespace MemoryCardsWebApp.Controllers
                 string claimName = identity.Name;
                 bool succeded = int.TryParse(claimName, out userId);
                 
-                return StatusCode(StatusCodes.Status200OK, _dbContext.Users.First(item => item.Id == userId));
+                return StatusCode(StatusCodes.Status200OK, dbContext.Users.First(item => item.Id == userId));
             }
             catch (Exception e)
             {
@@ -50,11 +50,11 @@ namespace MemoryCardsWebApp.Controllers
         }
 
         [HttpPost("Login")]
-        public ActionResult Post([FromBody] UserAuthenticationData userAuthenticationData)
+        public ActionResult Post([FromBody] UserAuthDTO userAuthDto)
         {
             try
             {
-                ClaimsIdentity identity = GetIdentity(userAuthenticationData);
+                ClaimsIdentity identity = GetIdentity(userAuthDto);
 
                 if (identity == null)
                 {
@@ -63,7 +63,7 @@ namespace MemoryCardsWebApp.Controllers
 
                 DateTime now = DateTime.UtcNow;
 
-                AuthOptions authParams = _authOptions.Value;
+                AuthOptions authParams = authOptions.Value;
 
                 JwtSecurityToken jwt = new JwtSecurityToken(
                     issuer: authParams.Issuer,
@@ -90,10 +90,10 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
-        private ClaimsIdentity GetIdentity(UserAuthenticationData userAuthenticationData)
+        private ClaimsIdentity GetIdentity(UserAuthDTO userAuthDto)
         {
-            User foundUser = _dbContext.Users.FirstOrDefault(u =>
-                u.Email == userAuthenticationData.Email && u.PasswordHash == userAuthenticationData.PasswordHash);
+            User foundUser = dbContext.Users.FirstOrDefault(u =>
+                u.Email == userAuthDto.Email && u.PasswordHash == userAuthDto.PasswordHash);
 
             if (foundUser != null)
             {

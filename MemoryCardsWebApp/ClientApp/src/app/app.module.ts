@@ -68,6 +68,5 @@ const appRoutes: Routes = [
   providers: [DataStorageService],
   bootstrap: [AppComponent]
 })
-export class AppModule {
 
-}
+export class AppModule { }

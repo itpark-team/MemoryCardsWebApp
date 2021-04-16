@@ -6,7 +6,7 @@ using System.Net;
 using System.Security.Claims;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
-using MemoryCardsWebApp.Models.TsEntities;
+using MemoryCardsWebApp.Models.DtoEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,17 +18,11 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class CardsController : Controller
     {
-        public class CardDTO
-        {
-            public Card Card { get; set; }
-            public int DeckId { get; set; }
-        }
-
-        private MemoryCardsContext _dbContext;
+        private MemoryCardsContext dbContext;
 
         public CardsController(MemoryCardsContext context)
         {
-            _dbContext = context;
+            dbContext = context;
         }
 
 
@@ -51,11 +45,11 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    User openingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (openingUser != null)
                     {
                         UsersDeck usersOpeningDeck =
-                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                            dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
                         if (usersOpeningDeck == null)
                         {
                             throw new WebException();
@@ -64,7 +58,7 @@ namespace MemoryCardsWebApp.Controllers
                 }
 
                 List<Card> cards =
-                    _dbContext.Cards.FromSqlRaw(
+                    dbContext.Cards.FromSqlRaw(
                             $"SELECT * FROM dbo.Cards WHERE id IN (SELECT CardId FROM dbo.DecksCards WHERE DeckId={id.ToString()})")
                         .ToList();
 
@@ -72,7 +66,7 @@ namespace MemoryCardsWebApp.Controllers
             }
             catch (ArgumentException e)
             {
-                return StatusCode(StatusCodes.Status409Conflict, "Couldn't parse user id!");
+                return StatusCode(StatusCodes.Status409Conflict, $"Couldn't parse user id! {e.Message}");
             }
             catch (WebException e)
             {
@@ -106,7 +100,7 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User openingUser = _dbContext.Users.First(u => u.Id == userId);
+                    User openingUser = dbContext.Users.First(u => u.Id == userId);
                     if (openingUser == null)
                     {
                         throw new WebException();
@@ -116,16 +110,16 @@ namespace MemoryCardsWebApp.Controllers
                     int deckId = cardDto.DeckId;
 
                     UsersDeck usersOpeningDeck =
-                        _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == deckId && ud.User.Id == userId);
+                        dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == deckId && ud.User.Id == userId);
                     if (usersOpeningDeck == null)
                     {
                         throw new WebException();
                     }
 
                     card = cardDto.Card;
-                    _dbContext.Cards.Add(card);
+                    dbContext.Cards.Add(card);
 
-                    _dbContext.SaveChanges();
+                    dbContext.SaveChanges();
 
                     return StatusCode(StatusCodes.Status200OK, card);
                 }
@@ -167,7 +161,7 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User openingUser = _dbContext.Users.First(u => u.Id == userId);
+                    User openingUser = dbContext.Users.First(u => u.Id == userId);
                     if (openingUser == null)
                     {
                         throw new WebException();
@@ -177,14 +171,14 @@ namespace MemoryCardsWebApp.Controllers
                     int deckId = cardDto.DeckId;
 
                     UsersDeck usersOpeningDeck =
-                        _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == deckId && ud.User.Id == userId);
+                        dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == deckId && ud.User.Id == userId);
                     if (usersOpeningDeck == null)
                     {
                         throw new WebException();
                     }
 
                     card = cardDto.Card;
-                    Card findCard = _dbContext.Cards.First(item => item.Id == id);
+                    Card findCard = dbContext.Cards.First(item => item.Id == id);
 
                     findCard.FrontText = card.FrontText;
                     findCard.FrontImage = card.FrontImage;
@@ -192,7 +186,7 @@ namespace MemoryCardsWebApp.Controllers
                     findCard.BackImage = card.BackImage;
                     findCard.Color = card.Color;
 
-                    _dbContext.SaveChanges();
+                    dbContext.SaveChanges();
 
                     return StatusCode(StatusCodes.Status200OK, card);
                 }
@@ -233,11 +227,11 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    User openingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (openingUser != null)
                     {
                         UsersDeck userOpeningDeck =
-                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == deckId && ud.User.Id == userId);
+                            dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == deckId && ud.User.Id == userId);
                         if (userOpeningDeck == null)
                         {
                             throw new WebException();
@@ -269,12 +263,11 @@ namespace MemoryCardsWebApp.Controllers
         {
             try
             {
-                
-                    Card foundCard = _dbContext.Cards.First(item => item.Id == id);
+                Card foundCard = dbContext.Cards.First(item => item.Id == id);
 
-                    _dbContext.Cards.Remove(foundCard);
+                    dbContext.Cards.Remove(foundCard);
 
-                    _dbContext.SaveChanges();
+                    dbContext.SaveChanges();
 
                     return StatusCode(StatusCodes.Status200OK, foundCard);
             }
