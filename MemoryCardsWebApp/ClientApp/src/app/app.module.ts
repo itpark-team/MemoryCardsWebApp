@@ -24,12 +24,17 @@ import {DataStorageService} from "./data-storage/data-storage.service";
 import {AuthCheckService} from "./auth-check/auth-check.service";
 
 import {WrongLoginOrPasswordDialog} from "./authentication-home/authentication-home.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
   {path: 'decks', component: DeckHomeComponent, canActivate: [AuthCheckService]},
   {path: 'deckcards/:id', component: DeckCardsHomeComponent, canActivate: [AuthCheckService]},
-  {path: 'auth', component: AuthenticationHomeComponent}
+  {path: 'auth', component: AuthenticationHomeComponent},
+  {
+    path: '**',
+    component: NotFoundComponent
+  }
 ];
 
 @NgModule({
@@ -37,6 +42,7 @@ const appRoutes: Routes = [
     AppComponent,
     DeckHomeComponent,
     ProjectHomeComponent,
+    NotFoundComponent,
     AddDeckDialog,
     EditDeckDialog,
     AddCardDialog,

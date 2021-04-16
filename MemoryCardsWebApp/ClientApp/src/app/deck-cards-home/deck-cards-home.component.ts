@@ -341,6 +341,11 @@ export class EditCardDialog {
       }
     });
   }
+
+  public cancel(): void {
+    this.dialog.closeAll();
+  }
+
 }
 
 @Component({
