@@ -6,10 +6,9 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
 import {PasserService} from "../pass-params/passer.service";
-
-
 import {AddDeckDialog} from "../deck-home/deck-home.component";
 import {EditDeckDialog} from "../deck-home/deck-home.component";
+
 
 //Entities
 interface Card {
@@ -58,12 +57,14 @@ export class DeckCardsHomeComponent implements OnInit {
     public dialog: MatDialog,
     private dataStorage: DataStorageService,
     private cookieService: CookieService,
-    private router: Router) {
+    private router: Router,
+    private passer: PasserService) {
 
-    //retrieve opened deck's id from DI
+    // Retrieve opened deck's id from DI
     this.subscription = route.params.subscribe(params => this.deckId = params['id']);
-  }
 
+    this.currentDeck = {id: -1, title: "", description: "", authorUserId: -1, visibility: true};
+  }
 
   ngOnInit(): void {
 
@@ -72,6 +73,12 @@ export class DeckCardsHomeComponent implements OnInit {
     this.getCardsByDeckId();
   }
 
+
+  //===================____DIALOGS____===================//
+
+  private clearCard(): void {
+    this.card = {id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
+  }
 
   showAddDialog(): void {
     this.clearCard();
@@ -133,26 +140,24 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
 
-  private clearCard(): void {
-    this.card = {id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
-  }
+  //================____CARDS____CRUD____================//
 
-  getCards(): void {
+  private getCardsByDeckId(): void {
     const token = this.cookieService.get('access_token');
 
-    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 
-    this.http.get<Card[]>(`/api/cards`, {headers: headers}).subscribe(
+    this.http.get<Card[]>(`/api/cards/GetCardsByDeckId/${this.deckId}`, {headers: headers}).subscribe(
       responseData => {
         this.cards = responseData;
-        this.setCards();
       },
       error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
+        this.passer.setErrorTypeId(error.status);
+
+        this.router.navigateByUrl("/decks");
       }
     );
   }
-
 
   postCard(): void {
 
@@ -256,7 +261,6 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-
   getCurrentDeck(): void {
     const token = this.cookieService.get('access_token');
 
@@ -267,33 +271,16 @@ export class DeckCardsHomeComponent implements OnInit {
         this.currentDeck = responseData;
       },
       error => {
+        this.passer.setErrorTypeId(error.status)
+
         this.router.navigateByUrl("/decks");
       }
     );
   }
 
-  getDecksCards(): void {
-    const token = this.cookieService.get('access_token');
-
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
-
-    this.http.get<DecksCard[]>(`/api/deckscards`, {headers: headers}).subscribe(
-      responseData => {
-        this.decksCards = responseData;
-        this.setCards();
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
-
-
   goBack(): void {
     this.router.navigateByUrl("deck");
   }
-
 
   setCards(): void {
     if (this.decksCards.length != 0 && this.cards.length != 0) {
@@ -304,22 +291,6 @@ export class DeckCardsHomeComponent implements OnInit {
       }
     }
   }
-
-  private getCardsByDeckId(): void {
-    const token = this.cookieService.get('access_token');
-
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
-    this.http.get<Card[]>(`/api/cards/GetCardsByDeckId/${this.deckId}`, {headers: headers}).subscribe(
-      responseData => {
-        this.cards = responseData;
-        console.dir(this.cards)
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
 }
 
 @Component({
@@ -327,7 +298,8 @@ export class DeckCardsHomeComponent implements OnInit {
   templateUrl: 'add-card-dialog.html',
 })
 export class AddCardDialog {
-  constructor(public dialogRef: MatDialogRef<AddCardDialog>, @Inject(MAT_DIALOG_DATA) public card: Card) {
+  constructor(public dialogRef: MatDialogRef<AddCardDialog>,
+              @Inject(MAT_DIALOG_DATA) public card: Card) {
 
   }
 
@@ -340,9 +312,10 @@ export class AddCardDialog {
   selector: 'edit-card-dialog',
   templateUrl: 'edit-card-dialog.html',
 })
-
 export class EditCardDialog {
-  constructor(public dialogRef: MatDialogRef<EditCardDialog>, @Inject(MAT_DIALOG_DATA) public editedCard: Card, public dialog: MatDialog) {
+  constructor(public dialogRef: MatDialogRef<EditCardDialog>,
+              @Inject(MAT_DIALOG_DATA) public editedCard: Card,
+              public dialog: MatDialog) {
   }
 
   onNoClick(): void {
@@ -351,6 +324,7 @@ export class EditCardDialog {
 
   showEditBackImageDialog(editedCard: Card): void {
     const dialogRef = this.dialog.open(EditImageDialog, {data: editedCard.backImage});
+
     dialogRef.afterClosed().subscribe(result => {
       if (result != null && result != "") {
         editedCard.backImage = result;
@@ -360,6 +334,7 @@ export class EditCardDialog {
 
   showEditFrontImageDialog(editedCard: Card): void {
     const dialogRef = this.dialog.open(EditImageDialog, {data: editedCard.frontImage});
+
     dialogRef.afterClosed().subscribe(result => {
       if (result != null && result != "") {
         editedCard.frontImage = result;
@@ -372,9 +347,9 @@ export class EditCardDialog {
   selector: 'edit-image-dialog',
   templateUrl: 'edit-image-dialog.html',
 })
-
 export class EditImageDialog {
-  constructor(public dialogRef: MatDialogRef<EditImageDialog>, @Inject(MAT_DIALOG_DATA) public editedImage: string) {
+  constructor(public dialogRef: MatDialogRef<EditImageDialog>,
+              @Inject(MAT_DIALOG_DATA) public editedImage: string) {
   }
 
   onNoClick(): void {
@@ -390,7 +365,6 @@ export class DeleteDialog {
   constructor(public dialogRef: MatDialogRef<DeleteDialog>) {
 
   }
-
 
   onNoClick(): void {
     this.dialogRef.close();
