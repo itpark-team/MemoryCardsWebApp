@@ -33,7 +33,7 @@
 </mat-dialog-content>
 <mat-dialog-actions class="mb-1">
   <div class="col-md-6 text-left">
-    <button mat-raised-button color="warn" [mat-dialog-close]="editedCard">Cancel</button>
+    <button mat-raised-button color="warn" (click)="cancel()" >Cancel</button>
   </div>
   <div class="col-md-6 text-right">
     <button mat-raised-button style="background-color: #234560;color: white" [mat-dialog-close]="editedCard">Save
