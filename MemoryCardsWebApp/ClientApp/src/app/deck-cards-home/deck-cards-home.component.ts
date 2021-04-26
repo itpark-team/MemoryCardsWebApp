@@ -132,8 +132,11 @@ export class DeckCardsHomeComponent implements OnInit {
     const dialogRef = this.dialog.open(EditDeckDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result != false) {
-        this.currentDeck = result;
+      if (result != "") {
+        this.currentDeck.title = result.title;
+        this.currentDeck.description = result.description;
+        this.currentDeck.visibility = result.visibility;
+        console.log("ну оно мзамшло");
         this.editDeck();
       }
     })
@@ -223,7 +226,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
-    this.http.put<number>(`/api/decks/${this.currentDeck.id}`, body, {headers: headers}).subscribe(
+    this.http.put<Deck>(`/api/decks/${this.currentDeck.id}`, body, {headers: headers}).subscribe(
       responseData => {
         location.href = 'deck';
       },
