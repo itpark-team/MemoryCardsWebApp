@@ -1,22 +1,25 @@
 ﻿<h2 mat-dialog-title>Edit deck:</h2>
 <mat-dialog-content class="mat-typography">
-  <label>
-    title: <input type="text" [ngModel]="deck.title" (ngModelChange)="deck.title=$event">
-  </label>
-  <br>
+    <div class="d-flex flex-column justify-content-center align-items-start" style="border-radius: 5px; padding-bottom: 5px">
+      <input type="text" class="mb-2" placeholder="Title"
+             style="border-radius: 5px;"
+             [ngModel]="deck.title"
+             (ngModelChange)="deck.title=$event">
 
-  <label>
-    description: <input type="text" [ngModel]="deck.description" (ngModelChange)="deck.description=$event">
-  </label>
-  <br>
+      <input class="mb-2" type="text" placeholder="Description"
+             style="border-radius: 5px;"
+             [ngModel]="deck.description"
+             (ngModelChange)="deck.description=$event">
 
-  <label>
-    visibility: <input type="checkbox" [ngModel]="deck.visibility" (ngModelChange)="deck.visibility=$event">
-  </label>
-  <br>
+      <label class="mb-2">
+        Visible: <input type="checkbox"
+                        [ngModel]="deck.visibility"
+                        (ngModelChange)="deck.visibility=$event">
+      </label>
 
+  </div>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-raised-button [mat-dialog-close]="''">Cancel</button>
+<mat-dialog-actions class="row justify-content-end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
   <button mat-raised-button color="accent" [mat-dialog-close]="deck">Update</button>
 </mat-dialog-actions>
