@@ -7,7 +7,6 @@ import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
 import {PasserService} from "../pass-params/passer.service";
 import {AddDeckDialog} from "../deck-home/deck-home.component";
-import {EditDeckDialog} from "../deck-home/deck-home.component";
 
 
 //Entities
@@ -129,6 +128,17 @@ export class DeckCardsHomeComponent implements OnInit {
     });
   }
 
+  showEditDeckDialog(): void {
+    const dialogRef = this.dialog.open(EditDeckDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != false) {
+        this.currentDeck = result;
+        this.editDeck();
+      }
+    })
+  }
+
   showDeleteDeckDialog(): void {
     const dialogRef = this.dialog.open(DeleteDialog);
 
@@ -199,6 +209,23 @@ export class DeckCardsHomeComponent implements OnInit {
         this.cards.splice(findIndex, 1, responseData);
 
         this.clearCard();
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
+
+  editDeck(): void {
+    const body = JSON.stringify(this.currentDeck);
+
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
+
+    this.http.put<number>(`/api/decks/${this.currentDeck.id}`, body, {headers: headers}).subscribe(
+      responseData => {
+        location.href = 'deck';
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -376,5 +403,18 @@ export class DeleteDialog {
   }
 }
 
+@Component({
+  selector: 'edit-deck-dialog',
+  templateUrl: 'edit-deck-dialog.html',
+})
+export class EditDeckDialog {
+  constructor(public dialogRef: MatDialogRef<EditDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
+
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
 
 

@@ -81,6 +81,7 @@ export class DeckHomeComponent implements OnInit {
     this.currentUserId = 0;
   }
 
+  //used
   private async processError(): Promise<void> {
     if (this.passerService.getErrorTypeId() !== -1) {
       console.log(this.passerService.getErrorTypeId());
@@ -102,6 +103,7 @@ export class DeckHomeComponent implements OnInit {
 
 
   //Methods from HTML
+  //used
   logout(): void {
     this.cookieService.delete('id_user');
     this.cookieService.delete('access_token');
@@ -111,10 +113,12 @@ export class DeckHomeComponent implements OnInit {
     this.router.navigateByUrl("/auth");
   }
 
+  //used
   openDeck(deckId: number): void {
     this.router.navigateByUrl('deckcards/' + deckId);
   }
 
+  //used
   showAddDialog(): void {
     this.clearDeck();
     const dialogRef = this.dialog.open(AddDeckDialog, {
@@ -130,6 +134,7 @@ export class DeckHomeComponent implements OnInit {
 
 
   //Local methods
+  //used
   private clearDeck(): void {
     this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
     this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
@@ -138,7 +143,7 @@ export class DeckHomeComponent implements OnInit {
 
   //======DECKS START======//
 
-
+  //used
   async getDecksByUserId(): Promise<void> {
 
     const token = this.cookieService.get('access_token');
@@ -172,6 +177,7 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
+  //used
   postDeck(): void {
     //this.deckToAction.authorUserId = this.currentUserId;
     const body = JSON.stringify(this.deckToAction);
@@ -199,7 +205,7 @@ export class DeckHomeComponent implements OnInit {
 
 //======DECKS FINISH======//
 
-
+  //used
   async getUser(id: number): Promise<void> {
     const token = this.cookieService.get('access_token');
 
@@ -220,6 +226,7 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
+  //used
   async getAuthorUsername(id: number): Promise<string> {
     await this.getUser(id);
     return this.user.username;
@@ -233,19 +240,6 @@ export class DeckHomeComponent implements OnInit {
 })
 export class AddDeckDialog {
   constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'edit-deck-dialog',
-  templateUrl: 'edit-deck-dialog.html',
-})
-export class EditDeckDialog {
-  constructor(public dialogRef: MatDialogRef<EditDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
   }
 
   onNoClick(): void {
