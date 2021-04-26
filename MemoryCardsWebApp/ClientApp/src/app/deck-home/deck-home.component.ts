@@ -8,7 +8,7 @@ import {PasserService} from "../pass-params/passer.service";
 
 
 //Entities
-interface Deck {
+interface DeckWithAuthor {
   id: number;
   title: string;
   description: string;
@@ -17,7 +17,7 @@ interface Deck {
   authorUser: string;
 }
 
-interface DeckToPost {
+interface Deck {
   id: number;
   title: string;
   description: string;
@@ -44,12 +44,11 @@ interface User {
 })
 export class DeckHomeComponent implements OnInit {
 
-  private readonly isAuth: boolean;
+  private readonly isUserAuthenticated: boolean;
 
-  decks: Deck[] = [];
+  decks: DeckWithAuthor[] = [];
 
   private deck: Deck;
-  private deckToAction: DeckToPost;
   private user: User;
   private readonly currentUserId: number;
 
@@ -61,7 +60,7 @@ export class DeckHomeComponent implements OnInit {
               private cookieService: CookieService,
               private passerService: PasserService) {
 
-    this.isAuth = this.cookieService.check("access_token");
+    this.isUserAuthenticated = this.cookieService.check("access_token");
 
     this.user = {
       id: 0,
@@ -74,14 +73,11 @@ export class DeckHomeComponent implements OnInit {
       subStatus: 0
     };
 
-    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
-
-    this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
 
     this.currentUserId = 0;
   }
 
-  //used
   private async processError(): Promise<void> {
     if (this.passerService.getErrorTypeId() !== -1) {
       console.log(this.passerService.getErrorTypeId());
@@ -90,7 +86,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.isAuth == false) {
+    if (this.isUserAuthenticated == false) {
       location.href = '';
     }
 
@@ -98,12 +94,11 @@ export class DeckHomeComponent implements OnInit {
 
     this.getDecksByUserId();
 
-    this.getUser(this.currentUserId);
+    this.getUserByUserId(this.currentUserId);
   }
 
 
   //Methods from HTML
-  //used
   logout(): void {
     this.cookieService.delete('id_user');
     this.cookieService.delete('access_token');
@@ -113,44 +108,39 @@ export class DeckHomeComponent implements OnInit {
     this.router.navigateByUrl("/auth");
   }
 
-  //used
   openDeck(deckId: number): void {
     this.router.navigateByUrl('deckcards/' + deckId);
   }
 
-  //used
-  showAddDialog(): void {
+  showCreatingDeckDialog(): void {
     this.clearDeck();
     const dialogRef = this.dialog.open(AddDeckDialog, {
-      data: this.deckToAction
+      data: this.deck
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != "") {
-        this.deckToAction = result;
-        this.postDeck();
+        this.deck = result;
+        this.addDeck();
       }
     });
   }
 
 
   //Local methods
-  //used
   private clearDeck(): void {
-    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
-    this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
   }
 
 
   //======DECKS START======//
 
-  //used
   async getDecksByUserId(): Promise<void> {
 
     const token = this.cookieService.get('access_token');
 
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 
-    this.http.get<Deck[]>(`/api/decks/GetDecksByUserId`, {headers: headers}).subscribe(
+    this.http.get<DeckWithAuthor[]>(`/api/decks/GetDecksByUserId`, {headers: headers}).subscribe(
       responseData => {
         this.decks = responseData
       },
@@ -160,27 +150,9 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-  deleteDeck(id: number): void {
-
-    const token = this.cookieService.get('access_token');
-
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
-    this.http.delete<number>(`/api/decks/${id}`, {headers: headers}).subscribe(
-      responseData => {
-        const findIndex = this.decks.findIndex(item => item.id == responseData);
-        this.decks.splice(findIndex, 1);
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
-
-  //used
-  postDeck(): void {
-    //this.deckToAction.authorUserId = this.currentUserId;
-    const body = JSON.stringify(this.deckToAction);
+  addDeck(): void {
+    //this.deck.authorUserId = this.currentUserId;
+    const body = JSON.stringify(this.deck);
 
     const token = this.cookieService.get('access_token');
 
@@ -189,10 +161,10 @@ export class DeckHomeComponent implements OnInit {
       .set('Content-Type', 'application/json')
       .append('Authorization', 'Bearer ' + token);
 
-    this.http.post<Deck>(`/api/decks`, body, {headers: headers}).subscribe(
+    this.http.post<DeckWithAuthor>(`/api/decks`, body, {headers: headers}).subscribe(
       async responseData => {
         this.decks.push(responseData);
-        await this.getAuthorUsername(this.user.id).then((userName) => {
+        await this.getUsernameByUserId(this.user.id).then((userName) => {
           this.decks[this.decks.length - 1].authorUser = userName
         })
         this.clearDeck();
@@ -205,8 +177,7 @@ export class DeckHomeComponent implements OnInit {
 
 //======DECKS FINISH======//
 
-  //used
-  async getUser(id: number): Promise<void> {
+  async getUserByUserId(id: number): Promise<void> {
     const token = this.cookieService.get('access_token');
 
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
@@ -226,9 +197,8 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-  //used
-  async getAuthorUsername(id: number): Promise<string> {
-    await this.getUser(id);
+  async getUsernameByUserId(id: number): Promise<string> {
+    await this.getUserByUserId(id);
     return this.user.username;
   }
 }
@@ -239,7 +209,7 @@ export class DeckHomeComponent implements OnInit {
   templateUrl: 'add-deck-dialog.html',
 })
 export class AddDeckDialog {
-  constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
+  constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: DeckWithAuthor) {
   }
 
   onNoClick(): void {
