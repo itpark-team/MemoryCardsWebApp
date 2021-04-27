@@ -10,6 +10,7 @@ import {AddDeckDialog} from "../deck-home/deck-home.component";
 import {Card} from "../../interfaces/card.interface";
 import {Deck} from "../../interfaces/deck.interface";
 import {DeckCard} from "../../interfaces/deck-card.interface";
+import {CardDto} from "../../interfaces/cardDto";
 
 
 @Component({
@@ -23,7 +24,7 @@ export class DeckCardsHomeComponent implements OnInit {
   private decksCards: DeckCard[] = [];
   private card: Card;
   private decksCard: DeckCard;
-  private querySubscription: Subscription; //?
+  private cardDto: CardDto;
 
   currentCards: Card[] = [];
   currentDeck: Deck;
@@ -153,9 +154,9 @@ export class DeckCardsHomeComponent implements OnInit {
 
   postCard(): void {
 
-    const cardToSend = {"Card": this.card, "DeckId": this.deckId}
-// ну нихуя себе что я нашёл
-    const body = JSON.stringify(cardToSend);
+    this.cardDto = {card: this.card, deckId: this.deckId}
+
+    const body = JSON.stringify(this.cardDto);
 
     const token = this.cookieService.get('access_token');
 

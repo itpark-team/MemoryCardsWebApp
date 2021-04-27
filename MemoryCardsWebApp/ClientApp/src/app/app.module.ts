@@ -26,7 +26,7 @@ import {EditCardDialog} from "./deck-cards-home/deck-cards-home.component";
 import {DeleteDialog} from "./deck-cards-home/deck-cards-home.component";
 import {AddCardDialog, EditImageDialog} from "./deck-cards-home/deck-cards-home.component";
 import {AddDeckDialog} from "./deck-home/deck-home.component";
-import {EditDeckDialog} from "./deck-home/deck-home.component";
+import {EditDeckDialog} from "./deck-cards-home/deck-cards-home.component";
 
 //services imports
 import {DataStorageService} from "./data-storage/data-storage.service";
