@@ -1,19 +1,11 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
-
-
-
-//Entities
-interface UserAuthenticationData {
-  email: string;
-  passwordHash: string;
-}
-
+import {UserAuthenticationData} from "../../interfaces/user-authentication-data.interface"
 
 
 @Component({
