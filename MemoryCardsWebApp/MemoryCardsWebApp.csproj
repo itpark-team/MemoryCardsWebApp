@@ -37,7 +37,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ClientApp\src\app\pass-params" />
+      <Folder Include="ClientApp\src\app\components" />
+      <Folder Include="ClientApp\src\app\services" />
     </ItemGroup>
 
     <ItemGroup>

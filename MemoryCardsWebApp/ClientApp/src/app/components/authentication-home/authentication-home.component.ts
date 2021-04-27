@@ -1,7 +1,6 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
@@ -36,7 +35,6 @@ export class AuthenticationHomeComponent implements OnInit {
   constructor(
     private http: HttpClient,
     public dialog: MatDialog,
-    private dataStorage: DataStorageService,
     private router: Router,
     private cookieService: CookieService) {
 

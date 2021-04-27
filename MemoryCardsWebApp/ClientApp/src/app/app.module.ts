@@ -20,16 +20,18 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from "@angular/material/dialog";
-import {DataStorageService} from "./data-storage/data-storage.service";
 import {AuthCheckService} from "./auth-check/auth-check.service";
 
 import {WrongLoginOrPasswordDialog} from "./authentication-home/authentication-home.component";
+import {AuthDeckCheckService} from "./auth-check/auth-deck-check.service";
+import {ErrorPagesComponent} from "./error-pages/error-pages.component";
 
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
   {path: 'deck', component: DeckHomeComponent, canActivate: [AuthCheckService]},
-  {path: 'deckcards/:id', component: DeckCardsHomeComponent, canActivate: [AuthCheckService]},
-  {path: 'auth', component: AuthenticationHomeComponent}
+  {path: 'deckcards/:id', component: DeckCardsHomeComponent, canActivate: [AuthDeckCheckService]},
+  {path: 'auth', component: AuthenticationHomeComponent},
+  {path: 'error/:code', component: ErrorPagesComponent}
 ];
 
 @NgModule({
@@ -45,7 +47,8 @@ const appRoutes: Routes = [
     EditImageDialog,
     DeckCardsHomeComponent,
     AuthenticationHomeComponent,
-    WrongLoginOrPasswordDialog
+    WrongLoginOrPasswordDialog,
+    ErrorPagesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -59,7 +62,7 @@ const appRoutes: Routes = [
     MatDialogModule,
     ReactiveFormsModule,
   ],
-  providers: [DataStorageService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

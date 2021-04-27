@@ -3,40 +3,10 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from 'rxjs';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
-import {PasserService} from "../pass-params/passer.service";
-
-
-import {AddDeckDialog} from "../deck-home/deck-home.component";
-import {EditDeckDialog} from "../deck-home/deck-home.component";
-
-//Entities
-interface Card {
-  id: number;
-  frontText: string;
-  backText: string;
-  frontImage: string;
-  backImage: string;
-  color: string;
-}
-
-interface DecksCard {
-  deckId: number;
-  cardId: number;
-}
-
-interface CardSides {
-  [id: number]: string;
-}
-
-interface Deck {
-  id: number;
-  title: string;
-  description: string;
-  visibility: boolean;
-  authorUserId: number;
-}
+import {Card} from "../../interfaces/card.interface";
+import {Deck} from "../../interfaces/deck.interface";
+import {DecksCard} from "../../interfaces/decks-card.interface";
 
 
 @Component({
@@ -45,80 +15,65 @@ interface Deck {
   styleUrls: ['./deck-cards-home.component.css']
 })
 export class DeckCardsHomeComponent implements OnInit {
-  private cardSides: CardSides = {};
   cards: Card[] = [];
-  private deckId: number;
-  private decksCards: DecksCard[] = [];
-  private card: Card;
-  private decksCard: DecksCard;
-  private querySubscription: Subscription;
+  deck: Deck;
 
-  currentCards: Card[] = [];
-  currentDeck: Deck;
+  private deckId: number;
   private subscription: Subscription;
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private dataStorage: DataStorageService,
     private cookieService: CookieService,
     private router: Router) {
 
-    //retrieve opened deck's id from DI
-    //this.deckId = +this.cookieService.get('opened_deck')
-    this.subscription = route.params.subscribe(params=>this.deckId=params['id']);
+
+    this.subscription = route.params.subscribe(params => this.deckId = params['id']);
   }
 
 
   ngOnInit(): void {
-
     this.getCurrentDeck();
 
     this.getCardsByDeckId();
   }
 
-  fillCardSides(): void {
-    this.cardSides = {};
-    for (let i = 0; i < this.currentCards.length; i++) {
-      this.cardSides[this.currentCards[i].id] = 'front';
-    }
-  }
 
   showAddDialog(): void {
-    this.clearCard();
-    const dialogRef = this.dialog.open(AddCardDialog, {data: this.card});
+    let card: Card = this.getClearCard();
+    const dialogRef = this.dialog.open(AddCardDialog, {data: card});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != "" && result != null) {
-        this.card = result;
-        this.postCard();
+        card = result;
+        this.postCard(card);
       }
     });
   }
 
   showEditCardDialog(editedCard: Card): void {
-    this.clearCard();
-    this.card.id = editedCard.id;
-    this.card.color = editedCard.color;
-    this.card.frontImage = editedCard.frontImage;
-    this.card.backImage = editedCard.backImage;
-    this.card.frontText = editedCard.frontText;
-    this.card.backText = editedCard.backText;
-    const dialogRef = this.dialog.open(EditCardDialog, {data: this.card});
+    let card: Card = this.getClearCard();
+    card.id = editedCard.id;
+    card.color = editedCard.color;
+    card.frontImage = editedCard.frontImage;
+    card.backImage = editedCard.backImage;
+    card.frontText = editedCard.frontText;
+    card.backText = editedCard.backText;
+    const dialogRef = this.dialog.open(EditCardDialog, {data: card});
     dialogRef.afterClosed().subscribe(result => {
       if (result != "" && result != null) {
         if (result == "Delete") {
-          this.showDeleteCardDialog(this.card.id);
+          this.showDeleteCardDialog(card.id);
         } else {
-          this.card = result;
-          editedCard.id = this.card.id;
-          editedCard.color = this.card.color;
-          editedCard.frontImage = this.card.frontImage;
-          editedCard.backImage = this.card.backImage;
-          editedCard.frontText = this.card.frontText;
-          editedCard.backText = this.card.backText;
-          this.putCard()
+          card = result;
+          editedCard.id = card.id;
+          editedCard.color = card.color;
+          editedCard.frontImage = card.frontImage;
+          editedCard.backImage = card.backImage;
+          editedCard.frontText = card.frontText;
+          editedCard.backText = card.backText;
+          this.putCard(card)
         }
       }
     });
@@ -145,29 +100,13 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
 
-  private clearCard(): void {
-    this.card = {id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
+  private getClearCard(): Card {
+    let card: Card={id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
+    return  card;
   }
 
-  getCards(): void {
-    const token = this.cookieService.get('access_token');
-
-    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
-
-    this.http.get<Card[]>(`/api/cards`, {headers:headers}).subscribe(
-      responseData => {
-        this.cards = responseData;
-        this.setCards();
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
-
-
-  postCard(): void {
-    const body = JSON.stringify(this.card);
+  postCard(card: Card): void {
+    const body = JSON.stringify(card);
 
     const token = this.cookieService.get('access_token');
 
@@ -176,31 +115,23 @@ export class DeckCardsHomeComponent implements OnInit {
     this.http.post<Card>(`/api/cards`, body, {headers: headers}).subscribe(
       responseData => {
         this.cards.push(responseData);
-        this.currentCards.push(responseData);
         this.postDeckCard(responseData.id);
-        this.clearCard();
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
       }
     );
-    this.fillCardSides();
   }
 
-  putCard(): void {
-
-    const body = JSON.stringify(this.card);
+  putCard(card: Card): void {
+    const body = JSON.stringify(card);
     const token = this.cookieService.get('access_token');
-
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
-    this.http.put<Card>(`/api/cards/${this.card.id}`, body, {headers: headers}).subscribe(
+    this.http.put<Card>(`/api/cards/${card.id}`, body, {headers: headers}).subscribe(
       responseData => {
-
         const findIndex = this.cards.findIndex(item => item.id == responseData.id);
         this.cards.splice(findIndex, 1, responseData);
-
-        this.clearCard();
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -213,7 +144,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
-    this.http.delete<number>(`/api/decks/${this.currentDeck.id}`, {headers: headers}).subscribe(
+    this.http.delete<number>(`/api/decks/${this.deckId}`, {headers: headers}).subscribe(
       responseData => {
         location.href = 'deck';
       },
@@ -229,31 +160,27 @@ export class DeckCardsHomeComponent implements OnInit {
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
 
-    this.http.delete<number>(`/api/cards/${cardId}`, {headers:headers}).subscribe(
+    this.http.delete<number>(`/api/cards/${cardId}`, {headers: headers}).subscribe(
       responseData => {
         const findIndex = this.cards.findIndex(item => item.id == responseData);
         this.cards.splice(findIndex, 1);
-        const findIndex2 = this.currentCards.findIndex(item => item.id == responseData);
-        this.currentCards.splice(findIndex2, 1);
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
       }
     );
-    this.fillCardSides();
   }
 
   postDeckCard(cardId: number): void {
-    this.decksCard = {cardId: cardId, deckId: this.currentDeck.id};
+    let decksCard: DecksCard = {cardId: cardId, deckId: this.deckId};
 
-    const body = JSON.stringify(this.decksCard);
+    const body = JSON.stringify(decksCard);
     const token = this.cookieService.get('access_token');
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
     this.http.post<DecksCard>(`/api/deckscards`, body, {headers: headers}).subscribe(
       responseData => {
-        this.decksCards.push(responseData);
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -269,7 +196,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     this.http.get<Deck>(`/api/decks/${this.deckId}`, {headers: headers}).subscribe(
       responseData => {
-        this.currentDeck = responseData;
+        this.deck = responseData;
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -277,46 +204,13 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-  getDecksCards(): void {
-    const token = this.cookieService.get('access_token');
 
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
-
-    this.http.get<DecksCard[]>(`/api/deckscards`, {headers:headers}).subscribe(
-      responseData => {
-        this.decksCards = responseData;
-        this.setCards();
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
-
-  changeCardSide(id: number): void {
-    if (this.cardSides[id] == 'front') {
-      this.cardSides[id] = 'back';
-    } else {
-      this.cardSides[id] = 'front';
-    }
-  }
 
   goBack(): void {
     this.router.navigateByUrl("deck");
   }
 
 
-  setCards(): void {
-    if (this.decksCards.length != 0 && this.cards.length != 0) {
-      for (let i = 0; i < this.decksCards.length; i++) {
-        if (this.decksCards[i].deckId == this.deckId) {
-          this.currentCards.push(this.cards.find(c => c.id == this.decksCards[i].cardId));
-        }
-      }
-    }
-    this.fillCardSides();
-  }
 
   private getCardsByDeckId(): void {
     const token = this.cookieService.get('access_token');

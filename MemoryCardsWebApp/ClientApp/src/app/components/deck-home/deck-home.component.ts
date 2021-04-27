@@ -1,10 +1,9 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, Inject, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
-import {PasserService} from "../pass-params/passer.service";
+import {PasserService} from "src/app/services/pass-params/passer.service";
 
 
 //Entities
@@ -56,7 +55,6 @@ export class DeckHomeComponent implements OnInit {
 
   constructor(private http: HttpClient,
               public dialog: MatDialog,
-              private dataStorage: DataStorageService,
               private router: Router,
               private cookieService: CookieService,
               private passerService: PasserService) {
