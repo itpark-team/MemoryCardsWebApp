@@ -6,32 +6,9 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
 import {PasserService} from "../pass-params/passer.service";
-import {AddDeckDialog} from "../deck-home/deck-home.component";
-import {EditDeckDialog} from "../deck-home/deck-home.component";
-
-
-//Entities
-interface Card {
-  id: number;
-  frontText: string;
-  backText: string;
-  frontImage: string;
-  backImage: string;
-  color: string;
-}
-
-interface DecksCard {
-  deckId: number;
-  cardId: number;
-}
-
-interface Deck {
-  id: number;
-  title: string;
-  description: string;
-  visibility: boolean;
-  authorUserId: number;
-}
+import {Card} from "../../interfaces/card.interface";
+import {Deck} from "../../interfaces/deck.interface";
+import {DeckCard} from "../../interfaces/deck-card.interface";
 
 
 @Component({
@@ -42,14 +19,15 @@ interface Deck {
 export class DeckCardsHomeComponent implements OnInit {
   cards: Card[] = [];
   private deckId: number;
-  private decksCards: DecksCard[] = [];
+  private decksCards: DeckCard[] = [];
   private card: Card;
-  private decksCard: DecksCard;
-  private querySubscription: Subscription;
+  private decksCard: DeckCard;
+  private querySubscription: Subscription; //?
 
   currentCards: Card[] = [];
   currentDeck: Deck;
   private subscription: Subscription;
+
 
   constructor(
     private http: HttpClient,
@@ -63,7 +41,7 @@ export class DeckCardsHomeComponent implements OnInit {
     // Retrieve opened deck's id from DI
     this.subscription = route.params.subscribe(params => this.deckId = params['id']);
 
-    this.currentDeck = {id: -1, title: "", description: "", authorUserId: -1, visibility: true};
+    this.currentDeck = {id: -1, title: "", description: "", authorUserId: -1, authorUserName: "", visibility: true};
   }
 
   ngOnInit(): void {
@@ -162,7 +140,7 @@ export class DeckCardsHomeComponent implements OnInit {
   postCard(): void {
 
     const cardToSend = {"Card": this.card, "DeckId": this.deckId}
-
+// ну нихуя себе что я нашёл
     const body = JSON.stringify(cardToSend);
 
     const token = this.cookieService.get('access_token');
@@ -213,7 +191,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     this.http.delete<number>(`/api/decks/${this.currentDeck.id}`, {headers: headers}).subscribe(
       responseData => {
-        location.href = 'deck';
+        location.href = 'decks';
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -251,7 +229,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
-    this.http.post<DecksCard>(`/api/deckscards`, body, {headers: headers}).subscribe(
+    this.http.post<DeckCard>(`/api/deckscards`, body, {headers: headers}).subscribe(
       responseData => {
         this.decksCards.push(responseData);
       },
@@ -279,7 +257,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigateByUrl("deck");
+    this.router.navigateByUrl("decks");
   }
 
   setCards(): void {
