@@ -190,7 +190,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     this.http.delete<number>(`/api/decks/${this.currentDeck.id}`, {headers: headers}).subscribe(
       responseData => {
-        location.href = 'deck';
+        location.href = 'decks';
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -256,7 +256,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigateByUrl("deck");
+    this.router.navigateByUrl("decks");
   }
 
   setCards(): void {
