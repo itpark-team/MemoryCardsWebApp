@@ -9,10 +9,6 @@ import {Deck} from "../../interfaces/deck.interface";
 import {DecksCard} from "../../interfaces/decks-card.interface";
 import {CardDTO} from "../../interfaces/card-dto";
 
-
-
-
-
 @Component({
   selector: 'app-deck-cards-home',
   templateUrl: './deck-cards-home.component.html',
@@ -155,7 +151,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
     this.http.delete<number>(`/api/decks/${this.deckId}`, {headers: headers}).subscribe(
       responseData => {
-        location.href = 'deck';
+        this.router.navigateByUrl("decks");
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -287,6 +283,8 @@ export class EditCardDialog {
   }
 
 }
+
+
 
 @Component({
   selector: 'edit-image-dialog',
