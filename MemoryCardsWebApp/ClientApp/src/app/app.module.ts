@@ -5,25 +5,25 @@ import {HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
 
 import {AppComponent} from './app.component';
-import {DeckHomeComponent} from './deck-home/deck-home.component';
-import {AddDeckDialog} from "./deck-home/deck-home.component";
-import {EditDeckDialog} from "./deck-home/deck-home.component";
-import {AddCardDialog, EditImageDialog} from "./deck-cards-home/deck-cards-home.component";
-import {DeleteDialog} from "./deck-cards-home/deck-cards-home.component";
-import {EditCardDialog} from "./deck-cards-home/deck-cards-home.component";
-import {ProjectHomeComponent} from './project-home/project-home.component';
-import {DeckCardsHomeComponent} from './deck-cards-home/deck-cards-home.component';
-import {AuthenticationHomeComponent} from './authentication-home/authentication-home.component';
+import {DeckHomeComponent} from "./components/deck-home/deck-home.component";
+import {AddDeckDialog} from "./components/deck-home/deck-home.component";
+import {EditDeckDialog} from "./components/deck-home/deck-home.component";
+import {AddCardDialog, EditImageDialog} from "./components/deck-cards-home/deck-cards-home.component";
+import {DeleteDialog} from "./components/deck-cards-home/deck-cards-home.component";
+import {EditCardDialog} from "./components/deck-cards-home/deck-cards-home.component";
+import {ProjectHomeComponent} from "./components/project-home/project-home.component";
+import {DeckCardsHomeComponent} from "./components/deck-cards-home/deck-cards-home.component";
+import {AuthenticationHomeComponent} from "./components/authentication-home/authentication-home.component";
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from "@angular/material/dialog";
-import {AuthCheckService} from "./auth-check/auth-check.service";
+import {AuthCheckService} from "./services/auth-check/auth-check.service";
 
-import {WrongLoginOrPasswordDialog} from "./authentication-home/authentication-home.component";
-import {NotFoundComponent} from "./not-found/not-found.component";
+import {WrongLoginOrPasswordDialog} from "./components/authentication-home/authentication-home.component";
+import {NotFoundComponent} from "./components/not-found/not-found.component";
 
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},

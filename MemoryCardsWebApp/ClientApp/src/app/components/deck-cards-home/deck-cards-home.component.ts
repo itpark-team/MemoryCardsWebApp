@@ -7,32 +7,10 @@ import {CookieService} from "ngx-cookie-service";
 import {Card} from "../../interfaces/card.interface";
 import {Deck} from "../../interfaces/deck.interface";
 import {DecksCard} from "../../interfaces/decks-card.interface";
-import {AddDeckDialog} from "../deck-home/deck-home.component";
-import {EditDeckDialog} from "../deck-home/deck-home.component";
+import {CardDTO} from "../../interfaces/card-dto";
 
 
-//Entities
-interface Card {
-  id: number;
-  frontText: string;
-  backText: string;
-  frontImage: string;
-  backImage: string;
-  color: string;
-}
 
-interface DecksCard {
-  deckId: number;
-  cardId: number;
-}
-
-interface Deck {
-  id: number;
-  title: string;
-  description: string;
-  visibility: boolean;
-  authorUserId: number;
-}
 
 
 @Component({
@@ -73,6 +51,7 @@ export class DeckCardsHomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != "" && result != null) {
         card = result;
+        console.log(card);
         this.postCard(card);
       }
     });
@@ -132,11 +111,14 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   postCard(card: Card): void {
-    const body = JSON.stringify(card);
+    let cardDTO:CardDTO={card:card,deckId:this.deckId};
+    const body = JSON.stringify(cardDTO);
 
     const token = this.cookieService.get('access_token');
+    console.log(token)
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
+
 
     this.http.post<Card>(`/api/cards`, body, {headers: headers}).subscribe(
       responseData => {
@@ -144,13 +126,14 @@ export class DeckCardsHomeComponent implements OnInit {
         this.postDeckCard(responseData.id);
       },
       error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
+        alert(`error post: ${error.status},  ${error.statusText},`);
       }
     );
   }
 
   putCard(card: Card): void {
-    const body = JSON.stringify(card);
+    let cardDTO:CardDTO={card:card,deckId:this.deckId};
+    const body = JSON.stringify(cardDTO);
     const token = this.cookieService.get('access_token');
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
@@ -232,7 +215,7 @@ export class DeckCardsHomeComponent implements OnInit {
 
 
   goBack(): void {
-    this.router.navigateByUrl("deck");
+    this.router.navigateByUrl("decks");
   }
 
 
@@ -299,9 +282,9 @@ export class EditCardDialog {
     });
   }
 
-  // public cancel(): void {
-  //   this.dialog.closeAll();
-  // }
+  public cancel(): void {
+    this.dialog.closeAll();
+  }
 
 }
 
