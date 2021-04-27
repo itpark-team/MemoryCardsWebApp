@@ -7,7 +7,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {UserAuthenticationData} from "../../interfaces/user-authentication-data.interface"
 
-
 @Component({
   selector: 'app-authentication-home',
   templateUrl: './authentication-home.component.html',
@@ -19,10 +18,11 @@ export class AuthenticationHomeComponent implements OnInit {
   private delay1000days: number = this.delay24hours * 1000;
 
 
-
   password: string;
   saveUser: boolean = false;
   userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
+
+
   form: FormGroup;
 
   constructor(
@@ -123,9 +123,5 @@ export class WrongLoginOrPasswordDialog {
   constructor(
     public dialogRef: MatDialogRef<WrongLoginOrPasswordDialog>) {
 
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }

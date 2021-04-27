@@ -21,6 +21,7 @@ export class DeckHomeComponent implements OnInit {
 
   decks: Deck[] = [];
 
+
   private deck: Deck;
   private deckToAction: DeckToPost;
   private user: User;
@@ -100,7 +101,6 @@ export class DeckHomeComponent implements OnInit {
       }
     });
   }
-
 
   //Local methods
   private clearDeck(): void {

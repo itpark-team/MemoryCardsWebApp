@@ -19,9 +19,6 @@
                    [ngModel]="userAuthenticationData.email"
                    (ngModelChange)="userAuthenticationData.email=$event"
             >
-            <!--  здесь же и SPANы   -->
-            <!--                   нужно сделать выделение красным-->
-
             <span   class="helper-text text-danger" style="padding-top: -10px" *ngIf="form.get('email').invalid && form.get('email').touched">
               <span *ngIf="form.get('email').errors['required']">Поле не может быть пустым</span>
               <span *ngIf="form.get('email').errors['email']">Неверный формат ввода почты</span>

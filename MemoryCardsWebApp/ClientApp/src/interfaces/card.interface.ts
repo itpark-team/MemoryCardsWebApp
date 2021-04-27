@@ -15,4 +15,4 @@ function Empty(): Card {
   return {id: -1, frontText: "", backText: "", frontImage: "", backImage: "", color: ""};
 }
 
-//??
+//?? не видит(
