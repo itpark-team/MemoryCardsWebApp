@@ -28,7 +28,6 @@ export class DeckCardsHomeComponent implements OnInit {
     private cookieService: CookieService,
     private router: Router) {
 
-
     this.subscription = route.params.subscribe(params => this.deckId = params['id']);
   }
 

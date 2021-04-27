@@ -1,19 +1,10 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
-
-
-
-//Entities
-interface UserAuthenticationData {
-  email: string;
-  passwordHash: string;
-}
-
-
+import {UserAuthenticationData} from "../../interfaces/user-authentication-data.interface";
 
 @Component({
   selector: 'app-authentication-home',
@@ -25,10 +16,9 @@ export class AuthenticationHomeComponent implements OnInit {
   private delay24hours: number = 86400000;
   private delay1000days: number = this.delay24hours * 1000;
 
-
-
   password: string;
   saveUser: boolean = false;
+
   userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
   form: FormGroup;
 
@@ -37,7 +27,6 @@ export class AuthenticationHomeComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private cookieService: CookieService) {
-
 
     if (this.cookieService.check('login') && this.cookieService.check('password')) {
 
