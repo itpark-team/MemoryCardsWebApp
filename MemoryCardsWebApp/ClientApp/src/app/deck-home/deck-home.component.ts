@@ -18,7 +18,7 @@ export class DeckHomeComponent implements OnInit {
 
   private readonly isUserAuthenticated: boolean;
 
-  decks: DeckWithAuthor[] = [];
+  decks: Deck[] = [];
 
 
   private deck: Deck;
@@ -47,8 +47,6 @@ export class DeckHomeComponent implements OnInit {
     };
 
     this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUserName: ''};
-
-    this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
 
     this.currentUserId = 0;
   }
@@ -104,7 +102,6 @@ export class DeckHomeComponent implements OnInit {
   private clearDeck(): void {
 
     this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUserName: ''};
-    this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
   }
 
 
@@ -116,7 +113,7 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 
-    this.http.get<DeckWithAuthor[]>(`/api/decks/GetDecksByUserId`, {headers: headers}).subscribe(
+    this.http.get<Deck[]>(`/api/decks/GetDecksByUserId`, {headers: headers}).subscribe(
       responseData => {
         this.decks = responseData
       },
@@ -137,7 +134,7 @@ export class DeckHomeComponent implements OnInit {
       .set('Content-Type', 'application/json')
       .append('Authorization', 'Bearer ' + token);
 
-    this.http.post<DeckWithAuthor>(`/api/decks`, body, {headers: headers}).subscribe(
+    this.http.post<Deck>(`/api/decks`, body, {headers: headers}).subscribe(
       async responseData => {
         this.decks.push(responseData);
 
@@ -187,7 +184,7 @@ export class DeckHomeComponent implements OnInit {
   templateUrl: 'add-deck-dialog.html',
 })
 export class AddDeckDialog {
-  constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: DeckWithAuthor) {
+  constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
   }
 
   onNoClick(): void {
