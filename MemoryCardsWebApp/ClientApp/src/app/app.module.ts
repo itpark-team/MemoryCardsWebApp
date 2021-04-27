@@ -1,40 +1,44 @@
-import {BrowserModule} from '@angular/platform-browser';
+//@angular imports
 import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
 
-import {AppComponent} from './app.component';
-import {DeckHomeComponent} from './deck-home/deck-home.component';
-import {AddDeckDialog} from "./deck-home/deck-home.component";
-import {EditDeckDialog} from "./deck-cards-home/deck-cards-home.component";
-import {AddCardDialog, EditImageDialog} from "./deck-cards-home/deck-cards-home.component";
-import {DeleteDialog} from "./deck-cards-home/deck-cards-home.component";
-import {EditCardDialog} from "./deck-cards-home/deck-cards-home.component";
-import {ProjectHomeComponent} from './project-home/project-home.component';
-import {DeckCardsHomeComponent} from './deck-cards-home/deck-cards-home.component';
-import {AuthenticationHomeComponent} from './authentication-home/authentication-home.component';
-
+//@angular/material imports
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from "@angular/material/dialog";
+
+//project components imports
+import {AppComponent} from './app.component';
+import {DeckHomeComponent} from './deck-home/deck-home.component';
+import {ProjectHomeComponent} from './project-home/project-home.component';
+import {DeckCardsHomeComponent} from './deck-cards-home/deck-cards-home.component';
+import {AuthenticationHomeComponent} from './authentication-home/authentication-home.component';
+import {NotFoundComponent} from "./not-found/not-found.component";
+
+//project visual imports
+import {WrongLoginOrPasswordDialog} from "./authentication-home/authentication-home.component";
+import {EditCardDialog} from "./deck-cards-home/deck-cards-home.component";
+import {DeleteDialog} from "./deck-cards-home/deck-cards-home.component";
+import {AddCardDialog, EditImageDialog} from "./deck-cards-home/deck-cards-home.component";
+import {AddDeckDialog} from "./deck-home/deck-home.component";
+import {EditDeckDialog} from "./deck-home/deck-home.component";
+
+//services imports
 import {DataStorageService} from "./data-storage/data-storage.service";
 import {AuthCheckService} from "./auth-check/auth-check.service";
 
-import {WrongLoginOrPasswordDialog} from "./authentication-home/authentication-home.component";
-import {NotFoundComponent} from "./not-found/not-found.component";
 
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
   {path: 'decks', component: DeckHomeComponent, canActivate: [AuthCheckService]},
   {path: 'deckcards/:id', component: DeckCardsHomeComponent, canActivate: [AuthCheckService]},
   {path: 'auth', component: AuthenticationHomeComponent},
-  {
-    path: '**',
-    component: NotFoundComponent
-  }
+  {path: '**', component: NotFoundComponent}
 ];
 
 @NgModule({
@@ -68,6 +72,6 @@ const appRoutes: Routes = [
   providers: [DataStorageService],
   bootstrap: [AppComponent]
 })
-export class AppModule {
 
+export class AppModule {
 }

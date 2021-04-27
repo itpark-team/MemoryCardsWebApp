@@ -1,20 +1,18 @@
+//@anular imports
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
-import {DataStorageService} from "../data-storage/data-storage.service";
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+
+//@angular/material imports
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+
+//services imports
+import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
 
-
-
-//Entities
-interface UserAuthenticationData {
-  email: string;
-  passwordHash: string;
-}
-
-
+//interfaces imports
+import {UserAuthenticationData} from "../../interfaces/user-authentication-data.interface"
 
 @Component({
   selector: 'app-authentication-home',
@@ -27,10 +25,11 @@ export class AuthenticationHomeComponent implements OnInit {
   private delay1000days: number = this.delay24hours * 1000;
 
 
-
   password: string;
   saveUser: boolean = false;
   userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
+
+
   form: FormGroup;
 
   constructor(
@@ -39,7 +38,6 @@ export class AuthenticationHomeComponent implements OnInit {
     private dataStorage: DataStorageService,
     private router: Router,
     private cookieService: CookieService) {
-
 
     if (this.cookieService.check('login') && this.cookieService.check('password')) {
 
@@ -131,9 +129,5 @@ export class WrongLoginOrPasswordDialog {
   constructor(
     public dialogRef: MatDialogRef<WrongLoginOrPasswordDialog>) {
 
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }

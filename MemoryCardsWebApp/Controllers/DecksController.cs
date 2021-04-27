@@ -5,7 +5,7 @@ using System.Net;
 using System.Security.Claims;
 using MemoryCardsWebApp.Models;
 using MemoryCardsWebApp.Models.DbEntities;
-using MemoryCardsWebApp.Models.TsEntities;
+using MemoryCardsWebApp.Models.DtoEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection.KeyManagement.Internal;
 using Microsoft.AspNetCore.Http;
@@ -19,11 +19,11 @@ namespace MemoryCardsWebApp.Controllers
     [Route("api/[controller]")]
     public class DecksController : ControllerBase
     {
-        private MemoryCardsContext _dbContext;
+        private MemoryCardsContext dbContext;
 
         public DecksController(MemoryCardsContext context)
         {
-            _dbContext = context;
+            dbContext = context;
         }
 
         [Authorize]
@@ -39,15 +39,15 @@ namespace MemoryCardsWebApp.Controllers
                 bool succeded = int.TryParse(claimName, out userId);
 
                 List<Deck> decks =
-                    _dbContext.Decks.FromSqlRaw(
+                    dbContext.Decks.FromSqlRaw(
                         $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={userId})").ToList();
-                List<DeckToSend> decksToSend = new List<DeckToSend>();
-                List<User> users = _dbContext.Users.ToList();
+                List<DeckDTO> decksToSend = new List<DeckDTO>();
+                List<User> users = dbContext.Users.ToList();
 
                 foreach (Deck deck in decks)
                 {
                     User user = users.First(user => user.Id == deck.AuthorUserId);
-                    decksToSend.Add(new DeckToSend()
+                    decksToSend.Add(new DeckDTO()
                     {
                         Id = deck.Id,
                         Title = deck.Title,
@@ -87,11 +87,11 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    User openingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (openingUser != null)
                     {
                         UsersDeck usersOpeningDeck =
-                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                            dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
                         if (usersOpeningDeck == null)
                         {
                             throw new WebException();
@@ -99,7 +99,7 @@ namespace MemoryCardsWebApp.Controllers
                     }
                 }
 
-                return StatusCode(StatusCodes.Status200OK, _dbContext.Decks.First(item => item.Id == id));
+                return StatusCode(StatusCodes.Status200OK, dbContext.Decks.First(item => item.Id == id));
             }
 
 
@@ -138,11 +138,11 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User deletingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    User deletingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (deletingUser != null)
                     {
                         UsersDeck usersDeletingDeck =
-                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                            dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
                         if (usersDeletingDeck == null)
                         {
                             throw new WebException();
@@ -150,11 +150,11 @@ namespace MemoryCardsWebApp.Controllers
                     }
                 }
 
-                Deck findDeck = _dbContext.Decks.First(item => item.Id == id);
+                Deck findDeck = dbContext.Decks.First(item => item.Id == id);
 
-                _dbContext.Decks.Remove(findDeck);
+                dbContext.Decks.Remove(findDeck);
 
-                _dbContext.SaveChanges();
+                dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, id);
             }
@@ -192,7 +192,7 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User openingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    User openingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (openingUser == null)
                     {
                         throw new WebException();
@@ -201,18 +201,18 @@ namespace MemoryCardsWebApp.Controllers
                     deck.AuthorUserId = userId;
                 }
                 
-                _dbContext.Decks.Add(deck);
+                dbContext.Decks.Add(deck);
 
-                _dbContext.SaveChanges();
+                dbContext.SaveChanges();
 
-                _dbContext.UsersDecks.Add(new UsersDeck()
+                dbContext.UsersDecks.Add(new UsersDeck()
                 {
                     UserId = deck.AuthorUserId,
                     DeckId = deck.Id
                 });
 
 
-                _dbContext.SaveChanges();
+                dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, deck);
             }
@@ -253,11 +253,11 @@ namespace MemoryCardsWebApp.Controllers
                         throw new ArgumentException("Could not retrieve ClaimName.");
                     }
 
-                    User editingUser = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                    User editingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
                     if (editingUser != null)
                     {
                         UsersDeck usersOpeningDeck =
-                            _dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                            dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
                         if (usersOpeningDeck == null)
                         {
                             throw new WebException();
@@ -265,13 +265,13 @@ namespace MemoryCardsWebApp.Controllers
                     }
                 }
 
-                Deck findDeck = _dbContext.Decks.First(item => item.Id == id);
+                Deck findDeck = dbContext.Decks.First(item => item.Id == id);
 
                 findDeck.Title = deck.Title;
                 findDeck.Description = deck.Description;
                 findDeck.Visibility = deck.Visibility;
 
-                _dbContext.SaveChanges();
+                dbContext.SaveChanges();
 
                 return StatusCode(StatusCodes.Status200OK, findDeck);
             }

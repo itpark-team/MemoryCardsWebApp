@@ -5,37 +5,9 @@ import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {PasserService} from "../pass-params/passer.service";
-
-
-//Entities
-interface DeckWithAuthor {
-  id: number;
-  title: string;
-  description: string;
-  visibility: boolean;
-  authorUserId: number;
-  authorUser: string;
-}
-
-interface Deck {
-  id: number;
-  title: string;
-  description: string;
-  visibility: boolean;
-  authorUserId: number;
-}
-
-interface User {
-  id: number;
-  username: string;
-  email: string;
-  passwordHash: string;
-  avatarImage: string;
-  subStatus: number;
-  subExpire: Date;
-  isActive: boolean;
-}
-
+import {Deck} from "../../interfaces/deck.interface";
+import {DeckToPost} from "../../interfaces/deck-to-post.interface";
+import {User} from "../../interfaces/user.interface";
 
 @Component({
   selector: 'app-deck-home',
@@ -47,6 +19,7 @@ export class DeckHomeComponent implements OnInit {
   private readonly isUserAuthenticated: boolean;
 
   decks: DeckWithAuthor[] = [];
+
 
   private deck: Deck;
   private user: User;
@@ -73,7 +46,9 @@ export class DeckHomeComponent implements OnInit {
       subStatus: 0
     };
 
-    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUserName: ''};
+
+    this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
 
     this.currentUserId = 0;
   }
@@ -125,10 +100,11 @@ export class DeckHomeComponent implements OnInit {
     });
   }
 
-
   //Local methods
   private clearDeck(): void {
-    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
+
+    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUserName: ''};
+    this.deckToAction = {id: 0, visibility: false, description: '', title: '', authorUserId: 1};
   }
 
 
@@ -164,8 +140,10 @@ export class DeckHomeComponent implements OnInit {
     this.http.post<DeckWithAuthor>(`/api/decks`, body, {headers: headers}).subscribe(
       async responseData => {
         this.decks.push(responseData);
+
         await this.getUsernameByUserId(this.user.id).then((userName) => {
-          this.decks[this.decks.length - 1].authorUser = userName
+          this.decks[this.decks.length - 1].authorUserName = userName
+
         })
         this.clearDeck();
       },

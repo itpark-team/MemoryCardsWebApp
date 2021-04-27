@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
-namespace MemoryCardsWebApp.Models.TsEntities
+namespace MemoryCardsWebApp.Models.DtoEntities
 {
-    public class DeckToSend
+    public class DeckDTO
     {
         public int Id { get; set; }
         public string Title { get; set; }
