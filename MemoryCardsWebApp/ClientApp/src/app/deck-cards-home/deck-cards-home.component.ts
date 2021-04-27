@@ -22,8 +22,7 @@ export class DeckCardsHomeComponent implements OnInit {
   private decksCards: DeckCard[] = [];
   private card: Card;
   private decksCard: DeckCard;
-  private querySubscription: Subscription;
-
+  private querySubscription: Subscription; //?
 
   currentCards: Card[] = [];
   currentDeck: Deck;

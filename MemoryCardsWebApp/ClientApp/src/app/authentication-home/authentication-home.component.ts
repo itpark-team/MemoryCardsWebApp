@@ -1,10 +1,17 @@
+//@anular imports
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {DataStorageService} from "../data-storage/data-storage.service";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+
+//@angular/material imports
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+
+//services imports
+import {DataStorageService} from "../data-storage/data-storage.service";
 import {CookieService} from "ngx-cookie-service";
+
+//interfaces imports
 import {UserAuthenticationData} from "../../interfaces/user-authentication-data.interface"
 
 @Component({
@@ -31,7 +38,6 @@ export class AuthenticationHomeComponent implements OnInit {
     private dataStorage: DataStorageService,
     private router: Router,
     private cookieService: CookieService) {
-
 
     if (this.cookieService.check('login') && this.cookieService.check('password')) {
 
