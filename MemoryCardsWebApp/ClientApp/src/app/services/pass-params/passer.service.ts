@@ -7,6 +7,8 @@ export class PasserService {
 
   private _openedDeckId: number = -1
 
+  private _errorTypeId: number = -1;
+
   constructor() {
   }
 
@@ -16,5 +18,13 @@ export class PasserService {
 
   setOpenedDeckId(openedDeckId: number) {
     this._openedDeckId = openedDeckId
+  }
+
+  getErrorTypeId(): number {
+    return this._errorTypeId;
+  }
+
+  setErrorTypeId(errorTypeId: number) {
+    this._errorTypeId = errorTypeId;
   }
 }

@@ -7,6 +7,32 @@ import {CookieService} from "ngx-cookie-service";
 import {Card} from "../../interfaces/card.interface";
 import {Deck} from "../../interfaces/deck.interface";
 import {DecksCard} from "../../interfaces/decks-card.interface";
+import {AddDeckDialog} from "../deck-home/deck-home.component";
+import {EditDeckDialog} from "../deck-home/deck-home.component";
+
+
+//Entities
+interface Card {
+  id: number;
+  frontText: string;
+  backText: string;
+  frontImage: string;
+  backImage: string;
+  color: string;
+}
+
+interface DecksCard {
+  deckId: number;
+  cardId: number;
+}
+
+interface Deck {
+  id: number;
+  title: string;
+  description: string;
+  visibility: boolean;
+  authorUserId: number;
+}
 
 
 @Component({
@@ -188,7 +214,6 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-
   getCurrentDeck(): void {
     const token = this.cookieService.get('access_token');
 
@@ -273,6 +298,11 @@ export class EditCardDialog {
       }
     });
   }
+
+  // public cancel(): void {
+  //   this.dialog.closeAll();
+  // }
+
 }
 
 @Component({
@@ -297,7 +327,6 @@ export class DeleteDialog {
   constructor(public dialogRef: MatDialogRef<DeleteDialog>) {
 
   }
-
 
   onNoClick(): void {
     this.dialogRef.close();

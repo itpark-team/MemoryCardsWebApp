@@ -23,15 +23,17 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {AuthCheckService} from "./auth-check/auth-check.service";
 
 import {WrongLoginOrPasswordDialog} from "./authentication-home/authentication-home.component";
-import {AuthDeckCheckService} from "./auth-check/auth-deck-check.service";
-import {ErrorPagesComponent} from "./error-pages/error-pages.component";
+import {NotFoundComponent} from "./not-found/not-found.component";
 
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
-  {path: 'deck', component: DeckHomeComponent, canActivate: [AuthCheckService]},
-  {path: 'deckcards/:id', component: DeckCardsHomeComponent, canActivate: [AuthDeckCheckService]},
+  {path: 'decks', component: DeckHomeComponent, canActivate: [AuthCheckService]},
+  {path: 'deckcards/:id', component: DeckCardsHomeComponent, canActivate: [AuthCheckService]},
   {path: 'auth', component: AuthenticationHomeComponent},
-  {path: 'error/:code', component: ErrorPagesComponent}
+  {
+    path: '**',
+    component: NotFoundComponent
+  }
 ];
 
 @NgModule({
@@ -39,6 +41,7 @@ const appRoutes: Routes = [
     AppComponent,
     DeckHomeComponent,
     ProjectHomeComponent,
+    NotFoundComponent,
     AddDeckDialog,
     EditDeckDialog,
     AddCardDialog,
@@ -47,8 +50,7 @@ const appRoutes: Routes = [
     EditImageDialog,
     DeckCardsHomeComponent,
     AuthenticationHomeComponent,
-    WrongLoginOrPasswordDialog,
-    ErrorPagesComponent
+    WrongLoginOrPasswordDialog
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

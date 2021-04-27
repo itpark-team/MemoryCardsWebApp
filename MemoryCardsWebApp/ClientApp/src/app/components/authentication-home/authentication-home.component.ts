@@ -83,7 +83,7 @@ export class AuthenticationHomeComponent implements OnInit {
           this.cookieService.set('password', this.userAuthenticationData.passwordHash, {expires: new Date(Date.now() + this.delay1000days)});
         }
 
-        this.router.navigateByUrl('/deck');
+        this.router.navigateByUrl('/decks');
       },
       error => {
         if (error.status == 401)

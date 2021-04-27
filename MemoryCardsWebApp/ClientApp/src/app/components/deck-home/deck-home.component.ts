@@ -50,7 +50,7 @@ export class DeckHomeComponent implements OnInit {
   private deck: Deck;
   private deckToAction: DeckToPost;
   private user: User;
-  private currentUserId: number;
+  private readonly currentUserId: number;
 
 
   constructor(private http: HttpClient,
@@ -79,11 +79,19 @@ export class DeckHomeComponent implements OnInit {
     this.currentUserId = 0;
   }
 
+  private async processError(): Promise<void> {
+    if (this.passerService.getErrorTypeId() !== -1) {
+      console.log(this.passerService.getErrorTypeId());
+      // alert(this.passerService.getErrorTypeId());
+    }
+  }
+
   ngOnInit(): void {
     if (this.isAuth == false) {
       location.href = '';
     }
-    //this.currentUserId = +this.cookieService.get('id_user');
+
+    this.processError();
 
     this.getDecksByUserId();
 
@@ -102,10 +110,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   openDeck(deckId: number): void {
-
-    //this.cookieService.set('opened_deck', deckId.toString());
-
-    this.router.navigateByUrl('deckcards/'+deckId);
+    this.router.navigateByUrl('deckcards/' + deckId);
   }
 
   showAddDialog(): void {
@@ -154,7 +159,7 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
 
-    this.http.delete<number>(`/api/decks/${id}`,{headers:headers}).subscribe(
+    this.http.delete<number>(`/api/decks/${id}`, {headers: headers}).subscribe(
       responseData => {
         const findIndex = this.decks.findIndex(item => item.id == responseData);
         this.decks.splice(findIndex, 1);
