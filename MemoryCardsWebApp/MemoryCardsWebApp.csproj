@@ -37,7 +37,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ClientApp\src\app\dto" />
       <Folder Include="ClientApp\src\app\pass-params" />
     </ItemGroup>
 
