@@ -18,7 +18,6 @@ export class DeckHomeComponent implements OnInit {
 
   decks: Deck[] = [];
 
-
   private deck: Deck;
   private user: User;
   private readonly currentUserId: number;
