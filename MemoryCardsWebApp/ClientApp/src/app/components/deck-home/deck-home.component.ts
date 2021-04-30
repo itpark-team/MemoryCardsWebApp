@@ -13,61 +13,25 @@ import {User} from "../../interfaces/user.interface";
   styleUrls: ['./deck-home.component.css']
 })
 export class DeckHomeComponent implements OnInit {
-
   private readonly isUserAuthenticated: boolean;
-
   decks: Deck[] = [];
-
-  private deck: Deck;
-  private user: User;
-  private readonly currentUserId: number;
-
 
   constructor(private http: HttpClient,
               public dialog: MatDialog,
               private router: Router,
-              private cookieService: CookieService,
-              private passerService: PasserService) {
-
+              private cookieService: CookieService) {
     this.isUserAuthenticated = this.cookieService.check("access_token");
-
-    this.user = {
-      id: 0,
-      subExpire: new Date(),
-      isActive: false,
-      email: '',
-      avatarImage: '',
-      username: '',
-      passwordHash: '',
-      subStatus: 0
-    };
-
-    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUserName: ''};
-
-    this.currentUserId = 0;
   }
 
-  private async processError(): Promise<void> {
-    if (this.passerService.getErrorTypeId() !== -1) {
-      console.log(this.passerService.getErrorTypeId());
-      // alert(this.passerService.getErrorTypeId());
-    }
-  }
 
   ngOnInit(): void {
     if (this.isUserAuthenticated == false) {
       location.href = '';
     }
-
-    this.processError();
-
-    this.getDecksByUserId();
-
-    this.getUserByUserId(this.currentUserId);
+    this.getDecksByUserToken();
   }
 
 
-  //Methods from HTML
   logout(): void {
     this.cookieService.delete('id_user');
     this.cookieService.delete('access_token');
@@ -82,46 +46,45 @@ export class DeckHomeComponent implements OnInit {
   }
 
   showCreatingDeckDialog(): void {
-    this.clearDeck();
+    let deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUserName: ''};
     const dialogRef = this.dialog.open(AddDeckDialog, {
-      data: this.deck
+      data: deck
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != "") {
-        this.deck = result;
-        this.addDeck();
+        deck = result;
+        this.addDeck(deck);
       }
     });
   }
 
-  //Local methods
-  private clearDeck(): void {
 
-    this.deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUserName: ''};
-  }
-
-
-  //======DECKS START======//
-
-  async getDecksByUserId(): Promise<void> {
+  async getDecksByUserToken(): Promise<void> {
 
     const token = this.cookieService.get('access_token');
 
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
-    this.http.get<Deck[]>(`/api/decks/GetDecksByUserId`, {headers: headers}).subscribe(
+   //this.http.get<string>('/api/users/GetNameById/' + 2, {headers: headers}).subscribe(respDat=>{console.log(respDat)},er=>{console.log(er)});
+
+
+    this.http.get<Deck[]>(`/api/decks/GetDecksByUserToken`, {headers: headers}).subscribe(
       responseData => {
-        this.decks = responseData
+        this.decks = responseData;
+        this.decks.forEach((d) => {
+          this.http.get<string>('/api/users/GetNameById/' + d.authorUserId, {headers: headers}).subscribe(respDat=>{d.authorUserName=respDat});
+        });
       },
       error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
+        alert(`error get by token: ${error.status}, ${error.statusText}`);
       }
     );
   }
 
-  addDeck(): void {
-    //this.deck.authorUserId = this.currentUserId;
-    const body = JSON.stringify(this.deck);
+  addDeck(deck: Deck): void {
+    console.log(deck);
+    console.log(JSON.stringify(deck));
+    const body = JSON.stringify(deck);
 
     const token = this.cookieService.get('access_token');
 
@@ -133,12 +96,6 @@ export class DeckHomeComponent implements OnInit {
     this.http.post<Deck>(`/api/decks`, body, {headers: headers}).subscribe(
       async responseData => {
         this.decks.push(responseData);
-
-        await this.getUsernameByUserId(this.user.id).then((userName) => {
-          this.decks[this.decks.length - 1].authorUserName = userName
-
-        })
-        this.clearDeck();
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -146,32 +103,6 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-//======DECKS FINISH======//
-
-  async getUserByUserId(id: number): Promise<void> {
-    const token = this.cookieService.get('access_token');
-
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
-    this.http.get<User>(`/api/users`, {headers: headers}).subscribe(
-      responseData => {
-        this.user.id = responseData.id;
-        this.user.username = responseData.username;
-        this.user.avatarImage = responseData.avatarImage;
-        this.user.subStatus = responseData.subStatus;
-        this.user.isActive = responseData.isActive;
-        this.user.subExpire = responseData.subExpire;
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
-
-  async getUsernameByUserId(id: number): Promise<string> {
-    await this.getUserByUserId(id);
-    return this.user.username;
-  }
 }
 
 
