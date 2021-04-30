@@ -83,8 +83,11 @@ export class AuthenticationHomeComponent implements OnInit {
     );
   }
 
+
+
   async authenticateAsync(): Promise<void> {
-    this.userAuthenticationData.passwordHash = this.password;
+
+    await this.sha512(this.password).then(result => {this.userAuthenticationData.passwordHash = result; console.log(result)});
     const body = JSON.stringify(this.userAuthenticationData);
 
     this.authenticateWithAuthData(body);
@@ -92,6 +95,12 @@ export class AuthenticationHomeComponent implements OnInit {
 
   //======AUTH FINISH======//
 
+
+  async sha512(str) {
+    return crypto.subtle.digest("SHA-512", new TextEncoder().encode(str)).then(buf => {
+      return Array.prototype.map.call(new Uint8Array(buf), x=>(('00'+x.toString(16)).slice(-2))).join('');
+    });
+  }
 
   private clearInputFields(): void {
     this.userAuthenticationData.email = "";
