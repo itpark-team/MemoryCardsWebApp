@@ -112,6 +112,16 @@ export class DeckCardsHomeComponent implements OnInit {
     });
   }
 
+  showEditDeckDialog(): void {
+    const dialogRef = this.dialog.open(EditDeckDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == true) {
+        // this.deck();
+      }
+    });
+  }
+
 
   private getClearCard(): Card {
     let card: Card={id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
@@ -348,6 +358,7 @@ export class DeleteDialog {
 })
 export class EditDeckDialog {
   constructor(public dialogRef: MatDialogRef<EditDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
+
 
   }
 
