@@ -90,24 +90,6 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
         
-        [Authorize]
-        [HttpGet("GetNameById/{id}")]
-        public IActionResult GetNameById(int id)
-        {
-            try
-            {
-                string name = dbContext.Users.Find(id).Username ;
-               
-                return StatusCode(StatusCodes.Status200OK, $"\"{name}\"");
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Sample error");
-            }
-        }
-
-
         private ClaimsIdentity GetIdentity(UserAuthDTO userAuthDto)
         {
             User foundUser = dbContext.Users.FirstOrDefault(u =>

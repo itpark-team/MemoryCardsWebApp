@@ -46,7 +46,7 @@ export class DeckHomeComponent implements OnInit {
   }
 
   showCreatingDeckDialog(): void {
-    let deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUserName: ''};
+    let deck: Deck = {id: 0, visibility: false, description: '', title: '', authorUserId: 1, authorUser: ''};
     const dialogRef = this.dialog.open(AddDeckDialog, {
       data: deck
     });
@@ -71,9 +71,6 @@ export class DeckHomeComponent implements OnInit {
     this.http.get<Deck[]>(`/api/decks/GetDecksByUserToken`, {headers: headers}).subscribe(
       responseData => {
         this.decks = responseData;
-        this.decks.forEach((d) => {
-          this.http.get<string>('/api/users/GetNameById/' + d.authorUserId, {headers: headers}).subscribe(respDat=>{d.authorUserName=respDat});
-        });
       },
       error => {
         alert(`error get by token: ${error.status}, ${error.statusText}`);

@@ -4,5 +4,5 @@
   description: string;
   visibility: boolean;
   authorUserId: number;
-  authorUserName: string;
+  authorUser: string;
 }
