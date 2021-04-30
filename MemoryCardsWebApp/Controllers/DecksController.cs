@@ -38,6 +38,11 @@ namespace MemoryCardsWebApp.Controllers
                 string claimName = identity.Name;
                 bool succeded = int.TryParse(claimName, out userId);
 
+                if (!succeded)
+                {
+                    throw new ArgumentException("Could not retrieve ClaimName.");
+                }
+                
                 List<Deck> decks =
                     dbContext.Decks.FromSqlRaw(
                         $"SELECT * FROM Decks WHERE id IN (SELECT DeckId FROM UsersDecks WHERE UserId={userId})").ToList();
@@ -75,29 +80,27 @@ namespace MemoryCardsWebApp.Controllers
             try
             {
                 ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+                
+                int userId;
+                string claimName = identity.Name;
+                bool succeded = int.TryParse(claimName, out userId);
 
-                if (identity != null)
+                if (!succeded)
                 {
-                    int userId;
-                    string claimName = identity.Name;
-                    bool succeded = int.TryParse(claimName, out userId);
+                    throw new ArgumentException("Could not retrieve ClaimName.");
+                }
 
-                    if (!succeded)
+                User openingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                if (openingUser != null)
+                {
+                    UsersDeck usersOpeningDeck =
+                        dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                    if (usersOpeningDeck == null)
                     {
-                        throw new ArgumentException("Could not retrieve ClaimName.");
-                    }
-
-                    User openingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
-                    if (openingUser != null)
-                    {
-                        UsersDeck usersOpeningDeck =
-                            dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
-                        if (usersOpeningDeck == null)
-                        {
-                            throw new WebException();
-                        }
+                        throw new WebException();
                     }
                 }
+                
 
                 return StatusCode(StatusCodes.Status200OK, dbContext.Decks.First(item => item.Id == id));
             }
@@ -127,26 +130,23 @@ namespace MemoryCardsWebApp.Controllers
             {
                 ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
-                if (identity != null)
+                int userId;
+                string claimName = identity.Name;
+                bool succeded = int.TryParse(claimName, out userId);
+
+                if (!succeded)
                 {
-                    int userId;
-                    string claimName = identity.Name;
-                    bool succeded = int.TryParse(claimName, out userId);
+                    throw new ArgumentException("Could not retrieve ClaimName.");
+                }
 
-                    if (!succeded)
+                User deletingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                if (deletingUser != null)
+                {
+                    UsersDeck usersDeletingDeck =
+                        dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                    if (usersDeletingDeck == null)
                     {
-                        throw new ArgumentException("Could not retrieve ClaimName.");
-                    }
-
-                    User deletingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
-                    if (deletingUser != null)
-                    {
-                        UsersDeck usersDeletingDeck =
-                            dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
-                        if (usersDeletingDeck == null)
-                        {
-                            throw new WebException();
-                        }
+                        throw new WebException();
                     }
                 }
 
@@ -181,25 +181,23 @@ namespace MemoryCardsWebApp.Controllers
             {
                 ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
-                if (identity != null)
+                int userId;
+                string claimName = identity.Name;
+                bool succeded = int.TryParse(claimName, out userId);
+
+                if (!succeded)
                 {
-                    int userId;
-                    string claimName = identity.Name;
-                    bool succeded = int.TryParse(claimName, out userId);
-
-                    if (!succeded)
-                    {
-                        throw new ArgumentException("Could not retrieve ClaimName.");
-                    }
-
-                    User openingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
-                    if (openingUser == null)
-                    {
-                        throw new WebException();
-                    }
-
-                    deck.AuthorUserId = userId;
+                    throw new ArgumentException("Could not retrieve ClaimName.");
                 }
+
+                User openingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                if (openingUser == null)
+                {
+                    throw new WebException();
+                }
+
+                deck.AuthorUserId = userId;
+            
                 
                 dbContext.Decks.Add(deck);
 
@@ -242,28 +240,27 @@ namespace MemoryCardsWebApp.Controllers
             {
                 ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
 
-                if (identity != null)
+                
+                int userId;
+                string claimName = identity.Name;
+                bool succeded = int.TryParse(claimName, out userId);
+
+                if (!succeded)
                 {
-                    int userId;
-                    string claimName = identity.Name;
-                    bool succeded = int.TryParse(claimName, out userId);
+                    throw new ArgumentException("Could not retrieve ClaimName.");
+                }
 
-                    if (!succeded)
+                User editingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                if (editingUser != null)
+                {
+                    UsersDeck usersOpeningDeck =
+                        dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
+                    if (usersOpeningDeck == null)
                     {
-                        throw new ArgumentException("Could not retrieve ClaimName.");
-                    }
-
-                    User editingUser = dbContext.Users.FirstOrDefault(u => u.Id == userId);
-                    if (editingUser != null)
-                    {
-                        UsersDeck usersOpeningDeck =
-                            dbContext.UsersDecks.FirstOrDefault(ud => ud.Deck.Id == id && ud.User.Id == userId);
-                        if (usersOpeningDeck == null)
-                        {
-                            throw new WebException();
-                        }
+                        throw new WebException();
                     }
                 }
+                
 
                 Deck findDeck = dbContext.Decks.First(item => item.Id == id);
 

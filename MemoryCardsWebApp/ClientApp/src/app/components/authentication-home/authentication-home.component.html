@@ -10,9 +10,8 @@
         </div>
 
         <form class="card"
-              [formGroup]="form"
-              (ngSubmit)="onSubmit()"
-        >
+              [formGroup]="form">
+
           <div class="authentication-items" >
             <input formControlName="email" id="email" class="mb-2" type="text" placeholder="Login"
                    [ngClass]="{'invalid':form.get('email').invalid && form.get('email').touched}"

@@ -9,7 +9,7 @@ import {ActivatedRoute, ActivatedRouteSnapshot, RouterStateSnapshot} from "@angu
 })
 export class NotFoundComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) {}
+  constructor() {}
 
   ngOnInit() {
   }

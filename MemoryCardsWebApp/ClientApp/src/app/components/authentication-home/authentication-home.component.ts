@@ -48,10 +48,6 @@ export class AuthenticationHomeComponent implements OnInit {
 
   }
 
-  //???
-  onSubmit() {
-
-  }
 
   /**
    * Authenticate user

@@ -18,19 +18,6 @@ namespace MemoryCardsWebApp.Controllers
             dbContext = context;
         }
         
-        [HttpGet]
-        public IActionResult Get()
-        {
-            try
-            {
-                return StatusCode(StatusCodes.Status200OK, dbContext.DecksCards);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-        
         [HttpPost]
         public IActionResult Post([FromBody] DecksCard decksCard)
         {

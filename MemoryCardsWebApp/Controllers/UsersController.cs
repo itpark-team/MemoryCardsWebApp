@@ -39,8 +39,10 @@ namespace MemoryCardsWebApp.Controllers
                 int userId;
                 string claimName = identity.Name;
                 bool succeded = int.TryParse(claimName, out userId);
+
+                User user = dbContext.Users.First(item => item.Id == userId);
                 
-                return StatusCode(StatusCodes.Status200OK, dbContext.Users.First(item => item.Id == userId));
+                return StatusCode(StatusCodes.Status200OK, user);
             }
             catch (Exception e)
             {
