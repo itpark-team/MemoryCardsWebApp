@@ -87,7 +87,7 @@ export class AuthenticationHomeComponent implements OnInit {
 
   async authenticateAsync(): Promise<void> {
 
-    await this.sha512(this.password).then(result => {this.userAuthenticationData.passwordHash = result; console.log(result)});
+    await this.sha512(this.password).then(passwordHash => {this.userAuthenticationData.passwordHash = passwordHash; console.log(passwordHash)});
     const body = JSON.stringify(this.userAuthenticationData);
 
     this.authenticateWithAuthData(body);
