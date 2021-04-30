@@ -3,6 +3,7 @@
     <div style="height: 1rem"></div>
     <div class="row justify-content-around">
       <button mat-raised-button (click)="goBack()">back</button>
+      <button mat-raised-button (click)="toggleTraining()">Training!</button>
       <div>
         <button style="margin-right: 10px" mat-raised-button (click)="showEditDeckDialog()">edit</button>
         <button mat-raised-button color="warn" (click)="showDeleteDeckDialog()">delete</button>
@@ -44,5 +45,9 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="training-container" [ngClass]="isHidden ? 'hidden' : 'shown'">
+    <app-training-home [cards]="cards"></app-training-home>
   </div>
 </div>
