@@ -24,6 +24,7 @@ import {AuthCheckService} from "./services/auth-check/auth-check.service";
 
 import {WrongLoginOrPasswordDialog} from "./components/authentication-home/authentication-home.component";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
+import { TrainingHomeComponent } from './components/training-home/training-home.component';
 
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     EditImageDialog,
     DeckCardsHomeComponent,
     AuthenticationHomeComponent,
-    WrongLoginOrPasswordDialog
+    WrongLoginOrPasswordDialog,
+    TrainingHomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

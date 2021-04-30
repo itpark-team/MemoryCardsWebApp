@@ -15,6 +15,8 @@ import {CardDTO} from "../../interfaces/card-dto";
   styleUrls: ['./deck-cards-home.component.css']
 })
 export class DeckCardsHomeComponent implements OnInit {
+  isHidden = true;
+
   cards: Card[] = [];
   deck: Deck;
 
@@ -260,6 +262,10 @@ export class DeckCardsHomeComponent implements OnInit {
       }
     );
   }
+
+  toggleTraining(): void {
+    this.isHidden = !this.isHidden;
+  }
 }
 
 @Component({
@@ -310,7 +316,6 @@ export class EditCardDialog {
   public cancel(): void {
     this.dialog.closeAll();
   }
-
 }
 
 
@@ -319,7 +324,6 @@ export class EditCardDialog {
   selector: 'edit-image-dialog',
   templateUrl: 'edit-image-dialog.html',
 })
-
 export class EditImageDialog {
   constructor(public dialogRef: MatDialogRef<EditImageDialog>, @Inject(MAT_DIALOG_DATA) public editedImage: string) {
   }
