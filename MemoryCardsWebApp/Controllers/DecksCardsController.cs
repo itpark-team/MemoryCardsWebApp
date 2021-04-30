@@ -9,8 +9,6 @@ namespace MemoryCardsWebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Route("api/[controller]/[action]")]
-    [Route("api/[controller]/[action]/{id}")]
     public class DecksCardsController : Controller
     {
         private MemoryCardsContext dbContext;
@@ -47,21 +45,6 @@ namespace MemoryCardsWebApp.Controllers
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
-
-        public IActionResult DeckCardsCount(int id)
-        {
-            try
-            {
-                int count = dbContext.DecksCards.Count(i => i.DeckId == id);
-
-                return StatusCode(StatusCodes.Status200OK, count);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
             }
         }
     }

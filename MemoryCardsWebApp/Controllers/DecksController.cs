@@ -27,8 +27,8 @@ namespace MemoryCardsWebApp.Controllers
         }
 
         [Authorize]
-        [HttpGet("GetDecksByUserId")]
-        public IActionResult GetDecksByUserId()
+        [HttpGet("GetDecksByUserToken")]
+        public IActionResult GetDecksByUserToken()
         {
             try
             {
@@ -66,7 +66,7 @@ namespace MemoryCardsWebApp.Controllers
                     "Fuck yourself and your fucking DecksToSend, cyka!");
             }
         }
-
+        
 
         [Authorize]
         [HttpGet("{id}")]
