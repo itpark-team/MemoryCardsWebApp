@@ -89,6 +89,19 @@ export class DeckCardsHomeComponent implements OnInit {
     });
   }
 
+  showEditDeckDialog(): void {
+    const dialogRef = this.dialog.open(EditDeckDialog, {
+      data: this.deck
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != "") {
+        this.deck = result;
+        console.log(result.id);
+        this.editDeck();
+      }
+    })
+  }
+
   showDeleteDeckDialog(): void {
     const dialogRef = this.dialog.open(DeleteDialog);
 
@@ -136,6 +149,22 @@ export class DeckCardsHomeComponent implements OnInit {
       responseData => {
         const findIndex = this.cards.findIndex(item => item.id == responseData.id);
         this.cards.splice(findIndex, 1, responseData);
+      },
+      error => {
+        alert(`error: ${error.status}, ${error.statusText}`);
+      }
+    );
+  }
+
+  editDeck(): void {
+    const body = JSON.stringify(this.deck);
+
+    const token = this.cookieService.get('access_token');
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
+
+    this.http.put<Deck>(`/api/decks/${this.deck.id}`, body, {headers: headers}).subscribe(
+      responseData => {
       },
       error => {
         alert(`error: ${error.status}, ${error.statusText}`);
@@ -313,5 +342,16 @@ export class DeleteDialog {
   }
 }
 
+@Component({
+  selector: 'edit-deck-dialog',
+  templateUrl: 'edit-deck-dialog.html',
+})
+export class EditDeckDialog {
+  constructor(public dialogRef: MatDialogRef<EditDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
 
+  }
 
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
