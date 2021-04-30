@@ -112,15 +112,6 @@ export class DeckCardsHomeComponent implements OnInit {
     });
   }
 
-  showEditDeckDialog(): void {
-    const dialogRef = this.dialog.open(EditDeckDialog);
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == true) {
-        // this.deck();
-      }
-    });
-  }
 
 
   private getClearCard(): Card {
