@@ -10,6 +10,7 @@ import {AddDeckDialog} from "./components/deck-home/deck-home.component";
 import {AddCardDialog, EditImageDialog} from "./components/deck-cards-home/deck-cards-home.component";
 import {DeleteDialog} from "./components/deck-cards-home/deck-cards-home.component";
 import {EditCardDialog} from "./components/deck-cards-home/deck-cards-home.component";
+import {EditDeckDialog} from "./components/deck-cards-home/deck-cards-home.component";
 import {ProjectHomeComponent} from "./components/project-home/project-home.component";
 import {DeckCardsHomeComponent} from "./components/deck-cards-home/deck-cards-home.component";
 import {AuthenticationHomeComponent} from "./components/authentication-home/authentication-home.component";
@@ -45,6 +46,7 @@ const appRoutes: Routes = [
     AddCardDialog,
     DeleteDialog,
     EditCardDialog,
+    EditDeckDialog,
     EditImageDialog,
     DeckCardsHomeComponent,
     AuthenticationHomeComponent,

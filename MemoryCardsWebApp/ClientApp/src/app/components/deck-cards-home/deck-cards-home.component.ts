@@ -100,6 +100,16 @@ export class DeckCardsHomeComponent implements OnInit {
     });
   }
 
+  showEditDeckDialog(): void {
+    const dialogRef = this.dialog.open(EditDeckDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == true) {
+        // this.deck();
+      }
+    });
+  }
+
 
   private getClearCard(): Card {
     let card: Card={id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
@@ -307,6 +317,19 @@ export class EditImageDialog {
 export class DeleteDialog {
   constructor(public dialogRef: MatDialogRef<DeleteDialog>) {
 
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector:'edit-deck-dialog',
+  templateUrl: 'edit-deck-dialog.html',
+})
+export class EditDeckDialog {
+  constructor(public  dialogRef: MatDialogRef<EditDeckDialog>) {
   }
 
   onNoClick(): void {
