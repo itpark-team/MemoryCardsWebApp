@@ -38,7 +38,7 @@
 
     <ItemGroup>
       <Folder Include="ClientApp\src\app\components" />
-      <Folder Include="ClientApp\src\app\services" />
+      <Folder Include="ClientApp\src\app\shared\components\inputs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -12,13 +12,14 @@
         <form class="card"
               [formGroup]="form">
 
-          <div class="authentication-items" >
+          <div class="authentication-items">
             <input formControlName="email" id="email" class="mb-2" type="text" placeholder="Login"
                    [ngClass]="{'invalid':form.get('email').invalid && form.get('email').touched}"
                    [ngModel]="userAuthenticationData.email"
                    (ngModelChange)="userAuthenticationData.email=$event"
             >
-            <span   class="helper-text text-danger" style="padding-top: -10px" *ngIf="form.get('email').invalid && form.get('email').touched">
+            <span class="helper-text text-danger" style="padding-top: -10px"
+                  *ngIf="form.get('email').invalid && form.get('email').touched">
               <span *ngIf="form.get('email').errors['required']">Поле не может быть пустым</span>
               <span *ngIf="form.get('email').errors['email']">Неверный формат ввода почты</span>
             </span>
@@ -29,13 +30,15 @@
             <span class="helper-text text-danger" *ngIf="form.get('password').invalid && form.get('password').touched">
               <span *ngIf="form.get('password').errors['required']">Поле не может быть пустым</span>
               <span
-                *ngIf="form.get('password').errors['minlength'] && form.get('password').errors['minlength']['requiredLength']">Неверный формат ввода пароля(должен состоять минимум из {{form.get('password').errors['minlength']['requiredLength']}} символов)</span>
+                *ngIf="form.get('password').errors['minlength'] && form.get('password').errors['minlength']['requiredLength']">Неверный формат ввода пароля(должен состоять минимум из {{form.get('password').errors['minlength']['requiredLength']}}
+                символов)</span>
 
             </span>
 
             <!-- CHECK BOX -->
             <div class="form-check">
-              <label style="color: black"><input type="checkbox" class="form-check-input" [checked]="saveUser" (change)="saveUser=!saveUser">Запомнить меня</label>
+              <label style="color: black"><input type="checkbox" class="form-check-input" [checked]="saveUser"
+                                                 (change)="saveUser=!saveUser">Запомнить меня</label>
             </div>
 
             <div class="flex-wrap d-flex justify-content-between">
@@ -47,7 +50,8 @@
               <br>
 
               <div class="d-flex justify-content-center">
-                <button mat-raised-button class="top-btn" (click)="authenticateAsync()" [disabled]="form.invalid">Sign In
+                <button mat-raised-button class="top-btn" (click)="authenticateAsync()" [disabled]="form.invalid">Sign
+                  In
                 </button>
               </div>
 

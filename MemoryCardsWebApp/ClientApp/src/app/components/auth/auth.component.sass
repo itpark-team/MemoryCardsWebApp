@@ -1,0 +1,68 @@
+@import '../../../styles/variables'
+
+$total_height: 573px
+
+.container
+  width: 100%
+  max-width: 350px
+  height: $total_height
+  margin: 0 auto
+  // margin-top: 199px
+  position: absolute
+  top: calc(50% - #{$total_height / 2})
+  left: calc(50% - 175px)
+
+  h2
+    color: $tits-orange
+    font-size: 40px
+    display: block
+    text-align: center
+    margin-bottom: 51px
+    text-shadow: -4px -2px #d4cdc1
+
+  small.title
+    font-size: 16px
+    color: $tits-active-dark
+    display: block
+    margin-bottom: 8px
+
+  small.error
+    font-size: 12px
+    display: block
+    line-height: 24px
+    color: $tits-error
+
+  .control-row
+    height: 102px
+
+    &.small
+      display: flex
+      height: 28px
+      flex-direction: row
+      margin-top: 15px
+
+      .checkbox-container
+        flex: 1
+        display: flex
+
+        app-checkbox
+          width: 28px
+          height: 28px
+          display: inline-block
+
+        span
+          font-size: 16px
+          margin-left: 13px
+          line-height: 28px
+          color: $tits-6
+
+      .link-container a
+        color: $tits-dark-blue
+        line-height: 28px
+        display: block
+        font-size: 16px
+
+  button
+    width: 100%
+    height: 52px
+    margin-top: 40px

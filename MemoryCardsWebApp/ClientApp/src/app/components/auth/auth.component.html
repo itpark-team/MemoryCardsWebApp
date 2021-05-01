@@ -1,0 +1,29 @@
+<div class="container">
+  <h2><img src="../../../assets/icons/logo.svg"></h2>
+  <form [formGroup]="authFormGroup" (submit)="auth()" (keyup.enter)="auth()">
+    <div class="control-row">
+      <small class="title">Login</small>
+      <app-login-input [phone]="true" formControlName="login" [validators]="validators"></app-login-input>
+      <small class="error" *ngIf="authFormGroup.get('login')?.errors?.required && authFormGroup.get('login')?.touched">Это
+        обязательное поле</small>
+    </div>
+    <div class="control-row">
+      <small class="title">Password</small>
+      <app-password-input [phone]="true" formControlName="password" [validators]="validators"></app-password-input>
+      <small class="error"
+             *ngIf="authFormGroup.get('password')?.errors?.required && authFormGroup.get('password')?.touched">Это
+        обязательное поле</small>
+    </div>
+    <div class="control-row small">
+      <div class="checkbox-container">
+        <app-checkbox formControlName="rememberMe"></app-checkbox>
+        <span>Запомнить меня</span>
+      </div>
+      <!--      TODO Do password refresh page -->
+      <div class="link-container">
+        <a [routerLink]="['/']">Забыли пароль?</a>
+      </div>
+    </div>
+    <button class="light-orange-button" type="submit" [disabled]="authFormGroup.invalid || isFormSent">Sign in</button>
+  </form>
+</div>

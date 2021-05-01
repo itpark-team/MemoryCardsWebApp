@@ -1,0 +1,6 @@
+<div class="container" (click)="update()">
+  <img src="/assets/icons/checkbox-active.svg" class="active" *ngIf="isChecked; else disabled">
+  <ng-template #disabled>
+    <img src="/assets/icons/checkbox-disabled.svg" class="disabled">
+  </ng-template>
+</div>
