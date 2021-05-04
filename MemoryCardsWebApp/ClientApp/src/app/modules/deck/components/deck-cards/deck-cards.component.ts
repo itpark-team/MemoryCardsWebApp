@@ -2,19 +2,21 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from 'rxjs';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {CookieService} from "ngx-cookie-service";
-import {Card} from "../../interfaces/card.interface";
-import {Deck} from "../../interfaces/deck.interface";
-import {DecksCard} from "../../interfaces/decks-card.interface";
-import {CardDTO} from "../../interfaces/card-dto";
+import {Card} from "../../../../shared/interfaces/card.interface";
+import {Deck} from "../../../../shared/interfaces/deck.interface";
+import {DecksCard} from "../../../../shared/interfaces/decks-card.interface";
+import {CardDTO} from "../../../../shared/interfaces/cardDto";
+import {DeckService} from "../../services/deck.service";
+import {DeckCardsService} from "../../services/deck-cards.service";
 
 @Component({
   selector: 'app-deck-cards-home',
-  templateUrl: './deck-cards-home.component.html',
-  styleUrls: ['./deck-cards-home.component.css']
+  templateUrl: './deck-cards.component.html',
+  styleUrls: ['./deck-cards.component.css']
 })
-export class DeckCardsHomeComponent implements OnInit {
+export class DeckCardsComponent implements OnInit {
   isHidden = true;
 
   cards: Card[] = [];
@@ -28,13 +30,20 @@ export class DeckCardsHomeComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private cookieService: CookieService,
-    private router: Router) {
+    private router: Router,
+    private _deckService: DeckService,
+    private _deckCardsService: DeckCardsService) {
 
-    this.subscription = route.params.subscribe(params => this.deckId = params['id']);
+
   }
 
 
   ngOnInit(): void {
+    this.subscription = this.route.params.subscribe(params => this.deckId = params['id']);
+    if (!this._deckService.isValid(this.deckId)) {
+      //TODO Handle invalid deck error
+    }
+
     this.getCurrentDeck();
 
     this.getCardsByDeckId();
@@ -53,6 +62,8 @@ export class DeckCardsHomeComponent implements OnInit {
       }
     });
   }
+
+  //TODO finish transportation of dialogs
 
   showEditCardDialog(editedCard: Card): void {
     let card: Card = this.getClearCard();
@@ -115,14 +126,13 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
 
-
   private getClearCard(): Card {
-    let card: Card={id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
-    return  card;
+    let card: Card = {id: 0, backText: "", frontText: "", backImage: "", color: "", frontImage: ""};
+    return card;
   }
 
   postCard(card: Card): void {
-    let cardDTO:CardDTO={card:card,deckId:this.deckId};
+    let cardDTO: CardDTO = {card: card, deckId: this.deckId};
     const body = JSON.stringify(cardDTO);
 
     const token = this.cookieService.get('access_token');
@@ -143,7 +153,7 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 
   putCard(card: Card): void {
-    let cardDTO:CardDTO={card:card,deckId:this.deckId};
+    let cardDTO: CardDTO = {card: card, deckId: this.deckId};
     const body = JSON.stringify(cardDTO);
     const token = this.cookieService.get('access_token');
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
@@ -224,140 +234,35 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-  getCurrentDeck(): void {
-    const token = this.cookieService.get('access_token');
-
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
-    this.http.get<Deck>(`/api/decks/${this.deckId}`, {headers: headers}).subscribe(
-      responseData => {
-        this.deck = responseData;
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
-  }
-
-
-
   goBack(): void {
     this.router.navigateByUrl("decks");
   }
 
 
+  //TITLE Finished refactoring:
+
+  private getCurrentDeck(): void {
+    this._deckService.loadDeckById(this.deckId)
+      .subscribe(() => {
+        this.deck = this._deckService.deck;
+      }, error => {
+        //TODO Output nett error
+        console.log(`ERROR in getCurrentDeck(): ${error}`)
+      });
+  }
 
   private getCardsByDeckId(): void {
-    const token = this.cookieService.get('access_token');
-
-    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-
-    this.http.get<Card[]>(`/api/cards/GetCardsByDeckId/${this.deckId}`, {headers: headers}).subscribe(
-      responseData => {
-        this.cards = responseData;
-        console.dir(this.cards)
-      },
-      error => {
-        alert(`error: ${error.status}, ${error.statusText}`);
-      }
-    );
+    this._deckCardsService.loadCardsByDeckId(this.deckId)
+      .subscribe(() => {
+        this.cards = this._deckCardsService.cards;
+        console.dir(this.cards);
+      }, error => {
+        //TODO Output nett error
+        console.log(`ERROR in getCardsByDeckId: ${error}`);
+      });
   }
 
   toggleTraining(): void {
     this.isHidden = !this.isHidden;
-  }
-}
-
-@Component({
-  selector: 'add-card-dialog',
-  templateUrl: 'add-card-dialog.html',
-})
-export class AddCardDialog {
-  constructor(public dialogRef: MatDialogRef<AddCardDialog>, @Inject(MAT_DIALOG_DATA) public card: Card) {
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'edit-card-dialog',
-  templateUrl: 'edit-card-dialog.html',
-})
-
-export class EditCardDialog {
-  constructor(public dialogRef: MatDialogRef<EditCardDialog>, @Inject(MAT_DIALOG_DATA) public editedCard: Card, public dialog: MatDialog) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  showEditBackImageDialog(editedCard: Card): void {
-    const dialogRef = this.dialog.open(EditImageDialog, {data: editedCard.backImage});
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null && result != "") {
-        editedCard.backImage = result;
-      }
-    });
-  }
-
-  showEditFrontImageDialog(editedCard: Card): void {
-    const dialogRef = this.dialog.open(EditImageDialog, {data: editedCard.frontImage});
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null && result != "") {
-        editedCard.frontImage = result;
-      }
-    });
-  }
-
-  public cancel(): void {
-    this.dialog.closeAll();
-  }
-}
-
-
-
-@Component({
-  selector: 'edit-image-dialog',
-  templateUrl: 'edit-image-dialog.html',
-})
-export class EditImageDialog {
-  constructor(public dialogRef: MatDialogRef<EditImageDialog>, @Inject(MAT_DIALOG_DATA) public editedImage: string) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'delete-dialog',
-  templateUrl: 'delete-dialog.html',
-})
-export class DeleteDialog {
-  constructor(public dialogRef: MatDialogRef<DeleteDialog>) {
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'edit-deck-dialog',
-  templateUrl: 'edit-deck-dialog.html',
-})
-export class EditDeckDialog {
-  constructor(public dialogRef: MatDialogRef<EditDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
-
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }

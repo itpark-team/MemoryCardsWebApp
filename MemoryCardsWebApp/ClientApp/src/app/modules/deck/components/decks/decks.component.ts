@@ -9,10 +9,10 @@ import {User} from "../../interfaces/user.interface";
 
 @Component({
   selector: 'app-deck-home',
-  templateUrl: './deck-home.component.html',
-  styleUrls: ['./deck-home.component.css']
+  templateUrl: './decks.component.html',
+  styleUrls: ['./decks.component.css']
 })
-export class DeckHomeComponent implements OnInit {
+export class DecksComponent implements OnInit {
   private readonly isUserAuthenticated: boolean;
   decks: Deck[] = [];
 
@@ -100,18 +100,4 @@ export class DeckHomeComponent implements OnInit {
     );
   }
 
-}
-
-
-@Component({
-  selector: 'add-deck-dialog',
-  templateUrl: 'add-deck-dialog.html',
-})
-export class AddDeckDialog {
-  constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 }

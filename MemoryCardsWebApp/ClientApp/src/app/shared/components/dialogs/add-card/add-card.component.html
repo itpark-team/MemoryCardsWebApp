@@ -1,4 +1,4 @@
-﻿<h2 mat-dialog-title>Add card:</h2>
+<h2 mat-dialog-title>Add card:</h2>
 <mat-dialog-content class="mat-typography">
   <label>
     Front text: <input type="text" [ngModel]="card.frontText" (ngModelChange)="card.frontText=$event">
@@ -24,11 +24,9 @@
     Color: <input type="text" [ngModel]="card.color" (ngModelChange)="card.color=$event">
   </label>
   <br>
-
-
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-raised-button mat-dialog-close>Cancel</button>
-  <button mat-raised-button color="accent" [mat-dialog-close]="card" >Add</button>
+  <button mat-raised-button color="accent" [mat-dialog-close]="card">Add</button>
 </mat-dialog-actions>
 

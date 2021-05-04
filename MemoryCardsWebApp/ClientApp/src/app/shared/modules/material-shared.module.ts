@@ -18,7 +18,6 @@ const MODULES = [
 
   exports: MODULES,
 })
-
 export class MaterialSharedModule {
 
 }

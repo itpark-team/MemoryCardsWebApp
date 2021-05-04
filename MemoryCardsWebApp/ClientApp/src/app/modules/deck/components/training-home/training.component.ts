@@ -3,10 +3,10 @@ import {Card} from "../../interfaces/card.interface";
 
 @Component({
   selector: 'app-training-home',
-  templateUrl: './training-home.component.html',
-  styleUrls: ['./training-home.component.css']
+  templateUrl: './training.component.html',
+  styleUrls: ['./training.component.css']
 })
-export class TrainingHomeComponent implements OnInit {
+export class TrainingComponent implements OnInit {
 
   @Input() cards: Card[];
 

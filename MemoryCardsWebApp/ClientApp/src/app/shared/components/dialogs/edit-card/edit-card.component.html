@@ -1,0 +1,43 @@
+<mat-dialog-content class="mat-typography">
+  <div class="row justify-content-around">
+    <div class="m-4"
+         style="border-radius: 30px;display: inline-flex;width: 40%; height: available; border:5px solid {{card.color}}; overflow:hidden;">
+      <div class="card pl-3 pt-3 pr-3" style="height: available">
+        <img *ngIf="card.frontImage!=''" src="{{card.frontImage}}" class="card-img-top img-fluid"
+             style="border-radius: 10px;height: available;width: available;"
+             (click)="editImage(card.frontImage, CardFrontSide)">
+        <img *ngIf="card.frontImage==''"
+             src="https://malyar-avto8.ru/thumb/2/TMuenNye52cacuxaDpW8xg/r/d/fgs16_image-placeholder.png"
+             (click)="editImage(card.frontImage, CardFrontSide)">
+        <div class="card-body" style="display: flex;align-items: center;justify-content: center">
+          <input type="text" [ngModel]="card.frontText" (ngModelChange)="card.frontText=$event"
+                 value="{{card.frontText}}">
+        </div>
+      </div>
+    </div>
+    <div class="m-4"
+         style="border-radius: 30px;display: inline-flex;width: 40%; height: 40%;border:5px solid {{card.color}}; overflow:hidden">
+      <div class="card pl-3 pt-3 pr-3" style="height: 100%">
+        <img *ngIf="card.backImage!=''" src="{{card.backImage}}" class="card-img-top img-fluid"
+             style="border-radius: 10px;height: 100%;width: auto;" (click)="editImage(card.backImage, CardBackSide)" alt="Back image">
+        <img *ngIf="card.backImage==''"
+             src="https://malyar-avto8.ru/thumb/2/TMuenNye52cacuxaDpW8xg/r/d/fgs16_image-placeholder.png"
+             (click)="editImage(card.backImage, CardBackSide)">
+        <div class="card-body" style="display: flex;align-items: center;justify-content: center">
+          <input type="text" [ngModel]="card.backText" (ngModelChange)="card.backText=$event"
+                 value="{{card.backText}}">
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="mb-1">
+  <div class="col-md-6 text-left">
+    <button mat-raised-button color="warn" (click)="onNoClick()" >Cancel</button>
+  </div>
+  <div class="col-md-6 text-right">
+    <button mat-raised-button style="background-color: #234560;color: white" [mat-dialog-close]="card">Save
+    </button>
+    <button mat-raised-button color="warn" style="color: white" [mat-dialog-close]="'Delete'">Delete</button>
+  </div>
+</mat-dialog-actions>

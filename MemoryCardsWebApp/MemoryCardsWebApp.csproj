@@ -38,6 +38,8 @@
 
     <ItemGroup>
       <Folder Include="ClientApp\src\app\components" />
+      <Folder Include="ClientApp\src\app\modules\deck\services" />
+      <Folder Include="ClientApp\src\app\shared\components\dialogs" />
       <Folder Include="ClientApp\src\app\shared\components\inputs" />
     </ItemGroup>
 
