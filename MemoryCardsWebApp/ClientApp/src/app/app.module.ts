@@ -6,11 +6,6 @@ import {RouterModule, Routes} from '@angular/router';
 
 import {AppComponent} from './app.component';
 import {DeckHomeComponent} from "./components/deck-home/deck-home.component";
-import {AddDeckDialog} from "./components/deck-home/deck-home.component";
-import {AddCardDialog, EditImageDialog} from "./components/deck-cards-home/deck-cards-home.component";
-import {DeleteDialog} from "./components/deck-cards-home/deck-cards-home.component";
-import {EditCardDialog} from "./components/deck-cards-home/deck-cards-home.component";
-import {EditDeckDialog} from "./components/deck-cards-home/deck-cards-home.component";
 import {ProjectHomeComponent} from "./components/project-home/project-home.component";
 import {DeckCardsHomeComponent} from "./components/deck-cards-home/deck-cards-home.component";
 import {AuthenticationHomeComponent} from "./components/authentication-home/authentication-home.component";
@@ -22,9 +17,15 @@ import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from "@angular/material/dialog";
 import {AuthCheckService} from "./services/auth-check/auth-check.service";
 
-import {WrongLoginOrPasswordDialog} from "./components/authentication-home/authentication-home.component";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
 import { TrainingHomeComponent } from './components/training-home/training-home.component';
+import {WrongLoginOrPasswordDialog} from "./components/authentication-home/wrong-login-or-password-dialog.component";
+import {EditCardDialog} from "./components/deck-cards-home/edit-card-dialog.component";
+import {EditImageDialog} from "./components/deck-cards-home/edit-image-dialog.component";
+import {DeleteDialog} from "./components/deck-cards-home/delete-dialog.component";
+import {EditDeckDialog} from "./components/deck-cards-home/edit-deck-dialog.component";
+import {AddCardDialog} from "./components/deck-cards-home/add-card-dialog.component";
+import {AddDeckDialog} from "./components/deck-home/add-deck-dialog.component";
 
 const appRoutes: Routes = [
   {path: '', component: ProjectHomeComponent},

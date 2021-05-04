@@ -1,13 +1,17 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from 'rxjs';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {CookieService} from "ngx-cookie-service";
 import {Card} from "../../interfaces/card.interface";
 import {Deck} from "../../interfaces/deck.interface";
 import {DecksCard} from "../../interfaces/decks-card.interface";
 import {CardDTO} from "../../interfaces/card-dto";
+import {EditCardDialog} from "./edit-card-dialog.component";
+import {DeleteDialog} from "./delete-dialog.component";
+import {EditDeckDialog} from "./edit-deck-dialog.component";
+import {AddCardDialog} from "./add-card-dialog.component";
 
 @Component({
   selector: 'app-deck-cards-home',
@@ -239,13 +243,9 @@ export class DeckCardsHomeComponent implements OnInit {
     );
   }
 
-
-
   goBack(): void {
     this.router.navigateByUrl("decks");
   }
-
-
 
   private getCardsByDeckId(): void {
     const token = this.cookieService.get('access_token');
@@ -268,96 +268,5 @@ export class DeckCardsHomeComponent implements OnInit {
   }
 }
 
-@Component({
-  selector: 'add-card-dialog',
-  templateUrl: 'add-card-dialog.html',
-})
-export class AddCardDialog {
-  constructor(public dialogRef: MatDialogRef<AddCardDialog>, @Inject(MAT_DIALOG_DATA) public card: Card) {
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'edit-card-dialog',
-  templateUrl: 'edit-card-dialog.html',
-})
-
-export class EditCardDialog {
-  constructor(public dialogRef: MatDialogRef<EditCardDialog>, @Inject(MAT_DIALOG_DATA) public editedCard: Card, public dialog: MatDialog) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  showEditBackImageDialog(editedCard: Card): void {
-    const dialogRef = this.dialog.open(EditImageDialog, {data: editedCard.backImage});
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null && result != "") {
-        editedCard.backImage = result;
-      }
-    });
-  }
-
-  showEditFrontImageDialog(editedCard: Card): void {
-    const dialogRef = this.dialog.open(EditImageDialog, {data: editedCard.frontImage});
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null && result != "") {
-        editedCard.frontImage = result;
-      }
-    });
-  }
-
-  public cancel(): void {
-    this.dialog.closeAll();
-  }
-}
 
 
-
-@Component({
-  selector: 'edit-image-dialog',
-  templateUrl: 'edit-image-dialog.html',
-})
-export class EditImageDialog {
-  constructor(public dialogRef: MatDialogRef<EditImageDialog>, @Inject(MAT_DIALOG_DATA) public editedImage: string) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'delete-dialog',
-  templateUrl: 'delete-dialog.html',
-})
-export class DeleteDialog {
-  constructor(public dialogRef: MatDialogRef<DeleteDialog>) {
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'edit-deck-dialog',
-  templateUrl: 'edit-deck-dialog.html',
-})
-export class EditDeckDialog {
-  constructor(public dialogRef: MatDialogRef<EditDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
-
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}

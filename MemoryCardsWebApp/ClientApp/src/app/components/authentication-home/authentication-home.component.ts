@@ -1,10 +1,11 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {UserAuthenticationData} from "../../interfaces/user-authentication-data.interface";
+import {WrongLoginOrPasswordDialog} from "./wrong-login-or-password-dialog.component";
 
 @Component({
   selector: 'app-authentication-home',
@@ -111,18 +112,3 @@ export class AuthenticationHomeComponent implements OnInit {
   }
 }
 
-@Component({
-  selector: 'wrong-login-or-password-dialog',
-  templateUrl: 'wrong-login-or-password-dialog.html',
-})
-
-export class WrongLoginOrPasswordDialog {
-  constructor(
-    public dialogRef: MatDialogRef<WrongLoginOrPasswordDialog>) {
-
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
