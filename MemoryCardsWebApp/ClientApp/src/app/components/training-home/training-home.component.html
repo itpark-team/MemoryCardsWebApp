@@ -1,5 +1,22 @@
 <div class="layout">
-  <div *ngFor="let card of cards">
-    <p><b><i>{{ card.frontText }}</i></b></p>
+  <div class="card-container">
+    <div class="head-btn">
+      <button (click)="hide()">hide</button>
+    </div>
+    <div class="context-container">
+      <div class="card-inner">
+        <div class="card-output">
+          <span>
+            {{ this.cardText }}
+          </span>
+        </div>
+        <div class="btns-container">
+          <button id="1" (click)="turnCard()">ПАВАРАЧИВАЙ</button>
+          <button id="2" (click)="hasTurned ? sendToMiddle() : sendToBack()">
+            {{ this.btnText }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
