@@ -211,8 +211,18 @@ namespace MemoryCardsWebApp.Controllers
 
 
                 dbContext.SaveChanges();
+                
+                DeckDTO deckDto=new DeckDTO()
+                {
+                    Id = deck.Id,
+                    Title = deck.Title,
+                    Description = deck.Description,
+                    Visibility = deck.Visibility,
+                    AuthorUserId = deck.AuthorUserId,
+                    AuthorUser = deck.AuthorUser.Username
+                };
 
-                return StatusCode(StatusCodes.Status200OK, deck);
+                return StatusCode(StatusCodes.Status200OK, deckDto);
             }
 
             catch (ArgumentException e)

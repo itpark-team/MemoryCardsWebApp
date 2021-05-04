@@ -15,8 +15,8 @@
           <div class="authentication-items" >
             <input formControlName="email" id="email" class="mb-2" type="text" placeholder="Login"
                    [ngClass]="{'invalid':form.get('email').invalid && form.get('email').touched}"
-                   [ngModel]="userAuthenticationData.email"
-                   (ngModelChange)="userAuthenticationData.email=$event"
+                   [ngModel]="inputEmail"
+                   (ngModelChange)="inputEmail=$event"
             >
             <span   class="helper-text text-danger" style="padding-top: -10px" *ngIf="form.get('email').invalid && form.get('email').touched">
               <span *ngIf="form.get('email').errors['required']">Поле не может быть пустым</span>
@@ -24,8 +24,8 @@
             </span>
             <input formControlName="password" id="password" class="mb-2" type="password" placeholder="Password"
                    [ngClass]="{'invalid':form.get('password').invalid && form.get('password').touched}"
-                   [ngModel]="password"
-                   (ngModelChange)="password=$event">
+                   [ngModel]="inputPassword"
+                   (ngModelChange)="inputPassword=$event">
             <span class="helper-text text-danger" *ngIf="form.get('password').invalid && form.get('password').touched">
               <span *ngIf="form.get('password').errors['required']">Поле не может быть пустым</span>
               <span
@@ -47,7 +47,7 @@
               <br>
 
               <div class="d-flex justify-content-center">
-                <button mat-raised-button class="top-btn" (click)="authenticateAsync()" [disabled]="form.invalid">Sign In
+                <button mat-raised-button class="top-btn" (click)="authenticatePressed()" [disabled]="form.invalid">Sign In
                 </button>
               </div>
 
