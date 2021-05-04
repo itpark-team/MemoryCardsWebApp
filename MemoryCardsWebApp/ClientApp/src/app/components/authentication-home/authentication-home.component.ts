@@ -16,10 +16,11 @@ export class AuthenticationHomeComponent implements OnInit {
   private delay24hours: number = 86400000;
   private delay1000days: number = this.delay24hours * 1000;
 
-  password: string;
+  inputPassword: string;
+  inputEmail: string;
   saveUser: boolean = false;
 
-  userAuthenticationData: UserAuthenticationData = {email: '', passwordHash: ''};
+
   form: FormGroup;
 
   constructor(
@@ -29,13 +30,12 @@ export class AuthenticationHomeComponent implements OnInit {
     private cookieService: CookieService) {
 
     if (this.cookieService.check('login') && this.cookieService.check('password')) {
+      let authData: UserAuthenticationData = {
+        email: this.cookieService.get('login'),
+        passwordHash: this.cookieService.get('password')
+      };
 
-      this.userAuthenticationData.email = this.cookieService.get('login');
-      this.userAuthenticationData.passwordHash = this.cookieService.get('password');
-
-      const body = JSON.stringify(this.userAuthenticationData);
-
-      this.authenticateWithAuthData(body);
+      this.authenticateWithAuthData(authData);
     }
   }
 
@@ -49,23 +49,29 @@ export class AuthenticationHomeComponent implements OnInit {
   }
 
 
-  /**
-   * Authenticate user
-   * @param body is json.stringified user's authentication data.
-   */
+  authenticatePressed():void {
+    this.sha512(this.inputPassword).then(passwordHash => {
+      let authData: UserAuthenticationData = {
+        email: this.inputEmail,
+        passwordHash: passwordHash
+      };
 
-  //======AUTH START======//
-  authenticateWithAuthData(body: string): void {
+      this.authenticateWithAuthData(authData);
+    });
+  }
+
+  authenticateWithAuthData(data: UserAuthenticationData): void {
+    let body = JSON.stringify(data);
+
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     this.http.post(`/api/users/login`, body, {headers: headers}).subscribe(
       responseData => {
         this.cookieService.set('access_token', responseData['access_token'], {expires: new Date(Date.now() + this.delay24hours)});
-        //this.cookieService.set('id_user', responseData['id_user'], {expires: new Date(Date.now() + this.delay24hours)});
 
         if (this.saveUser) {
-          this.cookieService.set('login', this.userAuthenticationData.email, {expires: new Date(Date.now() + this.delay1000days)});
-          this.cookieService.set('password', this.userAuthenticationData.passwordHash, {expires: new Date(Date.now() + this.delay1000days)});
+          this.cookieService.set('login', data.email, {expires: new Date(Date.now() + this.delay1000days)});
+          this.cookieService.set('password', data.passwordHash, {expires: new Date(Date.now() + this.delay1000days)});
         }
 
         this.router.navigateByUrl('/decks');
@@ -79,37 +85,24 @@ export class AuthenticationHomeComponent implements OnInit {
     );
   }
 
-
-
-  async authenticateAsync(): Promise<void> {
-
-    await this.sha512(this.password).then(passwordHash => {this.userAuthenticationData.passwordHash = passwordHash; console.log(passwordHash)});
-    const body = JSON.stringify(this.userAuthenticationData);
-
-    this.authenticateWithAuthData(body);
-  }
-
-  //======AUTH FINISH======//
-
-
   async sha512(str) {
     return crypto.subtle.digest("SHA-512", new TextEncoder().encode(str)).then(buf => {
-      return Array.prototype.map.call(new Uint8Array(buf), x=>(('00'+x.toString(16)).slice(-2))).join('');
+      return Array.prototype.map.call(new Uint8Array(buf), x => (('00' + x.toString(16)).slice(-2))).join('');
     });
   }
 
-  private clearInputFields(): void {
-    this.userAuthenticationData.email = "";
-    this.userAuthenticationData.passwordHash = "";
+  private clearInputData(): void {
+    this.inputEmail = "";
+    this.inputPassword = "";
   }
 
   private showWrongLoginOrPasswordDialog(): void {
-    this.clearInputFields();
+    this.clearInputData();
     const dialogRef = this.dialog.open(WrongLoginOrPasswordDialog);
   }
 
-  //Methods from HTML
-   signUpStub(): void {
+  //For future I guess...
+  signUpStub(): void {
     console.log(this.saveUser);
   }
 }

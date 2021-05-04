@@ -33,7 +33,6 @@ export class DeckHomeComponent implements OnInit {
 
 
   logout(): void {
-    this.cookieService.delete('id_user');
     this.cookieService.delete('access_token');
     this.cookieService.delete('login');
     this.cookieService.delete('password');
@@ -65,12 +64,11 @@ export class DeckHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json').append('Authorization', 'Bearer ' + token);
 
-   //this.http.get<string>('/api/users/GetNameById/' + 2, {headers: headers}).subscribe(respDat=>{console.log(respDat)},er=>{console.log(er)});
-
 
     this.http.get<Deck[]>(`/api/decks/GetDecksByUserToken`, {headers: headers}).subscribe(
       responseData => {
         this.decks = responseData;
+        console.log(responseData);
       },
       error => {
         alert(`error get by token: ${error.status}, ${error.statusText}`);
@@ -79,8 +77,6 @@ export class DeckHomeComponent implements OnInit {
   }
 
   addDeck(deck: Deck): void {
-    console.log(deck);
-    console.log(JSON.stringify(deck));
     const body = JSON.stringify(deck);
 
     const token = this.cookieService.get('access_token');
@@ -92,6 +88,7 @@ export class DeckHomeComponent implements OnInit {
 
     this.http.post<Deck>(`/api/decks`, body, {headers: headers}).subscribe(
       async responseData => {
+        console.log(responseData);
         this.decks.push(responseData);
       },
       error => {
