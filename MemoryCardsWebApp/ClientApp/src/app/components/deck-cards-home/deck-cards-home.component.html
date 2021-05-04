@@ -48,6 +48,6 @@
   </div>
 
   <div class="training-container" [ngClass]="isHidden ? 'hidden' : 'shown'">
-    <app-training-home [cards]="cards"></app-training-home>
+    <app-training-home (closeEvent)="toggleTraining()" [cards]="cards"></app-training-home>
   </div>
 </div>

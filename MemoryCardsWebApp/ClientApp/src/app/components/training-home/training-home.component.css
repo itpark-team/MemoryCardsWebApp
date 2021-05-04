@@ -1,4 +1,58 @@
 .layout {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.head-btn {
+  padding: 2rem;
+}
+
+.card-container {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+
+.head-btn {
+  width: 100%;
+  min-height: 100px;
+  height: 10%;
+}
+
+.context-container {
+  width: 100%;
+  height: 90%;
+  box-sizing: content-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-inner {
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  background-color: #111;
+  margin-bottom: 2rem;
+}
+
+.card-output {
+  width: 100%;
+  height: 40%;
+  min-height: 200px;
+  border-radius: 14px;
+  background-color: #fff;
+}
+
+
+
