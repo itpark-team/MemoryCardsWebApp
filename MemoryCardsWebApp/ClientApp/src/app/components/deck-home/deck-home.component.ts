@@ -1,11 +1,10 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component, Inject, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
-import {PasserService} from "../../services/pass-params/passer.service";
 import {Deck} from "../../interfaces/deck.interface";
-import {User} from "../../interfaces/user.interface";
+import {AddDeckDialog} from "./add-deck-dialog.component";
 
 @Component({
   selector: 'app-deck-home',
@@ -100,15 +99,3 @@ export class DeckHomeComponent implements OnInit {
 }
 
 
-@Component({
-  selector: 'add-deck-dialog',
-  templateUrl: 'add-deck-dialog.html',
-})
-export class AddDeckDialog {
-  constructor(public dialogRef: MatDialogRef<AddDeckDialog>, @Inject(MAT_DIALOG_DATA) public deck: Deck) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
