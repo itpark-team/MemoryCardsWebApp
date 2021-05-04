@@ -29,6 +29,10 @@ export class AuthenticationHomeComponent implements OnInit {
     private router: Router,
     private cookieService: CookieService) {
 
+    if(this.cookieService.check('access_token')){
+      this.router.navigateByUrl('/decks');
+    }
+
     if (this.cookieService.check('login') && this.cookieService.check('password')) {
       let authData: UserAuthenticationData = {
         email: this.cookieService.get('login'),
