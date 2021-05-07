@@ -71,7 +71,7 @@ export class AuthenticationHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post(`/api/users/login`, body, {headers: headers}).subscribe(
+    this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
         this.cookieService.set('access_token', responseData['access_token'], {expires: new Date(Date.now() + this.delay24hours)});
 
