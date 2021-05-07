@@ -1,0 +1,31 @@
+#screen1{
+  width: 100%;
+  height: 90vh;
+  background: #7258FE;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#jahz{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#hz2{
+  margin: 0;
+}
+
+.column{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#hztext{
+  font-size: 1.8rem;
+}
+
+
+
