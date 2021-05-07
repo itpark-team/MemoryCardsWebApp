@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryCardsWebApp", "MemoryCardsWebApp\MemoryCardsWebApp.csproj", "{B5DB443B-E83F-42C5-85E8-2094AC2EB73B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seeder", "Seeder\Seeder.csproj", "{D73D6E1C-1F52-46AD-9900-1ACC32213965}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{B5DB443B-E83F-42C5-85E8-2094AC2EB73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5DB443B-E83F-42C5-85E8-2094AC2EB73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5DB443B-E83F-42C5-85E8-2094AC2EB73B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D73D6E1C-1F52-46AD-9900-1ACC32213965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D73D6E1C-1F52-46AD-9900-1ACC32213965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D73D6E1C-1F52-46AD-9900-1ACC32213965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D73D6E1C-1F52-46AD-9900-1ACC32213965}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
