@@ -1,30 +1,42 @@
-#screen1{
-  width: 100%;
-  height: 90vh;
+.screen0-button-signin-background{
   background: #7258FE;
+  height: 10vh;
+  display: flex;
+  justify-content: flex-end;
+}
+.screen0-button-signin{
+  padding: 0;
+  width: fit-content;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  margin-right: 3rem;
+  height: fit-content
+}
+
+
+.screen1{
+  height: 100vh;
+  background: #7258FE;
+}
+
+.screen1-button-download{
+  border-radius: 1rem;
+  font-size: 3rem;
+  padding: 20px;
+  width: fit-content;
+  height: fit-content;
+}
+
+.screen1-picture{
+  width: 100%;
+  max-width: 30rem;
+}
+
+.screen1-center-content{
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-}
-
-#jahz{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-#hz2{
-  margin: 0;
-}
-
-.column{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-#hztext{
-  font-size: 1.8rem;
 }
 
 

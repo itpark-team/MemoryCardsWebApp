@@ -12,23 +12,54 @@
 <!--    <div style="width: 10rem"></div>-->
 <!--  </div>-->
 <!--</nav>-->
-<div class="d-flex justify-content-end" style="background: #7258FE; height: 10vh">
-  <button (click)="goToAuth()" mat-raised-button style="width: fit-content;border-radius: 1rem;margin-top: 1rem;margin-right: 3rem; height: fit-content"><p style="margin: 0">
-    Sign In</p>
-  </button>
-</div>
-<div id="screen1">
 
-  <div id="jahz">
-    <div class="offset-1"></div>
-    <div class="column">
-      <p class="display-3 text-white">Memorize words better with <b class="display-1 text-white font-weight-bold">Memory
-        cards</b></p>
-      <div style="height: 10vh"></div>
-      <button mat-flat-button style="width: fit-content;border-radius: 1rem"><p class="display-4" id="hz2">Download</p>
-      </button>
-    </div>
-    <img src="https://www.searchpng.com/wp-content/uploads/2019/03/iPhone-XR-Orange-Mockup-PNG-Image.png" style="width: 35rem">
-    <div class="offset-1"></div>
-  </div>
+<!--*************-->
+
+<!--<div class="d-flex justify-content-end" style="background: #7258FE; height: 10vh">-->
+<!--  <button (click)="goToAuth()" mat-raised-button-->
+<!--          style="width: fit-content;border-radius: 1rem;margin-top: 1rem;margin-right: 3rem; height: fit-content"><p-->
+<!--    style="margin: 0">-->
+<!--    Sign In</p>-->
+<!--  </button>-->
+<!--</div>-->
+<!--<div id="screen1">-->
+
+<!--  <div id="jahz">-->
+<!--    <div class="offset-1"></div>-->
+<!--    <div class="column">-->
+<!--      <p class="display-3 text-white">Memorize words better with <b class="display-1 text-white font-weight-bold">Memory-->
+<!--        cards</b></p>-->
+<!--      <div style="height: 10vh"></div>-->
+<!--      <button mat-flat-button style="width: fit-content;border-radius: 1rem"><p class="display-4" id="hz2">Download</p>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--    <img src="https://www.searchpng.com/wp-content/uploads/2019/03/iPhone-XR-Orange-Mockup-PNG-Image.png"-->
+<!--         style="width: 35rem">-->
+<!--    <div class="offset-1"></div>-->
+<!--  </div>-->
+<!--</div>-->
+
+
+<!--*************-->
+
+<div class="screen0-button-signin-background">
+  <button (click)="goToAuth()" mat-raised-button class="screen0-button-signin">Sign In</button>
 </div>
+
+<div class="row screen1">
+
+  <div class="col-lg-8 screen1-center-content">
+
+    <div class="display-3 text-white ml-5">Memorize words better with <b class="display-1 text-white font-weight-bold">Memory cards</b></div>
+
+    <div class="mt-5">
+      <button mat-flat-button class="screen1-button-download display-1">Download</button>
+    </div>
+
+  </div><!-- /.col-lg-8 -->
+
+  <div class="col-lg-4 screen1-center-content">
+    <img src="https://www.searchpng.com/wp-content/uploads/2019/03/iPhone-XR-Orange-Mockup-PNG-Image.png" alt="phone" class="screen1-picture ">
+  </div><!-- /.col-lg-4 -->
+
+</div><!-- /.row -->
