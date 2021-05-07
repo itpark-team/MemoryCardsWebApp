@@ -6,6 +6,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {UserAuthenticationData} from "../../interfaces/user-authentication-data.interface";
 import {WrongLoginOrPasswordDialog} from "./wrong-login-or-password-dialog.component";
+import {sha512} from "js-sha512"
 
 @Component({
   selector: 'app-authentication-home',
@@ -30,7 +31,7 @@ export class AuthenticationHomeComponent implements OnInit {
     private router: Router,
     private cookieService: CookieService) {
 
-    if(this.cookieService.check('access_token')){
+    if (this.cookieService.check('access_token')) {
       this.router.navigateByUrl('/decks');
     }
 
@@ -54,15 +55,15 @@ export class AuthenticationHomeComponent implements OnInit {
   }
 
 
-  authenticatePressed():void {
-    this.sha512(this.inputPassword).then(passwordHash => {
-      let authData: UserAuthenticationData = {
-        email: this.inputEmail,
-        passwordHash: passwordHash
-      };
+  authenticatePressed(): void {
 
-      this.authenticateWithAuthData(authData);
-    });
+    let authData: UserAuthenticationData = {
+      email: this.inputEmail,
+      passwordHash: sha512(this.inputPassword)
+    };
+
+    this.authenticateWithAuthData(authData);
+
   }
 
   authenticateWithAuthData(data: UserAuthenticationData): void {
@@ -70,7 +71,7 @@ export class AuthenticationHomeComponent implements OnInit {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post(`/api/users/login`, body, {headers: headers}).subscribe(
+    this.http.post(`/api/users/`, body, {headers: headers}).subscribe(
       responseData => {
         this.cookieService.set('access_token', responseData['access_token'], {expires: new Date(Date.now() + this.delay24hours)});
 
@@ -88,12 +89,6 @@ export class AuthenticationHomeComponent implements OnInit {
           alert(`error: ${error.status}, ${error.statusText}`);
       }
     );
-  }
-
-  async sha512(str) {
-    return crypto.subtle.digest("SHA-512", new TextEncoder().encode(str)).then(buf => {
-      return Array.prototype.map.call(new Uint8Array(buf), x => (('00' + x.toString(16)).slice(-2))).join('');
-    });
   }
 
   private clearInputData(): void {

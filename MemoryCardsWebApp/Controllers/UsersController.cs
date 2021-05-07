@@ -51,7 +51,7 @@ namespace MemoryCardsWebApp.Controllers
             }
         }
 
-        [HttpPost("Login")]
+        [HttpPost]
         public ActionResult Post([FromBody] UserAuthDTO userAuthDto)
         {
             try

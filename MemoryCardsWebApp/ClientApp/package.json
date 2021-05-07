@@ -29,6 +29,7 @@
     "bootstrap": "^4.5.0",
     "core-js": "^3.3.3",
     "jquery": "^3.5.1",
+    "js-sha512": "^0.8.0",
     "ngx-cookie-service": "^11.0.2",
     "oidc-client": "^1.9.1",
     "popper.js": "^1.16.0",

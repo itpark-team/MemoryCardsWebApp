@@ -11,7 +11,7 @@ export class WrongLoginOrPasswordDialog {
     public dialogRef: MatDialogRef<WrongLoginOrPasswordDialog>) {
 
   }
-
+//wqewq
   onNoClick(): void {
     this.dialogRef.close();
   }
