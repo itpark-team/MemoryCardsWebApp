@@ -6,7 +6,7 @@ import { ElementRef } from '@angular/core';
 @Component({
   selector: 'app-project-home',
   templateUrl: './project-home.component.html',
-  styleUrls: ['./project-home.component.css']
+  styleUrls: ['./project-home.component.css','./external2.css']
 })
 export class ProjectHomeComponent implements OnInit {
 

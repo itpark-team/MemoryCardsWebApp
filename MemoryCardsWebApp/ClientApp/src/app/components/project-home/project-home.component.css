@@ -43,6 +43,10 @@
   width: 80%;
 }
 
+.screen2-picture{
+  width: 80%;
+}
+
 .screen1-center-content{
   display: flex;
   flex-direction: column;
@@ -55,4 +59,18 @@
   height: fit-content;
 }
 
+.screen2 .col-lg-8 img{
+  width: 128px;
+  height: 128px;
+}
 
+.screen2 .col-lg-6{
+  text-align: center;
+}
+
+.screen3{
+  background: #e3e3e3;
+  text-align: center;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
