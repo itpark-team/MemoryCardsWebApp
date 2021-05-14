@@ -1,21 +1,33 @@
-.screen0-button-signin-background{
-  background: #7258FE;
-  height: 10vh;
-  display: flex;
-  justify-content: flex-end;
+.navbar{
+  color: white;
 }
+
+.navbar-brand{
+  color: white;
+}
+
+.navbar-scrolled .navbar-brand{
+  color: black;
+}
+
+.navbar-scrolled button{
+  color: black;
+}
+
+.navbar-scrolled{
+  background: white;
+}
+
 .screen0-button-signin{
   padding: 0;
   width: fit-content;
   border-radius: 1rem;
-  margin-top: 1rem;
-  margin-right: 3rem;
   height: fit-content
 }
 
-
 .screen1{
-  height: 100vh;
+  min-height: 100vh;
+  height: fit-content;
   background: #7258FE;
 }
 
@@ -28,8 +40,7 @@
 }
 
 .screen1-picture{
-  width: 100%;
-  max-width: 30rem;
+  width: 80%;
 }
 
 .screen1-center-content{
@@ -39,5 +50,9 @@
   justify-content: center;
 }
 
+.screen2{
+  min-height: 100vh;
+  height: fit-content;
+}
 
 
