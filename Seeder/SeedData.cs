@@ -9,10 +9,10 @@ namespace Seeder
     public class SeedData
     {
         private MemoryCardsContext dbContext { get; set; }
-
-        public SeedData()
+        
+        public SeedData(MemoryCardsContext context)
         {
-            MemoryCardsContext dbContext = new MemoryCardsContext();
+             dbContext = context;
         }
 
         private async Task<List<User>> GetSeededUser()
@@ -261,52 +261,56 @@ namespace Seeder
 
         private async Task SeedUsers()
         {
-            List<User> users = await GetSeededUser();
-            foreach (var user in users)
-            {
-                dbContext.Users.Add(user);
-            }
+            List<User> users = await GetSeededUser(); 
+            dbContext.Users.Add(users[0]);
+            dbContext.SaveChanges();
         }
 
         private async Task SeedDecks()
         {
             List<Deck> decks = await GetSeededDecks();
-            foreach (var deck in decks)
-            {
-                dbContext.Decks.Add(deck);
-            }
+            await dbContext.Decks.AddRangeAsync(decks);
+            await dbContext.SaveChangesAsync();
         }
 
         private async Task SeedCards()
         {
             List<Card> cards = await GetSeededCards();
-            foreach (var card in cards)
-            {
-                dbContext.Cards.Add(card);
-            }
+            await dbContext.Cards.AddRangeAsync(cards);
+            await dbContext.SaveChangesAsync();
+
         }
 
         private async Task SeedDecksCards()
         {
             List<DecksCard> decksCards = await GetSeedeDecksCards();
-            foreach (var decksCard in decksCards)
-            {
-                dbContext.DecksCards.Add(decksCard);
-            }
+            await dbContext.DecksCards.AddRangeAsync(decksCards);
+            await dbContext.SaveChangesAsync();
+
         }
 
         private async Task SeedUsersDeck()
         {
             List<UsersDeck> usersDecks = await GetSeededUsersDeck();
-            foreach (var usersDeck in usersDecks)
-            {
-                dbContext.UsersDecks.Add(usersDeck);
-            }
+            await dbContext.UsersDecks.AddRangeAsync(usersDecks);
+            await dbContext.SaveChangesAsync();
+
+        }
+
+        private async Task ClearDb()
+        {
+            dbContext.Users.FromSqlRaw($"EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT all'");
+            dbContext.Users.FromSqlRaw($"EXEC sp_MSForEachTable 'DELETE FROM ?'");
+            dbContext.Users.FromSqlRaw($"EXEC sp_MSForEachTable 'DBCC CHECKIDENT(''?'', RESEED, 0)'");
+            dbContext.Users.FromSqlRaw($"EXEC sp_MSForEachTable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL' ");
+            await dbContext.SaveChangesAsync();
+
         }
 
         public async Task Seed()
         {
-            dbContext.Cards.FromSqlRaw("TRUNCATE ");
+            await ClearDb();
+            //TODO: clear db
             await SeedUsers();
             await SeedCards();
             await SeedDecks();
